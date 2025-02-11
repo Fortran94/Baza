@@ -23,7 +23,6 @@ public class ParticipantUser extends User{
     }
 
     private double activityLevel () {
-
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
     }
 
