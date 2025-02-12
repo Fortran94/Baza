@@ -4,6 +4,8 @@
 import java.util.Scanner;
 public class Menu {
     public void printMenu(PatricipantList patricipantList) {
+        Logo logo = new Logo();
+        logo.printLogo();
         //Бесконечный цикл меню
         while (true) {
             System.out.println("Вы находитесь в главном меню" +
@@ -21,11 +23,9 @@ public class Menu {
             } else if (menuItem == 2) {
                 patricipantList.printList();
             } else if (menuItem == 3) {
-                System.out.println("Для просмотра подробной информации об участнике введите номер участника");
                 patricipantList.printSurnameList();
                 patricipantSelect(patricipantList);
             }
-
         }
     }
 
@@ -43,16 +43,22 @@ public class Menu {
         System.out.println();
         System.out.print("Введите возраст: ");
         int age = input.nextInt();
+        System.out.println();
         System.out.println("Участник успешно добавлен");
+        System.out.println();
         return new ParticipantUser(name, surname, callSign, age);
     }
-
-    //todo Здесь баг, не выводит информацию о выбранном участнике
+    //Показывает подробную информацию об участнике из пофамильного списка
     public void patricipantSelect(PatricipantList patricipantList) {
         Scanner pointScanner = new Scanner(System.in);
-        int point = pointScanner.nextInt();
-        patricipantList.list.get(point - 1).toString();
+        while (true) {
+            int point = pointScanner.nextInt();
+            if (point != 0) {
+                System.out.println(patricipantList.list.get(point - 1).toString());
+            } else {
+                break;
+            }
 
-
+        }
     }
 }

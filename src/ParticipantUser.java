@@ -35,7 +35,8 @@ public class ParticipantUser extends User{
                 "\n Позывной: " + getCallSign() +
                 "\n Возраст: " + getAge() +
                 "\n Стаж участника в месяцах: " + getExperiencePerMonth() +
-                "\n Колличество посещенных мероприятия: " + getNumberOfEvents() +
-                "\n Уровень активности: " + activityLevel();
+                "\n Количество посещенных мероприятия: " + getNumberOfEvents() +
+                "\n Уровень активности: " + activityLevel() +
+                "\n ";
     }
 }
