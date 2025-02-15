@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public  class PatricipantList {
+public  class ParticipantList {
     ArrayList<ParticipantUser> list = new ArrayList<>();
 
     public  void printList() {

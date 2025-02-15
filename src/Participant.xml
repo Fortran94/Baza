@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE participants [
+        <!ELEMENT participants (participant*)>
+        <!ELEMENT participant (name, surname, callSign, age)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT surname (#PCDATA)>
+        <!ELEMENT callSign (#PCDATA)>
+        <!ELEMENT age (#PCDATA)>
+        <!ATTLIST participant id CDATA #REQUIRED>
+        ]>
+
+        <participants>
+
+    <participant id="1">
+         <name> Anton </name>
+        <surname> Kozlov </surname>
+        <callSign> Dante </callSign>
+        <age> 30 </age>
+    </participant>
+
+    <participant id="2">
+        <name> Maxim </name>
+        <surname> Zinovyev </surname>
+        <callSign> Circus </callSign>
+        <age> 31 </age>
+    </participant>
+
+    <participant id="3">
+        <name> Vladimir </name>
+        <surname> Potapov </surname>
+        <callSign> Sirius </callSign>
+        <age> 31 </age>
+    </participant>
+
+</participants>

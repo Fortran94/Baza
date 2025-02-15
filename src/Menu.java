@@ -3,7 +3,7 @@
  */
 import java.util.Scanner;
 public class Menu {
-    public void printMenu(PatricipantList patricipantList) {
+    public void printMenu(ParticipantList participantList) {
         Logo logo = new Logo();
         logo.printLogo();
         //Бесконечный цикл меню
@@ -18,13 +18,13 @@ public class Menu {
             int menuItem = scanner.nextInt();
             if (menuItem == 1) {
                 //Добавляет нового участника в лист
-                patricipantList.list.add(addPatricipant());
+                participantList.list.add(addPatricipant());
                 //break;
             } else if (menuItem == 2) {
-                patricipantList.printList();
+                participantList.printList();
             } else if (menuItem == 3) {
-                patricipantList.printSurnameList();
-                patricipantSelect(patricipantList);
+                participantList.printSurnameList();
+                patricipantSelect(participantList);
             }
         }
     }
@@ -49,12 +49,12 @@ public class Menu {
         return new ParticipantUser(name, surname, callSign, age);
     }
     //Показывает подробную информацию об участнике из пофамильного списка
-    public void patricipantSelect(PatricipantList patricipantList) {
+    public void patricipantSelect(ParticipantList participantList) {
         Scanner pointScanner = new Scanner(System.in);
         while (true) {
             int point = pointScanner.nextInt();
             if (point != 0) {
-                System.out.println(patricipantList.list.get(point - 1).toString());
+                System.out.println(participantList.list.get(point - 1).toString());
             } else {
                 break;
             }
