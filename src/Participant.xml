@@ -9,27 +9,27 @@
         <!ATTLIST participant id CDATA #REQUIRED>
         ]>
 
-        <participants>
+<participants>
 
     <participant id="1">
-         <name> Anton </name>
-        <surname> Kozlov </surname>
-        <callSign> Dante </callSign>
-        <age> 30 </age>
+        <name>Anton</name>
+        <surname>Kozlov</surname>
+        <callSign>Dante</callSign>
+        <age>30</age>
     </participant>
 
     <participant id="2">
-        <name> Maxim </name>
-        <surname> Zinovyev </surname>
-        <callSign> Circus </callSign>
-        <age> 31 </age>
+        <name>Maxim</name>
+        <surname>Zinovyev</surname>
+        <callSign>Circus</callSign>
+        <age>31</age>
     </participant>
 
     <participant id="3">
-        <name> Vladimir </name>
-        <surname> Potapov </surname>
-        <callSign> Sirius </callSign>
-        <age> 31 </age>
+        <name>Vladimir</name>
+        <surname>Potapov</surname>
+        <callSign>Sirius</callSign>
+        <age>31</age>
     </participant>
 
 </participants>

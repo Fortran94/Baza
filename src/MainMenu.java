@@ -1,9 +1,11 @@
 /*
 Класс меню с методами отрисовки меню, выбора пункта меню.
  */
+//TODO Возможно надо разнести разные подпункты меню по разным классам??
 import java.util.Scanner;
-public class Menu {
-    public void printMenu(ParticipantList participantList) {
+
+public class MainMenu {
+    public void printMainMenu(ParticipantList participantList) {
         Logo logo = new Logo();
         logo.printLogo();
         //Бесконечный цикл меню
@@ -14,7 +16,8 @@ public class Menu {
             System.out.println("1. Добавить участника " +
                     "\n2. Посмотреть список участников" +
                     "\n3. Посмотреть список участников по фамилиями" +
-                    "\n4. Редактировать участника");
+                    "\n4. Редактировать участника" +
+                    "\n5. Записать на мероприятие");
             Scanner scanner = new Scanner(System.in);
             int menuItem = scanner.nextInt();
             if (menuItem == 1) {
@@ -31,7 +34,13 @@ public class Menu {
                 participantList.printSurnameList();
                 Scanner editParticipant = new Scanner(System.in);
                 int editParticipantPoint = editParticipant.nextInt();
-                editParticipant(participantList, editParticipantPoint);
+                editParticipant(participantList, editParticipantPoint - 1);
+            } else if (menuItem == 5) {
+                System.out.println("Введите номер участника");
+                participantList.printSurnameList();
+                Scanner editParticipant1 = new Scanner(System.in);
+                int partCounter = editParticipant1.nextInt();
+                participantList.list.get(partCounter - 1).takePart();
             }
         }
     }
@@ -55,6 +64,7 @@ public class Menu {
         System.out.println();
         return new ParticipantUser(name, surname, callSign, age);
     }
+
     //Показывает подробную информацию об участнике из пофамильного списка
     public void participantSelect(ParticipantList participantList) {
         Scanner pointScanner = new Scanner(System.in);
@@ -62,18 +72,17 @@ public class Menu {
             int point = pointScanner.nextInt();
             if (point != 0) {
                 System.out.println(participantList.list.get(point - 1).toString());
-            } else{
+            } else {
                 break;
             }
 
         }
     }
 
-    //todo Исправить ошибку при редактировании участника
     //Редактирует выбранного участника
     public void editParticipant(ParticipantList participantList, int point) {
         System.out.println("Текущая информация:");
-        participantList.list.get(point - 1).toString();
+        participantList.list.get(point).toString();
         Scanner input = new Scanner(System.in);
         System.out.print("Введите имя: ");
         participantList.list.get(point).setName(input.nextLine());
