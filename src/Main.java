@@ -5,9 +5,9 @@ public class Main {
         //Создаем список
         ParticipantList participantList = new ParticipantList();
         //Создаем меню
-        MainMenu menu = new MainMenu();
+        MainMenu mainMenu = new MainMenu();
         //Отрисовываем меню
-        menu.printMainMenu(participantList);
+        mainMenu.printFirstMenu(participantList);
 
     }
 }

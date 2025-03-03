@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ParticipantList {
-    ArrayList<ParticipantUser> list = new ArrayList<>();
+    ArrayList<ParticipantUser> list = new ArrayList<>(); //todo переименовать лист
 
     public void printList() {
         for (ParticipantUser i : list) {
@@ -16,5 +17,25 @@ public class ParticipantList {
         for (int i = 0; i < list.size(); i++) {
             System.out.println(i + 1 + " " + list.get(i).getSurname());
         }
+    }
+
+    //Метод создает нового участника
+    public ParticipantUser addParticipant() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Введите имя: ");
+        String name = input.nextLine();
+        System.out.println();
+        System.out.print("Введите фамилию: ");
+        String surname = input.nextLine();
+        System.out.println();
+        System.out.print("Введите позывной: ");
+        String callSign = input.nextLine();
+        System.out.println();
+        System.out.print("Введите возраст: ");
+        int age = input.nextInt();
+        System.out.println();
+        System.out.println("Участник успешно добавлен");
+        System.out.println();
+        return new ParticipantUser(name, surname, callSign, age);
     }
 }

@@ -1,3 +1,5 @@
+package Resurses;
+
 public class Logo {
     public void printLogo() {
         System.out.println("///////////          ////////|      |||||||||||     |||\\\\\\\\\\\\\n" +
