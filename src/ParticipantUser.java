@@ -23,7 +23,7 @@ public class ParticipantUser extends User {
         this.numberOfEvents = numberOfEvents;
     }
 
-    private double activityLevel() {
+    private double activityLevel() {//todo переименовать лист
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
     }
 

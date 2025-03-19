@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ParticipantList {
-    ArrayList<ParticipantUser> list = new ArrayList<>(); //todo переименовать лист
+    ArrayList<ParticipantUser> participantList = new ArrayList<>();
 
     public void printList() {
-        for (ParticipantUser i : list) {
+        for (ParticipantUser i : participantList) {
             System.out.println(i.toString());
         }
     }
@@ -14,8 +14,8 @@ public class ParticipantList {
     public void printSurnameList() {
         System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
                 "\n Для выхода нажмите 0");
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(i + 1 + " " + list.get(i).getSurname());
+        for (int i = 0; i < participantList.size(); i++) {
+            System.out.println(i + 1 + " " + participantList.get(i).getSurname());
         }
     }
 

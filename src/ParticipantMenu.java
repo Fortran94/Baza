@@ -2,32 +2,32 @@ import java.util.Scanner;
 
 public class ParticipantMenu {
     public void printParticipantMenu(ParticipantList participantList){
+        Scanner menuPoint = new Scanner(System.in);
         while (true) {
             System.out.println("1. Добавить участника " +
                     "\n2. Посмотреть список участников" +
                     "\n Для возврата введите 0");
-            Scanner menuPoint = new Scanner(System.in);
             int menuItem = menuPoint.nextInt();
 
             if (menuItem == 1) {
                 //Добавляет нового участника в лист
-                participantList.list.add(participantList.addParticipant());
+
+                participantList.participantList.add(participantList.addParticipant());
                 //break;
             } else if (menuItem == 2) {
+                Scanner pointScanner = new Scanner(System.in);
                 //выводит список участников
                 while (true) {
                     participantList.printSurnameList();
-                    Scanner pointScanner = new Scanner(System.in);
-
                     int point = pointScanner.nextInt();
-                    if (point != 0) {
-                        System.out.println(participantList.list.get(point - 1).toString());
+                    if (point > 0 && point <= participantList.participantList.size()) {
+                        System.out.println(participantList.participantList.get(point - 1).toString());
+                    } else if (point != 0) {
+                        System.out.println("Нет участника с таким номером!");
                     } else {
                         break;
                     }
-
                 }
-
             }
         }
     }
