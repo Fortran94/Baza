@@ -1,4 +1,4 @@
-package resources;
+package com.Fortran94.BazaApp.model;
 
 public class Logo {
     public void printLogo() {

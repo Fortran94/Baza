@@ -1,12 +1,12 @@
 package com.Fortran94.BazaApp.menu;
 
-import com.Fortran94.BazaApp.ParticipantList;
-import main.*;
+import com.Fortran94.BazaApp.dao.ParticipantDAO;
+import com.Fortran94.BazaApp.model.Logo;
 
 import java.util.Scanner;
 
 public class MainMenu {
-    public void printFirstMenu (ParticipantList participantList) {
+    public void printFirstMenu (ParticipantDAO participants) {
         /*
          * Рисуем лого и выводим пункты меню
          */
@@ -25,7 +25,7 @@ public class MainMenu {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
                     ParticipantMenu participantMenu = new ParticipantMenu();
-                    participantMenu.printParticipantMenu(participantList);
+                    participantMenu.printParticipantMenu(participants);
                 } else if (menuItem == 2) {
                     // todo пункт с мероприятиями
                 } else if (menuItem == 0) { // Выход из приложения
