@@ -1,3 +1,5 @@
+package com.Fortran94.BazaApp.model;
+
 public class ParticipantUser extends User {
     private int experiencePerMonth = 1;
     private int numberOfEvents;

@@ -1,4 +1,7 @@
-import Resurses.Logo;
+package com.Fortran94.BazaApp.menu;
+
+import com.Fortran94.BazaApp.ParticipantList;
+import main.*;
 
 import java.util.Scanner;
 

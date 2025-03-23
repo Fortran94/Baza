@@ -1,4 +1,9 @@
-import javax.swing.*;
+package com.Fortran94.BazaApp.menu;
+
+import com.Fortran94.BazaApp.ParticipantList;
+import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.utils.UserMacker;
+
 import java.util.Scanner;
 
 public class ParticipantMenu {

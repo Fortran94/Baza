@@ -1,4 +1,4 @@
-package Resurses;
+package resources;
 
 public class Logo {
     public void printLogo() {

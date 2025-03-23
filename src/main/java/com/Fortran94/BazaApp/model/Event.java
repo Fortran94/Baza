@@ -1,3 +1,5 @@
+package com.Fortran94.BazaApp.model;
+
 public abstract class Event {
     private String name, location, organizer, overview;
     private int quantityOfParticipant;

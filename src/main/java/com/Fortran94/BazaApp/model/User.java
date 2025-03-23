@@ -1,3 +1,5 @@
+package com.Fortran94.BazaApp.model;
+
 public abstract class User {
     private int id, age;
     private String name, surname, callSign;

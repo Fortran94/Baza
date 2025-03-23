@@ -1,3 +1,7 @@
+package com.Fortran94.BazaApp.utils;
+
+import com.Fortran94.BazaApp.model.ParticipantUser;
+
 import java.util.Scanner;
 
 public class UserMacker {

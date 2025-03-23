@@ -1,3 +1,7 @@
+package com.Fortran94.BazaApp;
+
+import com.Fortran94.BazaApp.model.Game;
+
 import java.util.ArrayList;
 
 public class GameList {
