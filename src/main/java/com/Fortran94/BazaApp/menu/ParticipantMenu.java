@@ -21,32 +21,34 @@ public class ParticipantMenu {
                 ParticipantUser participant = UserMacker.writer();
                 participantDAO.addParticipant(participant); // добавляем в список
             }else if (menuItem == 2) {
-                    while (true) {
-                        System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
-                                "\n Для выхода нажмите 0");
+                while (true) {
+                    System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
+                            "\n Для выхода нажмите 0");
 
-                        var participants = participantDAO.getAllParticipants();
-                        for (int i = 0; i < participants.size(); i++) {
-                            System.out.println((i + 1) + " " + participants.get(i).getSurname());
-                        }
-
-                        int point = menuPoint.nextInt();
-                        if (point > 0 && point <= participants.size()) {
-                            System.out.println(participants.get(point - 1).toString());
-                        } else if (point != 0) {
-                            System.out.println("Нет участника с таким номером!");
-                        } else {
-                            break;
-                        }
+                    var participants = participantDAO.getAllParticipants();
+                    for (int i = 0; i < participants.size(); i++) {
+                        System.out.println((i + 1) + " " + participants.get(i).getSurname());
                     }
+
+                    int point = menuPoint.nextInt();
+                    if (point > 0 && point <= participants.size()) {
+                        System.out.println(participants.get(point - 1).toString());
+                    } else if (point != 0) {
+                        System.out.println("Нет участника с таким номером!");
+                    } else {
+                        break;
+                    }
+                }
+            }
+            /*     Нужен метод который будет редактировать участника
             }else if (menuItem == 3) {
                 System.out.println("Введите номер участника для редактирования");
-                participantDAO.printSurnameList();
+                participantDAO.getAllParticipants();
                 Scanner editParticipant = new Scanner(System.in);
                 int editParticipantPoint = editParticipant.nextInt();
                 ParticipantUser participant = UserMacker.writer();
                 participantDAO.edit(editParticipantPoint - 1, participant);
-            }
+            }*/
         }
     }
 }
