@@ -19,8 +19,6 @@ public class UserMacker {
         System.out.print("Введите возраст: ");
         int age = input.nextInt();
         System.out.println();
-        System.out.println("Участник успешно добавлен");
-        System.out.println();
 
         return new ParticipantUser(name, surname, callSign, age);
     }

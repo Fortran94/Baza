@@ -4,6 +4,7 @@ import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.UserMacker;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ParticipantMenu {
@@ -23,9 +24,10 @@ public class ParticipantMenu {
             }else if (menuItem == 2) {
                 while (true) {
                     System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
-                            "\n Для выхода нажмите 0");
+                            "\nДля выхода нажмите 0");
 
-                    var participants = participantDAO.getAllParticipants();
+                    List<ParticipantUser> participants = participantDAO.getAllParticipants();
+
                     for (int i = 0; i < participants.size(); i++) {
                         System.out.println((i + 1) + " " + participants.get(i).getSurname());
                     }
