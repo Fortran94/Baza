@@ -13,6 +13,8 @@ public class MainMenu {
         Logo logo = new Logo();
         logo.printLogo();
         Scanner scanner = new Scanner(System.in);
+        ParticipantMenu participantMenu = new ParticipantMenu();
+
 
         while (true) {
             System.out.println("Вы находитесь в главном меню" +
@@ -20,12 +22,14 @@ public class MainMenu {
             System.out.println();
             System.out.println("1. Участники" +
                     "\n2. Мероприятия" +
+                    "\n " +
                     "\nДля выхода нажмите 0");
+            System.out.println();
             if (scanner.hasNextInt()) {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
-                    ParticipantMenu participantMenu = new ParticipantMenu();
                     participantMenu.printParticipantMenu(participants);
+                    break;
                 } else if (menuItem == 2) {
                     // todo пункт с мероприятиями
                 } else if (menuItem == 0) { // Выход из приложения
