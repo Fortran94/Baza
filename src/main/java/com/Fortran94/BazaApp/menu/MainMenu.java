@@ -29,18 +29,17 @@ public class MainMenu {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
                     participantMenu.printParticipantMenu(participants);
-                    break;
                 } else if (menuItem == 2) {
                     // todo пункт с мероприятиями
                 } else if (menuItem == 0) { // Выход из приложения
                     System.out.println("До свидания!");
                     System.exit(0);
+                }else {
+                    System.out.println("Введите корректный номер пункта меню.");
+                    scanner.next(); // чтобы считывать ошибочный ввод и не зациклиться
+                    //todo хз что тут, какая то хуйня
                 }
-            }else {
-                System.out.println("Введите корректный номер пункта меню.");
-                scanner.next(); // чтобы считывать ошибочный ввод и не зациклиться
             }
-
         }
     }
 }

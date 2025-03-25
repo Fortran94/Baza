@@ -13,30 +13,21 @@ public class ParticipantMenu {
 
 
     public void printParticipantMenu(ParticipantDAO participantDAO){
+        while (true) {
+            System.out.println("1. Добавить участника " +
+                    "\n2. Посмотреть список участников" +
+                    "\n3. Редактировать участника" +
+                    "\n0. Возврат в главное меню");
+            int menuItem = menuPoint.nextInt();
 
-                    System.out.println("1. Добавить участника " +
-                            "\n2. Посмотреть список участников" +
-                            "\n3. Редактировать участника" +
-                            "\n0. Возврат в главное меню");
-                    int menuItem = menuPoint.nextInt();
-
-                    if (menuItem == 1) {
-                        addParticipant(participantDAO);
-                    } else if (menuItem == 2) {
-                        printParticipantList(participantDAO);
-
-                    } else if (menuItem == 0) {
-
-                    }
-                /*     Нужен метод который будет редактировать участника
-                }else if (menuItem == 3) {
-                    System.out.println("Введите номер участника для редактирования");
-                    participantDAO.getAllParticipants();
-                    Scanner editParticipant = new Scanner(System.in);
-                    int editParticipantPoint = editParticipant.nextInt();
-                    ParticipantUser participant = UserMacker.writer();
-                    participantDAO.edit(editParticipantPoint - 1, participant);
-                }*/
+            if (menuItem == 1) {
+                addParticipant(participantDAO);
+            } else if (menuItem == 2) {
+                printParticipantList(participantDAO);
+            } else if (menuItem == 0) {
+                break;
+            }
+        }
     }
 
     //создание участника
@@ -47,23 +38,38 @@ public class ParticipantMenu {
 
     // выводит пофамильный список
     public void printParticipantList(ParticipantDAO participantDAO) {
-        System.out.println("Для просмотра подробной информации об участнике введите номер участника");
 
         List<ParticipantUser> participants = participantDAO.getAllParticipants();
+        while (true) {
+            for (int i = 0; i < participants.size(); i++) {
+                System.out.println((i + 1) + " " + participants.get(i).getSurname());
+            }
 
-        for (int i = 0; i < participants.size(); i++) {
-            System.out.println((i + 1) + " " + participants.get(i).getSurname());
+            System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
+                    "\nДля возврата в меню участников введите 0");
+
+            int point = menuPoint.nextInt();
+
+            /* Отображает карточку участника, проверяет корректность введенного номера
+             */
+            if (point > 0 && point <= participants.size()) {
+                printCard(participants, point);
+            } else if (point != 0) {
+                System.out.println("Нет участника с таким номером!");
+            }else {
+                break;
+            }
         }
+    }
 
-        int point = menuPoint.nextInt();
-        if (point > 0 && point <= participants.size()) {
-
-                System.out.println(participants.get(point - 1).toString());
-                System.out.println("Для возврата к списку нажмите 0");
-            //todo тут происходит выход, надо разобраться и сделать так, чтобы не происходил,
-            // а продолжал показываться карточка пока пользователь не введет ноль
-        } else if (point != 0) {
-            System.out.println("Нет участника с таким номером!");
+    public void printCard(List<ParticipantUser> participants, int point) {
+        while (true) {
+            System.out.println(participants.get(point - 1).toString());
+            System.out.println("Для возврата к списку нажмите 0");
+            point = menuPoint.nextInt();
+            if (point == 0) {
+                break;
+            }
         }
     }
 }
