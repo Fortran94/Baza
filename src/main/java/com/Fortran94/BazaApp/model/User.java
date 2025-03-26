@@ -4,12 +4,18 @@ public abstract class User {
     private int id, age;
     private String name, surname, callSign;
 
+
+
     public User(String name, String surname, String callSign, int age) {
 
         this.name = name;
         this.surname = surname;
         this.callSign = callSign;
         this.age = age;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

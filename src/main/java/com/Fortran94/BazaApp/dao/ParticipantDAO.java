@@ -10,7 +10,7 @@ import java.util.List;
 public class ParticipantDAO {
 
     public void addParticipant(ParticipantUser participant) {
-        String sql = "INSERT INTO participants (name, surname, call_sign, age, experience_per_month, number_of_events) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO   participants (name, surname, call_sign, age, experience_per_month, number_of_events) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -22,6 +22,28 @@ public class ParticipantDAO {
             stmt.setInt(6, participant.getNumberOfEvents());
             stmt.executeUpdate();
             System.out.println("Участник добавлен в базу данных!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateParticipant(ParticipantUser participant, int id) {
+        String sql = "UPDATE participants \n" +
+                "SET name = ?, surname = ?, call_sign = ?, age = ?, experience_per_month = ?, number_of_events = ?\n" +
+                "WHERE id = ?;\n";
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, participant.getName());
+            stmt.setString(2, participant.getSurname());
+            stmt.setString(3, participant.getCallSign());
+            stmt.setInt(4, participant.getAge());
+            stmt.setInt(5, participant.getExperiencePerMonth());
+            stmt.setInt(6, participant.getNumberOfEvents());
+            stmt.setInt(7, id);
+            stmt.executeUpdate();
+            System.out.println("Карточка участника обновлена!");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,4 +75,6 @@ public class ParticipantDAO {
         }
         return participants;
     }
+
+
 }

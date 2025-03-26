@@ -11,6 +11,11 @@ public class ParticipantMenu {
 
     Scanner menuPoint = new Scanner(System.in);
 
+    private final ParticipantDAO participantDAO;
+
+    public ParticipantMenu(ParticipantDAO participantDAO) {
+        this.participantDAO = participantDAO;
+    }
 
     public void printParticipantMenu(ParticipantDAO participantDAO){
         while (true) {
@@ -21,9 +26,9 @@ public class ParticipantMenu {
             int menuItem = menuPoint.nextInt();
 
             if (menuItem == 1) {
-                addParticipant(participantDAO);
+                addParticipant(this.participantDAO);
             } else if (menuItem == 2) {
-                printParticipantList(participantDAO);
+                printParticipantList(this.participantDAO);
             } else if (menuItem == 0) {
                 break;
             }
@@ -32,14 +37,20 @@ public class ParticipantMenu {
 
     //создание участника
     public void addParticipant(ParticipantDAO participantDAO) {
-        ParticipantUser participant = UserMacker.writer();
+        ParticipantUser participant = UserMacker.writer(); // Внесение записей
         participantDAO.addParticipant(participant); // добавляем в список
     }
+
+    public void updateParticipant(ParticipantDAO participantDAO, int id) {
+        ParticipantUser participant = UserMacker.writer(); // Внесение записей
+        participantDAO.updateParticipant(participant, id); // добавляем в список
+    }
+
 
     // выводит пофамильный список
     public void printParticipantList(ParticipantDAO participantDAO) {
 
-        List<ParticipantUser> participants = participantDAO.getAllParticipants();
+        List<ParticipantUser> participants = this.participantDAO.getAllParticipants();
         while (true) {
             for (int i = 0; i < participants.size(); i++) {
                 System.out.println((i + 1) + " " + participants.get(i).getSurname());
@@ -65,10 +76,15 @@ public class ParticipantMenu {
     public void printCard(List<ParticipantUser> participants, int point) {
         while (true) {
             System.out.println(participants.get(point - 1).toString());
-            System.out.println("Для возврата к списку нажмите 0");
+            System.out.println("1. Редактировать карточку участника" +
+                    "\n0. Возврат к списку");
             point = menuPoint.nextInt();
             if (point == 0) {
                 break;
+            } else if (point == 1) {
+                System.out.println("Редактирование участника:");
+                    updateParticipant(this.participantDAO, point);
+                    participants = participantDAO.getAllParticipants();
             }
         }
     }

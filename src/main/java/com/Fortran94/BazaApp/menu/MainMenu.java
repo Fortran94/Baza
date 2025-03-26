@@ -13,7 +13,7 @@ public class MainMenu {
         Logo logo = new Logo();
         logo.printLogo();
         Scanner scanner = new Scanner(System.in);
-        ParticipantMenu participantMenu = new ParticipantMenu();
+        ParticipantMenu participantMenu = new ParticipantMenu(participants);
 
 
         while (true) {
