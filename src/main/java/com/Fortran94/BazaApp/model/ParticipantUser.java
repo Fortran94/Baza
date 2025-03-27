@@ -5,8 +5,8 @@ public class ParticipantUser extends User {
     private int numberOfEvents;
 
 
-    public ParticipantUser(String name, String surname, String callSign, int age) {
-        super(name, surname, callSign, age);
+    public ParticipantUser(int id, String name, String surname, String callSign, int age) {
+        super(id, name, surname, callSign, age);
     }
 
     public int getExperiencePerMonth() {

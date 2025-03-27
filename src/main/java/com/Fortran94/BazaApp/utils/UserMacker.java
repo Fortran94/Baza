@@ -20,8 +20,7 @@ public class UserMacker {
         int age = input.nextInt();
         System.out.println();
 
-        return new ParticipantUser(name, surname, callSign, age);
+        return new ParticipantUser(writer().getId(), name, surname, callSign, age);
     }
-
 
 }

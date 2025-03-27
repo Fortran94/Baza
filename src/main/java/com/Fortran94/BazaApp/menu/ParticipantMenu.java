@@ -21,7 +21,7 @@ public class ParticipantMenu {
         while (true) {
             System.out.println("1. Добавить участника " +
                     "\n2. Посмотреть список участников" +
-                    "\n3. Редактировать участника" +
+                            "\n4.  Удалить" +
                     "\n0. Возврат в главное меню");
             int menuItem = menuPoint.nextInt();
 
@@ -41,9 +41,33 @@ public class ParticipantMenu {
         participantDAO.addParticipant(participant); // добавляем в список
     }
 
-    public void updateParticipant(ParticipantDAO participantDAO, int id) {
-        ParticipantUser participant = UserMacker.writer(); // Внесение записей
-        participantDAO.updateParticipant(participant, id); // добавляем в список
+    private void editParticipant(ParticipantUser participant) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Редактирование участника (оставьте поле пустым, чтобы не менять значение)");
+
+        System.out.println("Введите новое имя (" + participant.getName() + "):");
+        String newName = scanner.nextLine();
+        if (newName.isEmpty()) {
+            newName = participant.getName();
+        }
+
+        System.out.println("Введите новую фамилию (" + participant.getSurname() + "):");
+        String newSurname = scanner.nextLine();
+        if (newSurname.isEmpty()) {
+            newSurname = participant.getSurname();
+        }
+        System.out.println("Введите новый возраст (" + participant.getAge() + "):");
+        String ageInput = scanner.nextLine();
+        int newAge;
+        if (ageInput.isEmpty()) {
+            newAge = participant.getAge();
+        } else {
+            newAge = Integer.parseInt(ageInput);
+        }
+
+
+        // Отправляем обновление в БД
+        participantDAO.updateParticipant(participant.getId(), newName, newSurname, newAge);
     }
 
 
@@ -61,8 +85,8 @@ public class ParticipantMenu {
 
             int point = menuPoint.nextInt();
 
-            /* Отображает карточку участника, проверяет корректность введенного номера
-             */
+            // Отображает карточку участника, проверяет корректность введенного номера
+
             if (point > 0 && point <= participants.size()) {
                 printCard(participants, point);
             } else if (point != 0) {
@@ -74,17 +98,16 @@ public class ParticipantMenu {
     }
 
     public void printCard(List<ParticipantUser> participants, int point) {
+        System.out.println(participants.get(point - 1).toString());
+        Scanner input = new Scanner(System.in);
         while (true) {
-            System.out.println(participants.get(point - 1).toString());
             System.out.println("1. Редактировать карточку участника" +
                     "\n0. Возврат к списку");
-            point = menuPoint.nextInt();
-            if (point == 0) {
+            int inp = input.nextInt();
+            if (inp == 0) {
                 break;
-            } else if (point == 1) {
-                System.out.println("Редактирование участника:");
-                    updateParticipant(this.participantDAO, point);
-                    participants = participantDAO.getAllParticipants();
+            } else if (inp == 1) {
+                editParticipant(participants.get(point - 1));
             }
         }
     }

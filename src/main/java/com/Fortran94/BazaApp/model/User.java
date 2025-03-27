@@ -1,17 +1,23 @@
 package com.Fortran94.BazaApp.model;
 
 public abstract class User {
-    private int id, age;
+
+    private int id;
+    private int age;
     private String name, surname, callSign;
 
 
 
-    public User(String name, String surname, String callSign, int age) {
-
+    public User(int id, String name, String surname, String callSign, int age) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.callSign = callSign;
         this.age = age;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
