@@ -56,10 +56,42 @@ public class ParticipantDAO {
             e.printStackTrace();
         }
     }
+//todo не работает!!!
+    public void deleteParticipant(int id) {
+        String sql = "DELETE FROM partisipans WHERE id = ?";
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ParticipantUser getParticipantById(int id) {
+        String sql = "SELECT * FROM participants WHERE id = ?";
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new ParticipantUser(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getString("call_sign"),
+                        rs.getInt("age")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public List<ParticipantUser> getAllParticipants() {
         List<ParticipantUser> participants = new ArrayList<>();
-        String sql = "SELECT * FROM participants";
+        String sql = "SELECT * FROM participants ORDER BY id";
 
         try (Connection conn = DatabaseConnector.connect();
              Statement stmt = conn.createStatement();

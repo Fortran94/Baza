@@ -21,7 +21,6 @@ public class ParticipantMenu {
         while (true) {
             System.out.println("1. Добавить участника " +
                     "\n2. Посмотреть список участников" +
-                            "\n4.  Удалить" +
                     "\n0. Возврат в главное меню");
             int menuItem = menuPoint.nextInt();
 
@@ -65,9 +64,15 @@ public class ParticipantMenu {
             newAge = Integer.parseInt(ageInput);
         }
 
-
         // Отправляем обновление в БД
         participantDAO.updateParticipant(participant.getId(), newName, newSurname, newAge);
+
+    }
+
+    public void deleteParticipant (ParticipantUser participant) {
+
+        participantDAO.deleteParticipant(participant.getId()); // добавляем в список
+        System.out.println("Черт изгнан!");
     }
 
 
@@ -84,9 +89,9 @@ public class ParticipantMenu {
                     "\nДля возврата в меню участников введите 0");
 
             int point = menuPoint.nextInt();
+            menuPoint.nextLine(); // Очистка буфера после nextInt()
 
             // Отображает карточку участника, проверяет корректность введенного номера
-
             if (point > 0 && point <= participants.size()) {
                 printCard(participants, point);
             } else if (point != 0) {
@@ -102,13 +107,19 @@ public class ParticipantMenu {
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
+                    "\n2. Удалить участника" +
                     "\n0. Возврат к списку");
             int inp = input.nextInt();
+            input.nextLine(); // Очищаем буфер после nextInt()
             if (inp == 0) {
-                break;
+                return;
             } else if (inp == 1) {
-                editParticipant(participants.get(point - 1));
+                    editParticipant(participants.get(point - 1));
+                    participants.set(point - 1, participantDAO.getParticipantById(participants.get(point - 1).getId()));
+            }else if (inp == 2) {
+                deleteParticipant(participants.get(point - 1));
             }
+
         }
     }
 }

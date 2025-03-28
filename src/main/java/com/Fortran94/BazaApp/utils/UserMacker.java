@@ -18,9 +18,9 @@ public class UserMacker {
         System.out.println();
         System.out.print("Введите возраст: ");
         int age = input.nextInt();
-        System.out.println();
+        input.nextLine(); // Очистка буфера после nextInt()
 
-        return new ParticipantUser(writer().getId(), name, surname, callSign, age);
+        return new ParticipantUser(0, name, surname, callSign, age);
     }
 
 }
