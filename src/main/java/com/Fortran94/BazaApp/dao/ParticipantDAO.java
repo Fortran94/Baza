@@ -10,7 +10,7 @@ import java.util.List;
 public class ParticipantDAO {
 
     public void addParticipant(ParticipantUser participant) {
-        String sql = "INSERT INTO   participants (name, surname, call_sign, age, experience_per_month, number_of_events)" +
+        String sql = "INSERT INTO participants (name, surname, call_sign, age, experience_per_month, number_of_events)" +
                 " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
         try (Connection conn = DatabaseConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -56,16 +56,24 @@ public class ParticipantDAO {
             e.printStackTrace();
         }
     }
-//todo не работает!!!
+
+
     public void deleteParticipant(int id) {
-        String sql = "DELETE FROM partisipans WHERE id = ?";
+        String sql = "DELETE FROM participants WHERE id = ?";
         try (Connection conn = DatabaseConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Черт изгнан!");
+            } else {
+                System.out.println("Ошибка: участник не найден.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public ParticipantUser getParticipantById(int id) {
         String sql = "SELECT * FROM participants WHERE id = ?";
@@ -115,6 +123,5 @@ public class ParticipantDAO {
         }
         return participants;
     }
-
 
 }

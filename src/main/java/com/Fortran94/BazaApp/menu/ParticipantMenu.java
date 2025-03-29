@@ -72,7 +72,7 @@ public class ParticipantMenu {
     public void deleteParticipant (ParticipantUser participant) {
 
         participantDAO.deleteParticipant(participant.getId()); // добавляем в список
-        System.out.println("Черт изгнан!");
+        printParticipantList(participantDAO  );
     }
 
 
