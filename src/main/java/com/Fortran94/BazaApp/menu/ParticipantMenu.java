@@ -41,38 +41,13 @@ public class ParticipantMenu {
     }
 
     private void editParticipant(ParticipantUser participant) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Редактирование участника (оставьте поле пустым, чтобы не менять значение)");
-
-        System.out.println("Введите новое имя (" + participant.getName() + "):");
-        String newName = scanner.nextLine();
-        if (newName.isEmpty()) {
-            newName = participant.getName();
-        }
-
-        System.out.println("Введите новую фамилию (" + participant.getSurname() + "):");
-        String newSurname = scanner.nextLine();
-        if (newSurname.isEmpty()) {
-            newSurname = participant.getSurname();
-        }
-        System.out.println("Введите новый возраст (" + participant.getAge() + "):");
-        String ageInput = scanner.nextLine();
-        int newAge;
-        if (ageInput.isEmpty()) {
-            newAge = participant.getAge();
-        } else {
-            newAge = Integer.parseInt(ageInput);
-        }
-
-        // Отправляем обновление в БД
-        participantDAO.updateParticipant(participant.getId(), newName, newSurname, newAge);
-
+        UserMacker.participantEdit(participant, participantDAO);
     }
 
     public void deleteParticipant (ParticipantUser participant) {
 
         participantDAO.deleteParticipant(participant.getId()); // добавляем в список
-        printParticipantList(participantDAO  );
+        printParticipantList(participantDAO);
     }
 
 
@@ -116,6 +91,8 @@ public class ParticipantMenu {
             } else if (inp == 1) {
                     editParticipant(participants.get(point - 1));
                     participants.set(point - 1, participantDAO.getParticipantById(participants.get(point - 1).getId()));
+                    printCard(participants, point);
+                    return;
             }else if (inp == 2) {
                 deleteParticipant(participants.get(point - 1));
             }

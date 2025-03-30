@@ -1,10 +1,12 @@
 package com.Fortran94.BazaApp.model;
 
 public abstract class Event {
+    int id;
     private String name, location, organizer, overview;
     private int quantityOfParticipant;
 
-    public Event(String name, String location, String organizer, String overview, int quantityOfParticipant) {
+    public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipant) {
+        this.id = id;
         this.name = name;
         this.location = location;
         this.organizer = organizer;

@@ -35,16 +35,17 @@ public class ParticipantDAO {
         }
     }
 
-    public void updateParticipant(int id, String newName, String newSurname, int newAge) {
-        String sql = "UPDATE participants SET name = ?, surname = ?, age = ? WHERE id = ?";
+    public void updateParticipant(int id, String newName, String newSurname, String newCallSign, int newAge) {
+        String sql = "UPDATE participants SET name = ?, surname = ?, call_sign = ?, age = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, newName);
             stmt.setString(2, newSurname);
-            stmt.setInt(3, newAge);
-            stmt.setInt(4, id);
+            stmt.setString(3, newCallSign);
+            stmt.setInt(4, newAge);
+            stmt.setInt(5, id);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
