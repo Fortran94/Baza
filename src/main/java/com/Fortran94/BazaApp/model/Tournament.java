@@ -1,6 +1,6 @@
 package com.Fortran94.BazaApp.model;
 
-public class Tournament extends Event {
+public class Tournament extends Event implements Rating{
 
     public Tournament(int id, String name, String location, String organizer, String overview, int quantityOfParticipant) {
         super(id, name, location, organizer, overview, quantityOfParticipant);

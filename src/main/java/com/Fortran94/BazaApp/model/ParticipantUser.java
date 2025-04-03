@@ -1,8 +1,12 @@
 package com.Fortran94.BazaApp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParticipantUser extends User {
     private int experiencePerMonth = 1;
     private int numberOfEvents;
+    private List<Integer> eventIds = new ArrayList<>();
 
 
     public ParticipantUser(int id, String name, String surname, String callSign, int age) {

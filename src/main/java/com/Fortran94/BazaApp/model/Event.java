@@ -1,9 +1,13 @@
 package com.Fortran94.BazaApp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Event {
     int id;
     private String name, location, organizer, overview;
     private int quantityOfParticipant;
+    private List<Integer> participanIds = new ArrayList<>();
 
     public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipant) {
         this.id = id;
