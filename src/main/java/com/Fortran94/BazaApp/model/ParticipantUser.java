@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParticipantUser extends User {
-    private int experiencePerMonth = 1;
     private int numberOfEvents;
     private List<Integer> eventIds = new ArrayList<>();
+    private java.sql.Date registrationDate;
+    private int experiencePerMonth;
 
 
-    public ParticipantUser(int id, String name, String surname, String callSign, int age) {
+    public ParticipantUser(int id, String name, String surname, String callSign, int age, java.sql.Date registrationDate) {
         super(id, name, surname, callSign, age);
+        this.registrationDate = registrationDate;
     }
+
+
+    public java.sql.Date getRegistrationDate() {
+        return new java.sql.Date(registrationDate.getTime());
+    }
+
 
     public int getExperiencePerMonth() {
         return experiencePerMonth;
@@ -29,7 +37,7 @@ public class ParticipantUser extends User {
         this.numberOfEvents = numberOfEvents;
     }
 
-    private double activityLevel() {//todo переименовать лист
+    private double activityLevel() {
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
     }
 
@@ -45,9 +53,8 @@ public class ParticipantUser extends User {
                         "\n Фамилия: " + getSurname() +
                         "\n Позывной: " + getCallSign() +
                         "\n Возраст: " + getAge() +
-                        "\n Стаж участника в месяцах: " + getExperiencePerMonth() +
+                        "\n Стаж участника в месяцах: " + getRegistrationDate() +
                         "\n Количество посещенных мероприятия: " + getNumberOfEvents() +
-                        "\n Уровень активности: " + activityLevel() +
-                        "\n ";
+                        "\n Уровень активности: " + activityLevel();
     }
 }

@@ -3,9 +3,12 @@ package com.Fortran94.BazaApp.utils;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 
+import java.sql.Date;
 import java.util.Scanner;
 
 public class UserMacker {
+
+
     public static ParticipantUser writer () {
         Scanner input = new Scanner(System.in);
         System.out.print("Введите имя: ");
@@ -20,8 +23,9 @@ public class UserMacker {
         System.out.print("Введите возраст: ");
         int age = input.nextInt();
         input.nextLine(); // Очистка буфера после nextInt()
+        java.sql.Date registrationDate = new java.sql.Date(System.currentTimeMillis());
 
-        return new ParticipantUser(0, name, surname, callSign, age);
+        return new ParticipantUser(0, name, surname, callSign, age, registrationDate);
     }
 
     public static void participantEdit (ParticipantUser participant, ParticipantDAO participantDAO) {

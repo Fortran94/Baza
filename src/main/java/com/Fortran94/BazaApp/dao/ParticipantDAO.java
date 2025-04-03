@@ -1,6 +1,5 @@
 package com.Fortran94.BazaApp.dao;
 
-import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
@@ -13,7 +12,7 @@ public class ParticipantDAO {
     Connection conn = DatabaseConnector.connect();
 
     public void addParticipant(ParticipantUser participant) {
-        String sql = "INSERT INTO participants (name, surname, call_sign, age, experience_per_month, number_of_events)" +
+        String sql = "INSERT INTO participants (name, surname, call_sign, age, registration_date, number_of_events)" +
                 " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -21,7 +20,7 @@ public class ParticipantDAO {
             stmt.setString(2, participant.getSurname());
             stmt.setString(3, participant.getCallSign());
             stmt.setInt(4, participant.getAge());
-            stmt.setInt(5, participant.getExperiencePerMonth());
+            stmt.setDate(5, participant.getRegistrationDate());
             stmt.setInt(6, participant.getNumberOfEvents());
 
             ResultSet rs = stmt.executeQuery(); // Выполняем запрос и получаем сгенерированный id
@@ -87,8 +86,8 @@ public class ParticipantDAO {
                         rs.getString("name"),
                         rs.getString("surname"),
                         rs.getString("call_sign"),
-                        rs.getInt("age")
-                );
+                        rs.getInt("age"),
+                        rs.getDate("registration_date"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,9 +109,10 @@ public class ParticipantDAO {
                         rs.getString("name"),
                         rs.getString("surname"),
                         rs.getString("call_sign"),
-                        rs.getInt("age")
+                        rs.getInt("age"),
+                        rs.getDate("registration_date")
                 );
-                participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
+                //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
                 participant.setNumberOfEvents(rs.getInt("number_of_events"));
                 participants.add(participant);
             }
@@ -148,8 +148,8 @@ public class ParticipantDAO {
                         rs.getString("name"),
                         rs.getString("surname"),
                         rs.getString("callSign"),
-                        rs.getInt("age")
-                ));
+                        rs.getInt("age"),
+                        rs.getDate("registration_date")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,8 +157,9 @@ public class ParticipantDAO {
         return participants;
     }
 
-    // Получает список мероприятий у участника
-    public List<Event> getEventsByParticipant(int participantId) {
+    //todo исправить
+    /// Получает список мероприятий у участника
+   /* public List<Event> getEventsByParticipant(int participantId) {
         List<Event> events = new ArrayList<>();
         String sql = "SELECT e.* FROM events e JOIN event_participants ep ON e.id = ep.event_id WHERE ep.participant_id = ?";
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -179,7 +180,7 @@ public class ParticipantDAO {
         }
         return events;
     }
-
+*/
 
 
 
