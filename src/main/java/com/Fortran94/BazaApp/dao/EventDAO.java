@@ -1,0 +1,187 @@
+package com.Fortran94.BazaApp.dao;
+
+import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.utils.DatabaseConnector;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EventDAO {
+
+    Connection conn = DatabaseConnector.connect();
+
+    public void addParticipant(Event event) {
+        String sql = "INSERT INTO events (name, location, organizer, overview, quantityOfParticipant)" +
+                " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, event.getName());
+            stmt.setString(2, event.getLocation());
+            stmt.setString(3, event.getOrganizer());
+            stmt.setString(4, event.getOverview());
+            stmt.setInt(5, event.getQuantityOfParticipant());
+
+            ResultSet rs = stmt.executeQuery(); // Выполняем запрос и получаем сгенерированный id
+
+            if (rs.next()) {
+                event.setId(rs.getInt("id")); // Сохраняем id в объекте
+            }
+
+            System.out.println("Участник добавлен в базу данных!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateEvent(int id, String newName, String newLocation, String newOrganizer, String newOverview, int newQuantityOfParticipant) {
+        String sql = "UPDATE events SET name = ?, location = ?, organizer = ?, overview = ?, quantityOfParticipant = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newName);
+            stmt.setString(2, newLocation);
+            stmt.setString(3, newOrganizer);
+            stmt.setString(4, newOverview);
+            stmt.setInt(4, newQuantityOfParticipant);
+            stmt.setInt(5, id);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Участник успешно обновлён.");
+            } else {
+                System.out.println("Ошибка: участник не найден.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEvent(int id) {
+        String sql = "DELETE FROM events WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Мероприятие удалено");
+            } else {
+                System.out.println("Ошибка: мероприятие не найдено.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Event getEventsById(int id) {
+        String sql = "SELECT * FROM events WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Event(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("location"),
+                        rs.getString("organizer"),
+                        rs.getString("overview"),
+                        rs.getInt("quantityOfParticipant"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public List<Event> getAllEvents() {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT * FROM events ORDER BY id";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Event event = new Event(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("location"),
+                        rs.getString("organizer"),
+                        rs.getString("overview"),
+                        rs.getInt("quantityOfParticipant")
+                );
+                //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
+                //participant.setNumberOfEvents(rs.getInt("number_of_events"));
+                events.add(event);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
+    }
+
+    /// //////////////////// ниже не редактировано
+
+    /*
+    //Добавляет участников в мероприятие
+    public void addParticipantToEvent(int participantId, int eventId) {
+        String sql = "INSERT INTO event_participants (participant_id, event_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, participantId);
+            stmt.setInt(2, eventId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Получает список участников из мероприятия
+    //todo сделать чтоб возвращал только ид и фамилию
+    public List<ParticipantUser> getParticipantsByEvent(int eventId) {
+        List<ParticipantUser> participants = new ArrayList<>();
+        String sql = "SELECT p.* FROM participants p JOIN event_participants ep ON p.id = ep.participant_id WHERE ep.event_id = ?";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, eventId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                participants.add(new ParticipantUser(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getString("callSign"),
+                        rs.getInt("age"),
+                        rs.getDate("registration_date")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participants;
+    }
+
+//todo исправить
+/// Получает список мероприятий у участника
+   /* public List<Event> getEventsByParticipant(int participantId) {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT e.* FROM events e JOIN event_participants ep ON e.id = ep.event_id WHERE ep.participant_id = ?";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, participantId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                events.add(new Event(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("location"),
+                        rs.getString("organizer"),
+                        rs.getString("overview"),
+                        rs.getInt("quantity_of_participants")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
+    }*/
+}
