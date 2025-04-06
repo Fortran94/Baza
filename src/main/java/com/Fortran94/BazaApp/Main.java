@@ -1,5 +1,6 @@
 package com.Fortran94.BazaApp;
 
+import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.menu.MainMenu;
 import com.Fortran94.BazaApp.model.ParticipantUser;
@@ -10,10 +11,11 @@ public class Main {
 
 
         ParticipantDAO pD = new ParticipantDAO();
+        EventDAO eD = new EventDAO();
         //Создаем меню
         MainMenu mainMenu = new MainMenu();
         //Отрисовываем меню
-        mainMenu.printFirstMenu(pD);
+        mainMenu.printFirstMenu(pD, eD);
 
     }
 

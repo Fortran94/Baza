@@ -2,6 +2,7 @@ package com.Fortran94.BazaApp.menu;
 
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.utils.EventMacker;
 
 import java.util.List;
 import java.util.Scanner;
@@ -25,9 +26,9 @@ public class EventMenu {
                 int menuItem = menuPoint.nextInt();
 
                 if (menuItem == 1) {
-                    addEvent(eventDAO);
+                    addEvent(this.eventDAO);
                 } else if (menuItem == 2) {
-                    //
+                    printEventList(eventDAO);
                 } else if (menuItem == 0) {
                     break;
                 }
@@ -36,15 +37,17 @@ public class EventMenu {
 
     //создание мероприятие
     public void addEvent(EventDAO eventDAO) {
-        //
+        Event event = EventMacker.writer();
+        eventDAO.addEvent(event); // добавляем в список
     }
 
-    private void editEvent(EventDAO eventDAO) {
-        //
+    private void editEvent(Event event) {
+        EventMacker.eventEdit(event, eventDAO);
     }
 
-    public void deleteParticipant (Event event) {
-        //
+    public void deleteEvent (Event event) {
+        eventDAO.deleteEvent(event.getId());
+        printEventList(eventDAO);
     }
 
 
@@ -90,7 +93,7 @@ public class EventMenu {
                 printCard(events, point);
                 return;
             }else if (inp == 2) {
-                deleteParticipant(events.get(point - 1));
+                deleteEvent(events.get(point - 1));
             }
 
         }

@@ -1,7 +1,6 @@
 package com.Fortran94.BazaApp.dao;
 
 import com.Fortran94.BazaApp.model.Event;
-import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
 import java.sql.*;
@@ -12,9 +11,9 @@ public class EventDAO {
 
     Connection conn = DatabaseConnector.connect();
 
-    public void addParticipant(Event event) {
-        String sql = "INSERT INTO events (name, location, organizer, overview, quantityOfParticipant)" +
-                " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
+    public void addEvent(Event event) {
+        String sql = "INSERT INTO events (name, location, organizer, overview, quantity_of_participants)" +
+                " VALUES (?, ?, ?, ?, ?) RETURNING id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, event.getName());
@@ -29,15 +28,17 @@ public class EventDAO {
                 event.setId(rs.getInt("id")); // Сохраняем id в объекте
             }
 
-            System.out.println("Участник добавлен в базу данных!");
+            System.out.println("Мероприятие добавлено в базу данных!");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateEvent(int id, String newName, String newLocation, String newOrganizer, String newOverview, int newQuantityOfParticipant) {
-        String sql = "UPDATE events SET name = ?, location = ?, organizer = ?, overview = ?, quantityOfParticipant = ? WHERE id = ?";
+    public void updateEvent(int id, String newName, String newLocation, String newOrganizer,
+                            String newOverview, int newQuantityOfParticipant) {
+        String sql = "UPDATE events SET name = ?, location = ?, organizer = ?, overview = ?, " +
+                "quantity_of_participants = ? WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -45,14 +46,14 @@ public class EventDAO {
             stmt.setString(2, newLocation);
             stmt.setString(3, newOrganizer);
             stmt.setString(4, newOverview);
-            stmt.setInt(4, newQuantityOfParticipant);
-            stmt.setInt(5, id);
+            stmt.setInt(5, newQuantityOfParticipant);
+            stmt.setInt(6, id);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("Участник успешно обновлён.");
+                System.out.println("Информация о мероприятии успешно обновлена.");
             } else {
-                System.out.println("Ошибка: участник не найден.");
+                System.out.println("Ошибка: мероприятие не найдено.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +76,7 @@ public class EventDAO {
     }
 
 
-    public Event getEventsById(int id) {
+    public Event getEventById(int id) {
         String sql = "SELECT * FROM events WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -87,7 +88,7 @@ public class EventDAO {
                         rs.getString("location"),
                         rs.getString("organizer"),
                         rs.getString("overview"),
-                        rs.getInt("quantityOfParticipant"));
+                        rs.getInt("quantity_of_participants"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +111,7 @@ public class EventDAO {
                         rs.getString("location"),
                         rs.getString("organizer"),
                         rs.getString("overview"),
-                        rs.getInt("quantityOfParticipant")
+                        rs.getInt("quantity_of_participants")
                 );
                 //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
                 //participant.setNumberOfEvents(rs.getInt("number_of_events"));

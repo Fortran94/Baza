@@ -46,7 +46,7 @@ public class ParticipantMenu {
 
     public void deleteParticipant (ParticipantUser participant) {
 
-        participantDAO.deleteParticipant(participant.getId()); // добавляем в список
+        participantDAO.deleteParticipant(participant.getId());
         printParticipantList(participantDAO);
     }
 

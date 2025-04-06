@@ -73,8 +73,8 @@ public class Event {
         return "Мероприятие:" +
                 "Название: " + name + '\n' +
                 "Локация: " + location + '\n' +
-                "Организатор " + organizer + '\n' +
-                "Описание " + overview + '\n' +
+                "Организатор: " + organizer + '\n' +
+                "Описание: " + overview + '\n' +
                 "Количество участников: " + quantityOfParticipant;
     }
 
