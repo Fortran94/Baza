@@ -34,15 +34,12 @@ public class ParticipantUser extends User {
     }
 
     public void setNumberOfEvents(int numberOfEvents) {
+
         this.numberOfEvents = numberOfEvents;
     }
 
     private double activityLevel() {
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
-    }
-
-    public void takePart() {
-        numberOfEvents++;
     }
 
     //TODO сделать абстрактный метод

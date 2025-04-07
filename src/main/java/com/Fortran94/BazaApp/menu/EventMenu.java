@@ -1,7 +1,9 @@
 package com.Fortran94.BazaApp.menu;
 
 import com.Fortran94.BazaApp.dao.EventDAO;
+import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.EventMacker;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 public class EventMenu {
 
     Scanner menuPoint = new Scanner(System.in);
-
+    ParticipantDAO participantDAO = new ParticipantDAO();
     private final EventDAO eventDAO;
 
 
@@ -50,6 +52,19 @@ public class EventMenu {
         printEventList(eventDAO);
     }
 
+    public int addParticipantToEvent() {
+        List<ParticipantUser> participants = this.participantDAO.getAllParticipants();
+
+        for (int i = 0; i < participants.size(); i++) {
+            System.out.println((i + 1) + " " + participants.get(i).getSurname());
+        }
+
+        System.out.println("Введите номер участника которого хотите зарегистрировать на это мероприятие");
+        int participantId = participants.get(menuPoint.nextInt() - 1).getId();
+        menuPoint.nextLine(); // Очистка буфера после nextInt()
+
+        return participantId;
+    }
 
     // выводит список мероприятий
     public void printEventList(EventDAO eventDAO) {
@@ -59,8 +74,8 @@ public class EventMenu {
                     System.out.println((i + 1) + " " + events.get(i).getName());
             }
 
-            System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
-                        "\nДля возврата в меню участников введите 0");
+            System.out.println("Для просмотра подробной информации о мероприятии введите номер участника" +
+                        "\nДля возврата введите 0");
 
             int point = menuPoint.nextInt();
             menuPoint.nextLine(); // Очистка буфера после nextInt()
@@ -82,6 +97,7 @@ public class EventMenu {
         while (true) {
             System.out.println("1. Редактировать карточку мероприятия" +
                         "\n2. Удалить мероприятие" +
+                        "\n3. Записать участника" +
                         "\n0. Возврат к списку");
             int inp = input.nextInt();
             input.nextLine(); // Очищаем буфер после nextInt()
@@ -94,6 +110,9 @@ public class EventMenu {
                 return;
             }else if (inp == 2) {
                 deleteEvent(events.get(point - 1));
+            } else if (inp == 3) {
+                participantDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
+
             }
 
         }

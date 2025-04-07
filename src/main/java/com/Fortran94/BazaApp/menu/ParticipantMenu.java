@@ -1,6 +1,8 @@
 package com.Fortran94.BazaApp.menu;
 
+import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
+import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.UserMacker;
 
@@ -10,7 +12,7 @@ import java.util.Scanner;
 public class ParticipantMenu {
 
     Scanner menuPoint = new Scanner(System.in);
-
+    EventDAO eventDAO = new EventDAO();
     private final ParticipantDAO participantDAO;
 
     public ParticipantMenu(ParticipantDAO participantDAO) {
@@ -50,6 +52,19 @@ public class ParticipantMenu {
         printParticipantList(participantDAO);
     }
 
+    public int addParticipantToEvent() {
+        List<Event> events = this.eventDAO.getAllEvents();
+
+        for (int i = 0; i < events.size(); i++) {
+            System.out.println((i + 1) + " " + events.get(i).getName());
+        }
+
+        System.out.println("Введите номер мероприятие на которое хотите зарегистрировать этого участника");
+        int eventId = events.get(menuPoint.nextInt() - 1).getId();
+        menuPoint.nextLine(); // Очистка буфера после nextInt()
+        return eventId;
+    }
+
 
     // выводит пофамильный список
     public void printParticipantList(ParticipantDAO participantDAO) {
@@ -83,6 +98,7 @@ public class ParticipantMenu {
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
                     "\n2. Удалить участника" +
+                    "\n3. Записать на мероприятие" +
                     "\n0. Возврат к списку");
             int inp = input.nextInt();
             input.nextLine(); // Очищаем буфер после nextInt()
@@ -95,6 +111,8 @@ public class ParticipantMenu {
                     return;
             }else if (inp == 2) {
                 deleteParticipant(participants.get(point - 1));
+            } else if (inp == 3) {
+                eventDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
             }
 
         }

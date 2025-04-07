@@ -124,11 +124,9 @@ public class EventDAO {
         return events;
     }
 
-    /// //////////////////// ниже не редактировано
 
-    /*
     //Добавляет участников в мероприятие
-    public void addParticipantToEvent(int participantId, int eventId) {
+    public void addParticipantToEvent(int eventId, int participantId) {
         String sql = "INSERT INTO event_participants (participant_id, event_id) VALUES (?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, participantId);
@@ -139,7 +137,11 @@ public class EventDAO {
         }
     }
 
-    //Получает список участников из мероприятия
+    /// //////////////////// ниже не редактировано
+
+
+/// Нужно ли оно тут?
+   /* //Получает список участников из мероприятия
     //todo сделать чтоб возвращал только ид и фамилию
     public List<ParticipantUser> getParticipantsByEvent(int eventId) {
         List<ParticipantUser> participants = new ArrayList<>();
@@ -161,6 +163,9 @@ public class EventDAO {
         }
         return participants;
     }
+*/
+
+
 
 //todo исправить
 /// Получает список мероприятий у участника

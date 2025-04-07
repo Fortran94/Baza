@@ -129,11 +129,13 @@ public class ParticipantDAO {
              stmt.setInt(1, participantId);
              stmt.setInt(2, eventId);
              stmt.executeUpdate();
+            System.out.println("Участник записан на мероприятие");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /// Нужно ли оно тут?
     //Получает список участников из мероприятия
     //todo сделать чтоб возвращал только ид и фамилию
     public List<ParticipantUser> getParticipantsByEvent(int eventId) {
