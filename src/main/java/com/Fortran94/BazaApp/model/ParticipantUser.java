@@ -1,6 +1,8 @@
 
 package com.Fortran94.BazaApp.model;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,15 @@ public class ParticipantUser extends User {
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
     }
 
+    //todo сейчас стаж считается в java "На лету" и не хранится в БД, возможно в будущем стоит переделать
+    public int getMonthsSinceRegistration() {
+        LocalDate regDate = registrationDate.toLocalDate();
+        LocalDate now = LocalDate.now();
+        Period period = Period.between(regDate, now);
+        int months = period.getYears() * 12 + period.getMonths();
+        return Math.max(months, 1); // не меньше 1
+    }
+
     //TODO сделать абстрактный метод
     @Override
     public String toString() {
@@ -52,7 +63,7 @@ public class ParticipantUser extends User {
                         "\n Фамилия: " + getSurname() +
                         "\n Позывной: " + getCallSign() +
                         "\n Возраст: " + getAge() +
-                        "\n Стаж участника в месяцах: " + getRegistrationDate() +
+                        "\n Стаж участника в месяцах: " + getMonthsSinceRegistration() +
                         "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
                         "\n Уровень активности: " + activityLevel();
     }
