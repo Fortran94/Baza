@@ -1,5 +1,6 @@
 package com.Fortran94.BazaApp.dao;
 
+import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
@@ -135,6 +136,24 @@ public class ParticipantDAO {
         }
     }
 
+    public int countEventsForParticipant(int participantId) {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM event_participants WHERE participant_id = ?";
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, participantId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // можно логгером заменить в будущем
+        }
+        return count;
+    }
+
+
+
     /// Нужно ли оно тут?
     //Получает список участников из мероприятия
     //todo сделать чтоб возвращал только ид и фамилию
@@ -159,16 +178,15 @@ public class ParticipantDAO {
         return participants;
     }
 
-    //todo исправить
-    /// Получает список мероприятий у участника
-   /* public List<Event> getEventsByParticipant(int participantId) {
-        List<Event> events = new ArrayList<>();
+    // Получает список мероприятий у участника
+    public List<Event> getEventsByParticipant(int participantId) {
+        List<Event> eventsByParticipant = new ArrayList<>();
         String sql = "SELECT e.* FROM events e JOIN event_participants ep ON e.id = ep.event_id WHERE ep.participant_id = ?";
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, participantId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                events.add(new Event(
+                eventsByParticipant.add(new Event(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("location"),
@@ -180,12 +198,6 @@ public class ParticipantDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return events;
+        return eventsByParticipant;
     }
-*/
-
-
-
-
-
 }

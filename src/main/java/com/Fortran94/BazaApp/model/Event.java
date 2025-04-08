@@ -70,8 +70,8 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Мероприятие:" +
-                "Название: " + name + '\n' +
+        return
+                "\nНазвание: " + name + '\n' +
                 "Локация: " + location + '\n' +
                 "Организатор: " + organizer + '\n' +
                 "Описание: " + overview + '\n' +

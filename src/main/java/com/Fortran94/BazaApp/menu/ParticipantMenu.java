@@ -93,12 +93,21 @@ public class ParticipantMenu {
     }
 
     public void printCard(List<ParticipantUser> participants, int point) {
+        //Устанавливает актуальное количество посещенных мероприятий
+        //А здесь ли это вообще должно быть???
+        int eventCount = participantDAO.countEventsForParticipant(participants.get(point - 1).getId());
+        participants.get(point - 1).setNumberOfEvents(eventCount);
+
+        System.out.print("╔══════════════════════════════════════════════╗");
         System.out.println(participants.get(point - 1).toString());
+        System.out.println("╚══════════════════════════════════════════════╝");
+
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
                     "\n2. Удалить участника" +
                     "\n3. Записать на мероприятие" +
+                    "\n4. Просмотреть мероприятия на которых был участник" +
                     "\n0. Возврат к списку");
             int inp = input.nextInt();
             input.nextLine(); // Очищаем буфер после nextInt()
@@ -113,6 +122,16 @@ public class ParticipantMenu {
                 deleteParticipant(participants.get(point - 1));
             } else if (inp == 3) {
                 eventDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
+            }else if (inp == 4) {
+                System.out.println("Участник посетил следующие мероприятия: ");
+                System.out.println("╔════════════════════════════════════╗");
+                System.out.println();
+                for (int i = 0; i < participantDAO.getEventsByParticipant(participants.get(point - 1).getId()).size(); i++) {
+                    System.out.println((i + 1) + " " + participantDAO.getEventsByParticipant(participants.get(point - 1).getId()).get(i).getName());
+                }
+                System.out.println();
+                System.out.println("╚════════════════════════════════════╝");
+                System.out.println();
             }
 
         }

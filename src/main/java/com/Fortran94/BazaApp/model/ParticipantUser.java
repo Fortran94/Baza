@@ -1,3 +1,4 @@
+
 package com.Fortran94.BazaApp.model;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ParticipantUser extends User {
         this.numberOfEvents = numberOfEvents;
     }
 
+
     private double activityLevel() {
         return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
     }
@@ -51,7 +53,7 @@ public class ParticipantUser extends User {
                         "\n Позывной: " + getCallSign() +
                         "\n Возраст: " + getAge() +
                         "\n Стаж участника в месяцах: " + getRegistrationDate() +
-                        "\n Количество посещенных мероприятия: " + getNumberOfEvents() +
+                        "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
                         "\n Уровень активности: " + activityLevel();
     }
 }

@@ -1,6 +1,7 @@
 package com.Fortran94.BazaApp.dao;
 
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
 import java.sql.*;
@@ -137,57 +138,27 @@ public class EventDAO {
         }
     }
 
-    /// //////////////////// ниже не редактировано
 
-
-/// Нужно ли оно тут?
-   /* //Получает список участников из мероприятия
-    //todo сделать чтоб возвращал только ид и фамилию
+    //Получает список участников из мероприятия
     public List<ParticipantUser> getParticipantsByEvent(int eventId) {
-        List<ParticipantUser> participants = new ArrayList<>();
+        List<ParticipantUser> participantsByEvent = new ArrayList<>();
         String sql = "SELECT p.* FROM participants p JOIN event_participants ep ON p.id = ep.participant_id WHERE ep.event_id = ?";
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, eventId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                participants.add(new ParticipantUser(
+                participantsByEvent.add(new ParticipantUser(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getString("callSign"),
+                        rs.getString("call_sign"),
                         rs.getInt("age"),
                         rs.getDate("registration_date")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return participants;
+        return participantsByEvent;
     }
-*/
 
-
-
-//todo исправить
-/// Получает список мероприятий у участника
-   /* public List<Event> getEventsByParticipant(int participantId) {
-        List<Event> events = new ArrayList<>();
-        String sql = "SELECT e.* FROM events e JOIN event_participants ep ON e.id = ep.event_id WHERE ep.participant_id = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setInt(1, participantId);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                events.add(new Event(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("location"),
-                        rs.getString("organizer"),
-                        rs.getString("overview"),
-                        rs.getInt("quantity_of_participants")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return events;
-    }*/
 }

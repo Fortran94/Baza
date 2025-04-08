@@ -76,7 +76,6 @@ public class EventMenu {
 
             System.out.println("Для просмотра подробной информации о мероприятии введите номер участника" +
                         "\nДля возврата введите 0");
-
             int point = menuPoint.nextInt();
             menuPoint.nextLine(); // Очистка буфера после nextInt()
 
@@ -92,12 +91,17 @@ public class EventMenu {
     }
 
     public void printCard(List<Event> events, int point) {
+
+        System.out.print("╔══════════════════════════════════════════════╗");
         System.out.println(events.get(point - 1).toString());
+        System.out.println("╚══════════════════════════════════════════════╝");
+
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("1. Редактировать карточку мероприятия" +
                         "\n2. Удалить мероприятие" +
                         "\n3. Записать участника" +
+                        "\n4. Посмотреть участников" +
                         "\n0. Возврат к списку");
             int inp = input.nextInt();
             input.nextLine(); // Очищаем буфер после nextInt()
@@ -112,11 +116,21 @@ public class EventMenu {
                 deleteEvent(events.get(point - 1));
             } else if (inp == 3) {
                 participantDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
+                System.out.println("Участник записан");
+            } else if (inp == 4) {
+                System.out.println("Участники этого мероприятия: ");
+                System.out.println("╔════════════════════════════════════╗");
+                System.out.println();
+                for (int i = 0; i < eventDAO.getParticipantsByEvent(events.get(point - 1).getId()).size(); i++) {
+                    System.out.println((i + 1) + " " + eventDAO.getParticipantsByEvent(events.get(point - 1).getId()).get(i).getSurname());
+                }
+                System.out.println();
+                System.out.println("╚════════════════════════════════════╝");
+                System.out.println();
 
             }
 
         }
     }
-
 }
 
