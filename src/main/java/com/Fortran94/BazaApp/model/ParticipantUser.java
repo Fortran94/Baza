@@ -1,6 +1,7 @@
 
 package com.Fortran94.BazaApp.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -13,9 +14,10 @@ public class ParticipantUser extends User {
     private int experiencePerMonth;
 
 
-    public ParticipantUser(int id, String name, String surname, String callSign, int age, java.sql.Date registrationDate) {
+    public ParticipantUser(int id, String name, String surname, String callSign, int age, Date registrationDate) {
         super(id, name, surname, callSign, age);
         this.registrationDate = registrationDate;
+        this.numberOfEvents = numberOfEvents;
     }
 
 
@@ -43,7 +45,7 @@ public class ParticipantUser extends User {
 
 
     private double activityLevel() {
-        return Math.round(((double) this.numberOfEvents / this.experiencePerMonth) * 100.0) / 100.0;
+        return Math.round(((double) getNumberOfEvents()  / getMonthsSinceRegistration()  * 100.0) / 100.0);
     }
 
     //todo сейчас стаж считается в java "На лету" и не хранится в БД, возможно в будущем стоит переделать

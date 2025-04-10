@@ -3,13 +3,13 @@ package com.Fortran94.BazaApp.utils;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 
-import java.sql.Date;
 import java.util.Scanner;
 
 public class UserMacker {
 
 
     public static ParticipantUser writer () {
+        int numberOfEvents = 0;
         Scanner input = new Scanner(System.in);
         System.out.print("Введите имя: ");
         String name = input.nextLine();

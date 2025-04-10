@@ -13,7 +13,7 @@ public class ParticipantDAO {
     Connection conn = DatabaseConnector.connect();
 
     public void addParticipant(ParticipantUser participant) {
-        String sql = "INSERT INTO participants (name, surname, call_sign, age, registration_date, number_of_events)" +
+        String sql = "INSERT INTO participants (name, surname, call_sign, age, registration_date)" +
                 " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -115,6 +115,7 @@ public class ParticipantDAO {
                 );
                 //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
                 participant.setNumberOfEvents(rs.getInt("number_of_events"));
+                participant.setNumberOfEvents(countEventsForParticipant(participant.getId()));
                 participants.add(participant);
             }
 
@@ -136,6 +137,7 @@ public class ParticipantDAO {
         }
     }
 
+    // Возвращает количество мероприятий посещенных участником
     public int countEventsForParticipant(int participantId) {
         int count = 0;
         String query = "SELECT COUNT(*) FROM event_participants WHERE participant_id = ?";
