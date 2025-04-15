@@ -1,0 +1,17 @@
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/Event.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/menu/MainMenu.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/Tournament.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/dao/ParticipantDAO.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/Rating.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/utils/EventMacker.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/utils/UserMacker.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/menu/ParticipantMenu.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/Game.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/dao/EventDAO.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/ParticipantUser.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/Main.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/utils/DatabaseConnector.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/menu/EventMenu.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/Logo.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/AdminUser.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/Fortran94/BazaApp/model/User.java

@@ -6,26 +6,28 @@ import java.util.List;
 public class Event {
     int id;
     private String name, location, organizer, overview;
-    private int quantityOfParticipant;
+    private int quantityOfParticipantAll;
     private List<Integer> participanIds = new ArrayList<>();
 
 
 
-    public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipant) {
+
+    public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipantAll) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.organizer = organizer;
         this.overview = overview;
-        this.quantityOfParticipant = quantityOfParticipant;
+        this.quantityOfParticipantAll = quantityOfParticipantAll;
+
     }
 
     public int getId() {
         return id;
     }
 
-    public void setQuantityOfParticipant(int quantityOfParticipant) {
-        this.quantityOfParticipant = quantityOfParticipant;
+    public void setQuantityOfParticipantAll(int quantityOfParticipantAll) {
+        this.quantityOfParticipantAll = quantityOfParticipantAll;
     }
 
     public void setId(int id) {
@@ -64,8 +66,8 @@ public class Event {
         this.overview = overview;
     }
 
-    public int getQuantityOfParticipant() {
-        return quantityOfParticipant;
+    public int getQuantityOfParticipantAll() {
+        return quantityOfParticipantAll;
     }
 
     @Override
@@ -75,7 +77,8 @@ public class Event {
                 "Локация: " + location + '\n' +
                 "Организатор: " + organizer + '\n' +
                 "Описание: " + overview + '\n' +
-                "Количество участников: " + quantityOfParticipant;
+               // "Наших участников: " + quantityOfParticipantOur + '\n' +
+                "Количество участников всего: " + quantityOfParticipantAll;
     }
 
 

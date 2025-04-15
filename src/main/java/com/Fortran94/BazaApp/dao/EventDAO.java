@@ -21,7 +21,8 @@ public class EventDAO {
             stmt.setString(2, event.getLocation());
             stmt.setString(3, event.getOrganizer());
             stmt.setString(4, event.getOverview());
-            stmt.setInt(5, event.getQuantityOfParticipant());
+            stmt.setInt(5, event.getQuantityOfParticipantAll());
+           // stmt.setInt(6, event.getQuantityOfParticipantOur());
 
             ResultSet rs = stmt.executeQuery(); // Выполняем запрос и получаем сгенерированный id
 
@@ -89,7 +90,9 @@ public class EventDAO {
                         rs.getString("location"),
                         rs.getString("organizer"),
                         rs.getString("overview"),
-                        rs.getInt("quantity_of_participants"));
+                        rs.getInt("quantity_of_participants")
+                        //rs.getInt("quantity_of_participants_our")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,6 +116,7 @@ public class EventDAO {
                         rs.getString("organizer"),
                         rs.getString("overview"),
                         rs.getInt("quantity_of_participants")
+                        //rs.getInt("quantity_of_participants_our")
                 );
                 //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
                 //participant.setNumberOfEvents(rs.getInt("number_of_events"));

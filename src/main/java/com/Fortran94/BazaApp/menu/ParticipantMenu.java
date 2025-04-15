@@ -121,7 +121,7 @@ public class ParticipantMenu {
             }else if (inp == 2) {
                 deleteParticipant(participants.get(point - 1));
             } else if (inp == 3) {
-                eventDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
+                eventDAO.addParticipantToEvent(this.addParticipantToEvent(), participants.get(point - 1).getId());
             }else if (inp == 4) {
                 System.out.println("Участник посетил следующие мероприятия: ");
                 System.out.println("╔════════════════════════════════════╗");

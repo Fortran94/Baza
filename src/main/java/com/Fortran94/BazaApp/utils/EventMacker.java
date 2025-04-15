@@ -21,12 +21,14 @@ public class EventMacker {
         System.out.print("Введите краткое описание: ");
         String overview = input.nextLine();
         System.out.println();
-        System.out.print("Введите количество участников: ");
-        int quantityOfParticipant = input.nextInt();
+        System.out.print("Введите количество всех участников: ");
+        int quantityOfParticipantAll = input.nextInt();
+//        System.out.print("Введите количество наших участников: ");
+//        int quantityOfParticipantOur = input.nextInt();
         input.nextLine(); // Очистка буфера после nextInt()
         java.sql.Date registrationDate = new java.sql.Date(System.currentTimeMillis());
 
-        return new Event(0, name, location, organizer, overview, quantityOfParticipant);
+        return new Event(0, name, location, organizer, overview, quantityOfParticipantAll);
     }
 
     public static void eventEdit (Event event, EventDAO eventDAO) {
@@ -57,11 +59,11 @@ public class EventMacker {
             newOverview = event.getOverview();
         }
 
-        System.out.println("Введите новое количество участников (" + event.getQuantityOfParticipant() + "):");
+        System.out.println("Введите новое количество участников (" + event.getQuantityOfParticipantAll() + "):");
         String quantityOfParticipantInput = scanner.nextLine();
         int newQuantityOfParticipant;
         if (quantityOfParticipantInput.isEmpty()) {
-            newQuantityOfParticipant = event.getQuantityOfParticipant();
+            newQuantityOfParticipant = event.getQuantityOfParticipantAll();
         } else {
             newQuantityOfParticipant = Integer.parseInt(quantityOfParticipantInput);
         }

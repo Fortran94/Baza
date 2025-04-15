@@ -6,6 +6,7 @@ import com.Fortran94.BazaApp.menu.MainMenu;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
+
 public class Main {
     public static void main(String[] args) {
 

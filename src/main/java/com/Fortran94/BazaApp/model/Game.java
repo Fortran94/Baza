@@ -1,5 +1,5 @@
 package com.Fortran94.BazaApp.model;
-
+/*
 //TODO Написать класс Турнир, прописать принципиальные различия между классами.
 public class Game extends Event {
 
@@ -9,3 +9,4 @@ public class Game extends Event {
 
 
 }
+*/

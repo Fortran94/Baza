@@ -20,4 +20,23 @@
             <version>42.7.2</version>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <!-- Плагин для упаковки JAR с Main-Class в манифест -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.Fortran94.BazaApp.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

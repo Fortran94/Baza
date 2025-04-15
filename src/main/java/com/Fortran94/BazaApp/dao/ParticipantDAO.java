@@ -13,7 +13,7 @@ public class ParticipantDAO {
     Connection conn = DatabaseConnector.connect();
 
     public void addParticipant(ParticipantUser participant) {
-        String sql = "INSERT INTO participants (name, surname, call_sign, age, registration_date)" +
+        String sql = "INSERT INTO participants (name, surname, call_sign, age, registration_date, number_of_events)" +
                 " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -128,14 +128,19 @@ public class ParticipantDAO {
     public void addParticipantToEvent(int participantId, int eventId) {
         String sql = "INSERT INTO event_participants (participant_id, event_id) VALUES (?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-             stmt.setInt(1, participantId);
-             stmt.setInt(2, eventId);
-             stmt.executeUpdate();
-            System.out.println("Участник записан на мероприятие");
+            stmt.setInt(1, participantId);
+            stmt.setInt(2, eventId);
+            stmt.executeUpdate();
+
+            // 👇 Считаем и обновляем количество мероприятий
+            int count = countEventsForParticipant(participantId);
+            updateNumberOfEvents(participantId, count);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     // Возвращает количество мероприятий посещенных участником
     public int countEventsForParticipant(int participantId) {
@@ -196,10 +201,24 @@ public class ParticipantDAO {
                         rs.getString("overview"),
                         rs.getInt("quantity_of_participants")
                 ));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return eventsByParticipant;
     }
+
+    public void updateNumberOfEvents(int participantId, int newCount) {
+        String sql = "UPDATE participants SET number_of_events = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, newCount);
+            stmt.setInt(2, participantId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
