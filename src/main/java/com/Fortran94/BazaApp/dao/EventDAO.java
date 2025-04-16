@@ -130,19 +130,6 @@ public class EventDAO {
     }
 
 
-    //Добавляет участников в мероприятие
-    public void addParticipantToEvent(int eventId, int participantId) {
-        String sql = "INSERT INTO event_participants (participant_id, event_id) VALUES (?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, participantId);
-            stmt.setInt(2, eventId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     //Получает список участников из мероприятия
     public List<ParticipantUser> getParticipantsByEvent(int eventId) {
         List<ParticipantUser> participantsByEvent = new ArrayList<>();

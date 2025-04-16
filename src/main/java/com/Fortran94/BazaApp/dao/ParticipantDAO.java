@@ -160,31 +160,6 @@ public class ParticipantDAO {
     }
 
 
-
-    /// Нужно ли оно тут?
-    //Получает список участников из мероприятия
-    //todo сделать чтоб возвращал только ид и фамилию
-    public List<ParticipantUser> getParticipantsByEvent(int eventId) {
-        List<ParticipantUser> participants = new ArrayList<>();
-        String sql = "SELECT p.* FROM participants p JOIN event_participants ep ON p.id = ep.participant_id WHERE ep.event_id = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setInt(1, eventId);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                participants.add(new ParticipantUser(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getString("callSign"),
-                        rs.getInt("age"),
-                        rs.getDate("registration_date")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return participants;
-    }
-
     // Получает список мероприятий у участника
     public List<Event> getEventsByParticipant(int participantId) {
         List<Event> eventsByParticipant = new ArrayList<>();
@@ -219,6 +194,5 @@ public class ParticipantDAO {
             e.printStackTrace();
         }
     }
-
 
 }

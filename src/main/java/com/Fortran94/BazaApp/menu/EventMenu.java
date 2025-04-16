@@ -5,6 +5,7 @@ import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.EventMacker;
+import com.Fortran94.BazaApp.model.ParticipantUser;
 
 import java.util.List;
 import java.util.Scanner;
@@ -115,7 +116,7 @@ public class EventMenu {
             }else if (inp == 2) {
                 deleteEvent(events.get(point - 1));
             } else if (inp == 3) {
-                participantDAO.addParticipantToEvent(this.addParticipantToEvent(), point);
+                participantDAO.addParticipantToEvent(this.addParticipantToEvent(), events.get(point - 1).getId());
                 System.out.println("Участник записан");
             } else if (inp == 4) {
                 System.out.println("Участники этого мероприятия: ");
