@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class EventMacker {
 
+    //todo Сделать обработку пустых значений (Строк)
     public static Event writer () {
         Scanner input = new Scanner(System.in);
         System.out.print("Введите название: ");

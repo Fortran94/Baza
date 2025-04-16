@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class UserMacker {
 
-
+//todo Сделать обработку пустых значений (Строк)
     public static ParticipantUser writer () {
         int numberOfEvents = 0;
         Scanner input = new Scanner(System.in);

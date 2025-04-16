@@ -36,22 +36,40 @@ public class ParticipantMenu {
         }
     }
 
-    //создание участника
+    /**
+     * Вызывает метод создания нового участника, вызывает метод добавляющий участника в БД и
+     * передает ему данные только что созданного участника
+     * @param participantDAO
+     */
     public void addParticipant(ParticipantDAO participantDAO) {
         ParticipantUser participant = UserMacker.writer(); // Внесение записей
         participantDAO.addParticipant(participant); // добавляем в список
     }
 
+    /**
+     * Вызывает метод для редактирования существующего участника и
+     * передает ему конкретного участника
+     * @param participant
+     */
     private void editParticipant(ParticipantUser participant) {
         UserMacker.participantEdit(participant, participantDAO);
     }
 
+    /**
+     * Вызывает метод удаления участника из БД,
+     * выводит сообщение об успешном удалении
+     * @param participant
+     */
     public void deleteParticipant (ParticipantUser participant) {
-
         participantDAO.deleteParticipant(participant.getId());
         printParticipantList(participantDAO);
     }
 
+    /**
+     * /////////
+     * @return
+     */
+    //todo Сделать обработку если введен пункт которого нет, в М также
     public int addParticipantToEvent() {
         List<Event> events = this.eventDAO.getAllEvents();
 
@@ -60,6 +78,7 @@ public class ParticipantMenu {
         }
 
         System.out.println("Введите номер мероприятие на которое хотите зарегистрировать этого участника");
+
         int eventId = events.get(menuPoint.nextInt() - 1).getId();
         menuPoint.nextLine(); // Очистка буфера после nextInt()
         return eventId;
@@ -93,15 +112,22 @@ public class ParticipantMenu {
     }
 
     public void printCard(List<ParticipantUser> participants, int point) {
-        //Устанавливает актуальное количество посещенных мероприятий
-        //А здесь ли это вообще должно быть???
-        int eventCount = participantDAO.countEventsForParticipant(participants.get(point - 1).getId());
-        participants.get(point - 1).setNumberOfEvents(eventCount);
+        ParticipantUser participant = participants.get(point - 1);
+        showParticipantCard(participant);
+        showParticipantActions(participant, participants, point);
+    }
+
+
+    private void showParticipantCard(ParticipantUser participant) {
+        int eventCount = participantDAO.countEventsForParticipant(participant.getId());
+        participant.setNumberOfEvents(eventCount);
 
         System.out.print("╔══════════════════════════════════════════════╗");
-        System.out.println(participants.get(point - 1).toString());
+        System.out.println(participant);
         System.out.println("╚══════════════════════════════════════════════╝");
+    }
 
+    private void showParticipantActions(ParticipantUser participant, List<ParticipantUser> participants, int point) {
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
@@ -110,30 +136,37 @@ public class ParticipantMenu {
                     "\n4. Просмотреть мероприятия на которых был участник" +
                     "\n0. Возврат к списку");
             int inp = input.nextInt();
-            input.nextLine(); // Очищаем буфер после nextInt()
+            input.nextLine();
+
             if (inp == 0) {
                 return;
-            } else if (inp == 1) {
-                    editParticipant(participants.get(point - 1));
-                    participants.set(point - 1, participantDAO.getParticipantById(participants.get(point - 1).getId()));
-                    printCard(participants, point);
-                    return;
-            }else if (inp == 2) {
-                deleteParticipant(participants.get(point - 1));
+            }else if (inp == 1) {
+                editParticipant(participant);
+                participants.set(point - 1, participantDAO.getParticipantById(participant.getId()));
+                printCard(participants, point);
+                return;
+            } else if (inp == 2) {
+                deleteParticipant(participant);
             } else if (inp == 3) {
-                participantDAO.addParticipantToEvent(participants.get(point - 1).getId(), this.addParticipantToEvent());
-            }else if (inp == 4) {
-                System.out.println("Участник посетил следующие мероприятия: ");
-                System.out.println("╔════════════════════════════════════╗");
-                System.out.println();
-                for (int i = 0; i < participantDAO.getEventsByParticipant(participants.get(point - 1).getId()).size(); i++) {
-                    System.out.println((i + 1) + " " + participantDAO.getEventsByParticipant(participants.get(point - 1).getId()).get(i).getName());
-                }
-                System.out.println();
-                System.out.println("╚════════════════════════════════════╝");
-                System.out.println();
-            }
+                int eventId = addParticipantToEvent();
+                participantDAO.addParticipantToEvent(participant.getId(), eventId);
+            } else if (inp == 4) {
+                printParticipantEvents(participant.getId());
 
+            }else {
+                System.out.println("Неверный ввод.");
+            }
         }
     }
+
+    private void printParticipantEvents(int participantId) {
+        List<Event> events = participantDAO.getEventsByParticipant(participantId);
+        System.out.println("Участник посетил следующие мероприятия: ");
+        System.out.println("╔═══════════════════════════════╗");
+        for (int i = 0; i < events.size(); i++) {
+            System.out.println((i + 1) + " " + events.get(i).getName());
+        }
+        System.out.println("╚═══════════════════════════════╝");
+    }
+
 }

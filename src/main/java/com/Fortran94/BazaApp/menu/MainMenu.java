@@ -19,14 +19,7 @@ public class MainMenu {
 
 
         while (true) {
-            System.out.println("Вы находитесь в главном меню" +
-                    "\n Выберите пункт меню");
-            System.out.println();
-            System.out.println("1. Участники" +
-                    "\n2. Мероприятия" +
-                    "\n " +
-                    "\nДля выхода нажмите 0");
-            System.out.println();
+            showMenuText();
             if (scanner.hasNextInt()) {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
@@ -37,11 +30,21 @@ public class MainMenu {
                     System.out.println("До свидания!");
                     System.exit(0);
                 }else {
-                    System.out.println("Введите корректный номер пункта меню.");
-                    scanner.next(); // чтобы считывать ошибочный ввод и не зациклиться
-                    //todo хз что тут, какая то хуйня
+                    System.out.println("Некорректный пункт меню!" +
+                            "\nВведите корректный номер пункта меню!");
                 }
             }
         }
+    }
+
+    public void showMenuText () {
+        System.out.println("Вы находитесь в главном меню" +
+                "\n Выберите пункт меню");
+        System.out.println();
+        System.out.println("1. Участники" +
+                "\n2. Мероприятия" +
+                "\n " +
+                "\nДля выхода нажмите 0");
+        System.out.println();
     }
 }
