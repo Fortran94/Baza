@@ -7,15 +7,15 @@ import com.Fortran94.BazaApp.model.Logo;
 import java.util.Scanner;
 
 public class MainMenu {
-    public void printFirstMenu (ParticipantDAO participants, EventDAO events) {
+    public void printFirstMenu (ParticipantDAO participantDAO, EventDAO eventDAO) {
         /*
          * Рисуем лого и выводим пункты меню
          */
         Logo logo = new Logo();
         logo.printLogo();
         Scanner scanner = new Scanner(System.in);
-        ParticipantMenu participantMenu = new ParticipantMenu(participants);
-        EventMenu eventMenu = new EventMenu(events);
+        ParticipantMenu participantMenu = new ParticipantMenu(participantDAO);
+        EventMenu eventMenu = new EventMenu(eventDAO);
 
 
         while (true) {
@@ -23,9 +23,9 @@ public class MainMenu {
             if (scanner.hasNextInt()) {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
-                    participantMenu.printParticipantMenu(participants); //todo Переименовать тут партисипантс в партисипантдао
+                    participantMenu.printParticipantMenu(participantDAO);
                 } else if (menuItem == 2) {
-                    eventMenu.printEventMenu(events); //todo Переименовать тут эвентс в эвентдао
+                    eventMenu.printEventMenu(eventDAO);
                 } else if (menuItem == 0) { // Выход из приложения
                     System.out.println("До свидания!");
                     System.exit(0);

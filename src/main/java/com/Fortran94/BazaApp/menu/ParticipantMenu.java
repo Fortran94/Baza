@@ -16,6 +16,7 @@ public class ParticipantMenu {
     private final ParticipantDAO participantDAO;
 
     public ParticipantMenu(ParticipantDAO participantDAO) {
+
         this.participantDAO = participantDAO;
     }
 
@@ -69,7 +70,7 @@ public class ParticipantMenu {
      * /////////
      * @return
      */
-    //todo Сделать обработку если введен пункт которого нет, в М также
+    //todo Сделать в М также
     public int addParticipantToEvent() {
         List<Event> events = this.eventDAO.getAllEvents();
 
@@ -79,16 +80,22 @@ public class ParticipantMenu {
 
         System.out.println("Введите номер мероприятие на которое хотите зарегистрировать этого участника");
 
-        int eventId = events.get(menuPoint.nextInt() - 1).getId();
+        int point = menuPoint.nextInt();
         menuPoint.nextLine(); // Очистка буфера после nextInt()
-        return eventId;
+
+        if (point > 0 && point <= events.size()) {
+            return events.get(point - 1).getId();
+        } else  {
+            System.out.println("Нет мероприятия с таким номером!");
+            return 0;
+        }
     }
 
 
     // выводит пофамильный список
     public void printParticipantList(ParticipantDAO participantDAO) {
 
-        List<ParticipantUser> participants = this.participantDAO.getAllParticipants();
+        List<ParticipantUser> participants = participantDAO.getAllParticipants();
         while (true) {
             for (int i = 0; i < participants.size(); i++) {
                 System.out.println((i + 1) + " " + participants.get(i).getSurname());
@@ -122,9 +129,9 @@ public class ParticipantMenu {
         int eventCount = participantDAO.countEventsForParticipant(participant.getId());
         participant.setNumberOfEvents(eventCount);
 
-        System.out.print("╔══════════════════════════════════════════════╗");
+        System.out.print("╔═════════════════════════════════════════╗");
         System.out.println(participant);
-        System.out.println("╚══════════════════════════════════════════════╝");
+        System.out.println("╚═════════════════════════════════════════╝");
     }
 
     private void showParticipantActions(ParticipantUser participant, List<ParticipantUser> participants, int point) {
@@ -148,11 +155,13 @@ public class ParticipantMenu {
             } else if (inp == 2) {
                 deleteParticipant(participant);
             } else if (inp == 3) {
+                //todo сделать такую же обработку в М
                 int eventId = addParticipantToEvent();
-                participantDAO.addParticipantToEvent(participant.getId(), eventId);
+                if (eventId > 0) {
+                    participantDAO.addParticipantToEvent(participant.getId(), eventId);
+                }
             } else if (inp == 4) {
                 printParticipantEvents(participant.getId());
-
             }else {
                 System.out.println("Неверный ввод.");
             }
