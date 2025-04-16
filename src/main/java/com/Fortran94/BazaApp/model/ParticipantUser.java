@@ -17,7 +17,6 @@ public class ParticipantUser extends User {
     public ParticipantUser(int id, String name, String surname, String callSign, int age, Date registrationDate) {
         super(id, name, surname, callSign, age);
         this.registrationDate = registrationDate;
-        this.numberOfEvents = numberOfEvents;
     }
 
 
