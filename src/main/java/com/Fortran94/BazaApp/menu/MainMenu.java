@@ -8,8 +8,9 @@ import java.util.Scanner;
 
 public class MainMenu {
     public void printFirstMenu (ParticipantDAO participantDAO, EventDAO eventDAO) {
-        /*
-         * Рисуем лого и выводим пункты меню
+        /**
+         * Создает и рисует Лого, создает Сканнер,
+         * Меню участников и мероприятий
          */
         Logo logo = new Logo();
         logo.printLogo();

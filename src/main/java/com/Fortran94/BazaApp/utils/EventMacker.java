@@ -7,23 +7,50 @@ import java.util.Scanner;
 
 public class EventMacker {
 
-    //todo Сделать обработку пустых значений (Строк)
     public static Event writer () {
         Scanner input = new Scanner(System.in);
-        System.out.print("Введите название: ");
-        String name = input.nextLine();
-        System.out.println();
-        System.out.print("Введите локацию: ");
-        String location = input.nextLine();
-        System.out.println();
-        System.out.print("Укажите организатора: ");
-        String organizer = input.nextLine();
-        System.out.println();
-        System.out.print("Введите краткое описание: ");
-        String overview = input.nextLine();
-        System.out.println();
-        System.out.print("Введите количество всех участников: ");
-        int quantityOfParticipantAll = input.nextInt();
+
+        String name = "";
+        while (name.isEmpty()) {
+            System.out.print("Введите название: ");
+            name = input.nextLine().trim();
+            if (name.isEmpty()) System.out.println("Название не может быть пустым.");
+        }
+
+        String location = "";
+        while (location.isEmpty()) {
+            System.out.print("Введите локацию: ");
+            location = input.nextLine().trim();
+            if (location.isEmpty()) System.out.println("Локация не указана.");
+        }
+
+        String organizer = "";
+        while (organizer.isEmpty()) {
+            System.out.print("Введите организатора: ");
+            organizer = input.nextLine().trim();
+            if (organizer.isEmpty()) System.out.println("Организатор не указан.");
+        }
+
+
+        String overview = "";
+        while (overview.isEmpty()) {
+            System.out.print("Введите описание: ");
+            overview = input.nextLine().trim();
+            if (overview.isEmpty()) System.out.println("Описание не указано.");
+        }
+
+        int quantityOfParticipantAll = 0;
+        while (quantityOfParticipantAll <= 0) {
+            System.out.print("Введите количество участников: ");
+            if (input.hasNextInt()) {
+                quantityOfParticipantAll = input.nextInt();
+                if (quantityOfParticipantAll <= 0) System.out.println("Количество должно быть больше 0.");
+            } else {
+                System.out.println("Введите корректное число.");
+                input.next(); // пропускаем неправильный ввод
+            }
+            input.nextLine(); // очищаем буфер
+        }
 //        System.out.print("Введите количество наших участников: ");
 //        int quantityOfParticipantOur = input.nextInt();
         input.nextLine(); // Очистка буфера после nextInt()

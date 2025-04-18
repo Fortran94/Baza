@@ -4,12 +4,10 @@ package com.Fortran94.BazaApp.model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class ParticipantUser extends User {
     private int numberOfEvents;
-    private List<Integer> eventIds = new ArrayList<>();
     private java.sql.Date registrationDate;
     private int experiencePerMonth;
 
@@ -23,7 +21,6 @@ public class ParticipantUser extends User {
     public java.sql.Date getRegistrationDate() {
         return new java.sql.Date(registrationDate.getTime());
     }
-
 
     public int getExperiencePerMonth() {
         return experiencePerMonth;
@@ -56,7 +53,6 @@ public class ParticipantUser extends User {
         return Math.max(months, 1); // не меньше 1
     }
 
-    //TODO сделать абстрактный метод
     @Override
     public String toString() {
         return

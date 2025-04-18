@@ -60,11 +60,17 @@ public class EventMenu {
             System.out.println((i + 1) + " " + participants.get(i).getSurname());
         }
 
-        System.out.println("Введите номер участника которого хотите зарегистрировать на это мероприятие");
-        int participantId = participants.get(menuPoint.nextInt() - 1).getId();
+        System.out.println("Введите номер участника которого хотите зарегистрировать на это мероприятия");
+
+        int point = menuPoint.nextInt();
         menuPoint.nextLine(); // Очистка буфера после nextInt()
 
-        return participantId;
+        if (point > 0 && point <= participants.size()) {
+            return participants.get(point - 1).getId();
+        } else  {
+            System.out.println("Нет участника с таким номером!");
+            return 0;
+        }
     }
 
     // выводит список мероприятий
@@ -125,9 +131,13 @@ public class EventMenu {
             } else if (inp == 2) {
                 deleteEvent(event);
             } else if (inp == 3) {
+
                 int participantId = addParticipantToEvent();
-                participantDAO.addParticipantToEvent(participantId, event.getId());
-                System.out.println("Участник записан");
+                if (participantId > 0) {
+                    participantDAO.addParticipantToEvent(participantId, event.getId());
+                    System.out.println("Участник записан");
+                }
+
             } else if (inp == 4) {
                 printEventParticipants(event.getId());
             }else {

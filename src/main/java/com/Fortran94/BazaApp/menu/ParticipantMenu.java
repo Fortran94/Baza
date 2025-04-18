@@ -70,7 +70,6 @@ public class ParticipantMenu {
      * /////////
      * @return
      */
-    //todo Сделать в М также
     public int addParticipantToEvent() {
         List<Event> events = this.eventDAO.getAllEvents();
 
@@ -155,11 +154,12 @@ public class ParticipantMenu {
             } else if (inp == 2) {
                 deleteParticipant(participant);
             } else if (inp == 3) {
-                //todo сделать такую же обработку в М
+
                 int eventId = addParticipantToEvent();
                 if (eventId > 0) {
                     participantDAO.addParticipantToEvent(participant.getId(), eventId);
                 }
+
             } else if (inp == 4) {
                 printParticipantEvents(participant.getId());
             }else {
