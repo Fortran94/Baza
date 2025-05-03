@@ -1,7 +1,9 @@
 package com.Fortran94.BazaApp.dao;
 
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.Game;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.model.Tournament;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
 import java.sql.*;
@@ -13,8 +15,8 @@ public class EventDAO {
     Connection conn = DatabaseConnector.connect();
 
     public void addEvent(Event event) {
-        String sql = "INSERT INTO events (name, location, organizer, overview, quantity_of_participants)" +
-                " VALUES (?, ?, ?, ?, ?) RETURNING id;";
+        String sql = "INSERT INTO events (name, location, organizer, overview, quantity_of_participants, type)" +
+                " VALUES (?, ?, ?, ?, ?, ?) RETURNING id;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, event.getName());
@@ -22,7 +24,7 @@ public class EventDAO {
             stmt.setString(3, event.getOrganizer());
             stmt.setString(4, event.getOverview());
             stmt.setInt(5, event.getQuantityOfParticipantAll());
-           // stmt.setInt(6, event.getQuantityOfParticipantOur());
+            stmt.setString(6, event.getType());
 
             ResultSet rs = stmt.executeQuery(); // Выполняем запрос и получаем сгенерированный id
 
@@ -38,9 +40,9 @@ public class EventDAO {
     }
 
     public void updateEvent(int id, String newName, String newLocation, String newOrganizer,
-                            String newOverview, int newQuantityOfParticipant) {
+                            String newOverview, int newQuantityOfParticipant, String newType) {
         String sql = "UPDATE events SET name = ?, location = ?, organizer = ?, overview = ?, " +
-                "quantity_of_participants = ? WHERE id = ?";
+                "quantity_of_participants = ?, type = ? WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -49,7 +51,8 @@ public class EventDAO {
             stmt.setString(3, newOrganizer);
             stmt.setString(4, newOverview);
             stmt.setInt(5, newQuantityOfParticipant);
-            stmt.setInt(6, id);
+            stmt.setString(6, newType);
+            stmt.setInt(7, id);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
@@ -84,15 +87,31 @@ public class EventDAO {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Event(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("location"),
-                        rs.getString("organizer"),
-                        rs.getString("overview"),
-                        rs.getInt("quantity_of_participants")
-                        //rs.getInt("quantity_of_participants_our")
-                );
+
+                String type = rs.getString("type");
+
+                if ("game".equalsIgnoreCase(type)) {
+                    return new Game(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type")
+                    );
+                } else if ("tournament".equalsIgnoreCase(type)) {
+                    return new Tournament( rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type"));
+                } else {
+                    throw new RuntimeException("Неизвестный тип мероприятия: " + type);
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,17 +128,32 @@ public class EventDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Event event = new Event(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("location"),
-                        rs.getString("organizer"),
-                        rs.getString("overview"),
-                        rs.getInt("quantity_of_participants")
-                        //rs.getInt("quantity_of_participants_our")
-                );
-                //participant.setExperiencePerMonth(rs.getInt("experience_per_month"));
-                //participant.setNumberOfEvents(rs.getInt("number_of_events"));
+
+                String type = rs.getString("type");
+                Event event;
+                if ("game".equalsIgnoreCase(type)) {
+                    event = new Game(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type")
+                    );
+                } else if ("tournament".equalsIgnoreCase(type)) {
+                    event = new Tournament(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type")
+                    );
+                } else {
+                    throw new RuntimeException("Неизвестный тип мероприятия: " + type);
+                }
                 events.add(event);
             }
 

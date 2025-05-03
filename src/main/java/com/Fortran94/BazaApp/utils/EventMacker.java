@@ -2,6 +2,8 @@ package com.Fortran94.BazaApp.utils;
 
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.Game;
+import com.Fortran94.BazaApp.model.Tournament;
 
 import java.util.Scanner;
 
@@ -9,6 +11,13 @@ public class EventMacker {
 
     public static Event writer () {
         Scanner input = new Scanner(System.in);
+
+        String type = "";
+        while (type.isEmpty()) {
+            System.out.print("Введите тип мероприятия: ");
+            type = input.nextLine().trim();
+            if (type.isEmpty()) System.out.println("Тип не может быть пустым.");
+        }
 
         String name = "";
         while (name.isEmpty()) {
@@ -51,17 +60,27 @@ public class EventMacker {
             }
             input.nextLine(); // очищаем буфер
         }
-//        System.out.print("Введите количество наших участников: ");
-//        int quantityOfParticipantOur = input.nextInt();
-        input.nextLine(); // Очистка буфера после nextInt()
-        java.sql.Date registrationDate = new java.sql.Date(System.currentTimeMillis());
+            //System.out.print("Введите количество наших участников: ");
+            //int quantityOfParticipantOur = input.nextInt();
 
-        return new Event(0, name, location, organizer, overview, quantityOfParticipantAll);
+        if (type.equalsIgnoreCase("Игра")) {
+            return new Game(0, name, location, organizer, overview, quantityOfParticipantAll, "Игра");
+        }else if (type.equalsIgnoreCase("Турнир")){
+            return new Tournament(0, name, location, organizer, overview, quantityOfParticipantAll, "Турнир");
+        }
+
+        return null;// Зачем это???
     }
 
     public static void eventEdit (Event event, EventDAO eventDAO) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Редактирование мероприятия (оставьте поле пустым, чтобы не менять значение)");
+
+        System.out.println("Введите новый тип (" + event.getType() + "):");
+        String newType = scanner.nextLine();
+        if (newType.isEmpty()) {
+            newType = event.getType();
+        }
 
         System.out.println("Введите новое название (" + event.getName() + "):");
         String newName = scanner.nextLine();
@@ -97,7 +116,7 @@ public class EventMacker {
         }
 
         // Отправляем обновление в БД
-        eventDAO.updateEvent(event.getId(), newName, newLocation, newOrganizer, newOverview, newQuantityOfParticipant);
+        eventDAO.updateEvent(event.getId(), newName, newLocation, newOrganizer, newOverview, newQuantityOfParticipant, newType);
 
     }
 }

@@ -5,7 +5,6 @@ import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.EventMacker;
-import com.Fortran94.BazaApp.model.ParticipantUser;
 
 import java.util.List;
 import java.util.Scanner;
