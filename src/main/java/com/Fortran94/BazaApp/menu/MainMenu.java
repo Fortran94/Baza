@@ -3,7 +3,6 @@ package com.Fortran94.BazaApp.menu;
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Logo;
-import com.Fortran94.BazaApp.service.ParticipantService;
 
 import java.util.Scanner;
 
