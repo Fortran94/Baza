@@ -2,23 +2,25 @@ package com.Fortran94.BazaApp.model;
 
 import java.util.ArrayList;
 import java.util.List;
-//todo Сделать абстрактным, сделан не абстрактным для теста
-public class Event {
+
+public abstract class Event {
     int id;
     private String name, location, organizer, overview;
     private int quantityOfParticipantAll;
+    private String type;
     private List<Integer> participanIds = new ArrayList<>();
 
 
 
 
-    public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipantAll) {
+    public Event(int id, String name, String location, String organizer, String overview, int quantityOfParticipantAll, String type) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.organizer = organizer;
         this.overview = overview;
         this.quantityOfParticipantAll = quantityOfParticipantAll;
+        this.type = type;
 
     }
 
@@ -70,15 +72,25 @@ public class Event {
         return quantityOfParticipantAll;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
+        if (type.equalsIgnoreCase("Game")) {
+            type = "Игра";
+        } else if (type.equalsIgnoreCase("Tournament")) {
+            type = "Турнир";
+        }
         return
                 "\nНазвание: " + name + '\n' +
-                "Локация: " + location + '\n' +
-                "Организатор: " + organizer + '\n' +
-                "Описание: " + overview + '\n' +
-               // "Наших участников: " + quantityOfParticipantOur + '\n' +
-                "Количество участников всего: " + quantityOfParticipantAll;
+                        "Локация: " + location + '\n' +
+                        "Организатор: " + organizer + '\n' +
+                        "Описание: " + overview + '\n' +
+                        // "Наших участников: " + quantityOfParticipantOur + '\n' +
+                        "Количество участников всего: " + quantityOfParticipantAll + '\n' +
+                        "Тип мероприятия: " + type;
     }
 
 

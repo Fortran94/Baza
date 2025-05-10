@@ -5,33 +5,34 @@ import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
 import com.Fortran94.BazaApp.utils.EventMacker;
-import com.Fortran94.BazaApp.model.ParticipantUser;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class EventMenu {
 
-    Scanner menuPoint = new Scanner(System.in);
-    ParticipantDAO participantDAO = new ParticipantDAO();
+    private final ParticipantDAO participantDAO;
     private final EventDAO eventDAO;
+    private final Scanner scanner;
 
-
-    public EventMenu(EventDAO eventDAO) {
+    public EventMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
+        this.participantDAO = participantDAO;
         this.eventDAO = eventDAO;
+        this.scanner = scanner;
     }
 
-    public void printEventMenu(EventDAO eventDAO){
+
+    public void printEventMenu(){
             while (true) {
                 System.out.println("1. Добавить мероприятие " +
                         "\n2. Посмотреть список мероприятий" +
                         "\n0. Возврат в главное меню");
-                int menuItem = menuPoint.nextInt();
+                int menuItem = scanner.nextInt();
 
                 if (menuItem == 1) {
-                    addEvent(this.eventDAO);
+                    addEvent();
                 } else if (menuItem == 2) {
-                    printEventList(eventDAO);
+                    printEventList();
                 } else if (menuItem == 0) {
                     break;
                 }
@@ -39,7 +40,7 @@ public class EventMenu {
     }
 
     //создание мероприятие
-    public void addEvent(EventDAO eventDAO) {
+    public void addEvent() {
         Event event = EventMacker.writer();
         eventDAO.addEvent(event); // добавляем в список
     }
@@ -50,7 +51,7 @@ public class EventMenu {
 
     public void deleteEvent (Event event) {
         eventDAO.deleteEvent(event.getId());
-        printEventList(eventDAO);
+        printEventList();
     }
 
     public int addParticipantToEvent() {
@@ -61,14 +62,14 @@ public class EventMenu {
         }
 
         System.out.println("Введите номер участника которого хотите зарегистрировать на это мероприятие");
-        int participantId = participants.get(menuPoint.nextInt() - 1).getId();
-        menuPoint.nextLine(); // Очистка буфера после nextInt()
+        int participantId = participants.get(scanner.nextInt() - 1).getId();
+        scanner.nextLine(); // Очистка буфера после nextInt()
 
         return participantId;
     }
 
     // выводит список мероприятий
-    public void printEventList(EventDAO eventDAO) {
+    public void printEventList() {
         List<Event> events = this.eventDAO.getAllEvents();
         while (true) {
             for (int i = 0; i < events.size(); i++) {
@@ -77,8 +78,8 @@ public class EventMenu {
 
             System.out.println("Для просмотра подробной информации о мероприятии введите номер участника" +
                         "\nДля возврата введите 0");
-            int point = menuPoint.nextInt();
-            menuPoint.nextLine(); // Очистка буфера после nextInt()
+            int point = scanner.nextInt();
+            scanner.nextLine(); // Очистка буфера после nextInt()
 
             // Отображает карточку мероприятия, проверяет корректность введенного номера
             if (point > 0 && point <= events.size()) {
@@ -94,7 +95,7 @@ public class EventMenu {
     public void printCard(List<Event> events, int point) {
         Event event = events.get(point - 1);
         showEventCard(event);
-        handleEventActions(event, events, point);
+        handleEventActions(event, events, point, scanner);
     }
 
     private void showEventCard(Event event) {
@@ -103,8 +104,7 @@ public class EventMenu {
         System.out.println("╚══════════════════════════════════════════════╝");
     }
 
-    private void handleEventActions(Event event, List<Event> events, int point) {
-        Scanner input = new Scanner(System.in);
+    private void handleEventActions(Event event, List<Event> events, int point, Scanner scanner) {
 
         while (true) {
             System.out.println("1. Редактировать карточку мероприятия" +
@@ -112,8 +112,8 @@ public class EventMenu {
                     "\n3. Записать участника" +
                     "\n4. Посмотреть участников" +
                     "\n0. Возврат к списку");
-            int inp = input.nextInt();
-            input.nextLine();
+            int inp = scanner.nextInt();
+            scanner.nextLine();
 
             if (inp == 0) {
                 return;

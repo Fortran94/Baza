@@ -11,25 +11,27 @@ import java.util.Scanner;
 
 public class ParticipantMenu {
 
-    Scanner menuPoint = new Scanner(System.in);
-    EventDAO eventDAO = new EventDAO();
     private final ParticipantDAO participantDAO;
+    private final EventDAO eventDAO;
+    private final Scanner scanner;
 
-    public ParticipantMenu(ParticipantDAO participantDAO) {
+    public ParticipantMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
         this.participantDAO = participantDAO;
+        this.eventDAO = eventDAO;
+        this.scanner = scanner;
     }
 
-    public void printParticipantMenu(ParticipantDAO participantDAO){
+    public void printParticipantMenu(){
         while (true) {
             System.out.println("1. Добавить участника " +
                     "\n2. Посмотреть список участников" +
                     "\n0. Возврат в главное меню");
-            int menuItem = menuPoint.nextInt();
+            int menuItem = scanner.nextInt();
 
             if (menuItem == 1) {
-                addParticipant(this.participantDAO);
+                addParticipant();
             } else if (menuItem == 2) {
-                printParticipantList(this.participantDAO);
+                printParticipantList();
             } else if (menuItem == 0) {
                 break;
             }
@@ -39,9 +41,8 @@ public class ParticipantMenu {
     /**
      * Вызывает метод создания нового участника, вызывает метод добавляющий участника в БД и
      * передает ему данные только что созданного участника
-     * @param participantDAO
      */
-    public void addParticipant(ParticipantDAO participantDAO) {
+    public void addParticipant() {
         ParticipantUser participant = UserMacker.writer(); // Внесение записей
         participantDAO.addParticipant(participant); // добавляем в список
     }
@@ -62,7 +63,7 @@ public class ParticipantMenu {
      */
     public void deleteParticipant (ParticipantUser participant) {
         participantDAO.deleteParticipant(participant.getId());
-        printParticipantList(participantDAO);
+        printParticipantList();
     }
 
     /**
@@ -79,16 +80,16 @@ public class ParticipantMenu {
 
         System.out.println("Введите номер мероприятие на которое хотите зарегистрировать этого участника");
 
-        int eventId = events.get(menuPoint.nextInt() - 1).getId();
-        menuPoint.nextLine(); // Очистка буфера после nextInt()
+        int eventId = events.get(scanner.nextInt() - 1).getId();
+        scanner.nextLine(); // Очистка буфера после nextInt()
         return eventId;
     }
 
 
     // выводит пофамильный список
-    public void printParticipantList(ParticipantDAO participantDAO) {
+    public void printParticipantList() {
 
-        List<ParticipantUser> participants = this.participantDAO.getAllParticipants();
+        List<ParticipantUser> participants = participantDAO.getAllParticipants();
         while (true) {
             for (int i = 0; i < participants.size(); i++) {
                 System.out.println((i + 1) + " " + participants.get(i).getSurname());
@@ -97,8 +98,8 @@ public class ParticipantMenu {
             System.out.println("Для просмотра подробной информации об участнике введите номер участника" +
                     "\nДля возврата в меню участников введите 0");
 
-            int point = menuPoint.nextInt();
-            menuPoint.nextLine(); // Очистка буфера после nextInt()
+            int point = scanner.nextInt();
+            scanner.nextLine(); // Очистка буфера после nextInt()
 
             // Отображает карточку участника, проверяет корректность введенного номера
             if (point > 0 && point <= participants.size()) {
@@ -114,7 +115,7 @@ public class ParticipantMenu {
     public void printCard(List<ParticipantUser> participants, int point) {
         ParticipantUser participant = participants.get(point - 1);
         showParticipantCard(participant);
-        showParticipantActions(participant, participants, point);
+        showParticipantActions(participant, participants, point, scanner);
     }
 
 
@@ -127,16 +128,16 @@ public class ParticipantMenu {
         System.out.println("╚══════════════════════════════════════════════╝");
     }
 
-    private void showParticipantActions(ParticipantUser participant, List<ParticipantUser> participants, int point) {
-        Scanner input = new Scanner(System.in);
+    private void showParticipantActions(ParticipantUser participant, List<ParticipantUser> participants, int point, Scanner scanner) {
+
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
                     "\n2. Удалить участника" +
                     "\n3. Записать на мероприятие" +
                     "\n4. Просмотреть мероприятия на которых был участник" +
                     "\n0. Возврат к списку");
-            int inp = input.nextInt();
-            input.nextLine();
+            int inp = scanner.nextInt();
+            scanner.nextLine();
 
             if (inp == 0) {
                 return;

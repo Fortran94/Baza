@@ -1,11 +1,14 @@
 package com.Fortran94.BazaApp.dao;
 
 import com.Fortran94.BazaApp.model.Event;
+import com.Fortran94.BazaApp.model.Game;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.model.Tournament;
 import com.Fortran94.BazaApp.utils.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ParticipantDAO {
@@ -168,14 +171,30 @@ public class ParticipantDAO {
             statement.setInt(1, participantId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                eventsByParticipant.add(new Event(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("location"),
-                        rs.getString("organizer"),
-                        rs.getString("overview"),
-                        rs.getInt("quantity_of_participants")
-                ));
+
+                String type = rs.getString("type");
+
+                if ("game".equalsIgnoreCase(type)) {
+                    return Collections.singletonList(new Game(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type")
+                    ));
+                } else if ("tournament".equalsIgnoreCase(type)) {
+                    return Collections.singletonList(new Tournament(rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            rs.getString("organizer"),
+                            rs.getString("overview"),
+                            rs.getInt("quantity_of_participants"),
+                            rs.getString("type")));
+                } else {
+                    throw new RuntimeException("Неизвестный тип мероприятия: " + type);
+                }
 
             }
         } catch (SQLException e) {

@@ -3,29 +3,35 @@ package com.Fortran94.BazaApp.menu;
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Logo;
+import com.Fortran94.BazaApp.service.ParticipantService;
 
 import java.util.Scanner;
 
 public class MainMenu {
-    public void printFirstMenu (ParticipantDAO participants, EventDAO events) {
-        /*
-         * Рисуем лого и выводим пункты меню
-         */
-        Logo logo = new Logo();
-        logo.printLogo();
-        Scanner scanner = new Scanner(System.in);
-        ParticipantMenu participantMenu = new ParticipantMenu(participants);
-        EventMenu eventMenu = new EventMenu(events);
 
+    private final Scanner scanner;
+    private final ParticipantMenu participantMenu;
+    private final EventMenu eventMenu;
+
+    public MainMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
+        this.scanner = scanner;
+        this.participantMenu = new ParticipantMenu(participantDAO, eventDAO, scanner);
+        this.eventMenu = new EventMenu(participantDAO, eventDAO, scanner);
+    }
+
+    public void printMainMenu() {
+
+        Logo logo = new Logo(); //todo Внедрить зависимость
+        logo.printLogo();
 
         while (true) {
             showMenuText();
             if (scanner.hasNextInt()) {
                 int menuItem = scanner.nextInt();
                 if (menuItem == 1) {
-                    participantMenu.printParticipantMenu(participants); //todo Переименовать тут партисипантс в партисипантдао
+                    participantMenu.printParticipantMenu();
                 } else if (menuItem == 2) {
-                    eventMenu.printEventMenu(events); //todo Переименовать тут эвентс в эвентдао
+                    eventMenu.printEventMenu();
                 } else if (menuItem == 0) { // Выход из приложения
                     System.out.println("До свидания!");
                     System.exit(0);
