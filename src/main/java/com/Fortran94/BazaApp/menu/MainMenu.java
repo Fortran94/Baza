@@ -3,6 +3,7 @@ package com.Fortran94.BazaApp.menu;
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Logo;
+import com.Fortran94.BazaApp.service.ParticipantService;
 
 import java.util.Scanner;
 
@@ -11,16 +12,18 @@ public class MainMenu {
     private final Scanner scanner;
     private final ParticipantMenu participantMenu;
     private final EventMenu eventMenu;
+    private final ParticipantService participantService;
 
-    public MainMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
+    public MainMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
         this.scanner = scanner;
-        this.participantMenu = new ParticipantMenu(participantDAO, eventDAO, scanner);
-        this.eventMenu = new EventMenu(participantDAO, eventDAO, scanner);
+        this.participantService = participantService;
+        this.participantMenu = new ParticipantMenu(participantService, eventDAO, scanner);
+        this.eventMenu = new EventMenu(participantService, eventDAO, scanner);
     }
 
     public void printMainMenu() {
 
-        Logo logo = new Logo(); //todo Внедрить зависимость
+        Logo logo = new Logo();
         logo.printLogo();
 
         while (true) {

@@ -2,10 +2,15 @@ package com.Fortran94.BazaApp.utils;
 
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.service.ParticipantService;
 
 import java.util.Scanner;
 
 public class UserMacker {
+
+    /// //
+    ParticipantDAO participantDAO = new ParticipantDAO();
+    /// //
 
 
     public static ParticipantUser writer () {
@@ -50,7 +55,7 @@ public class UserMacker {
     }
 
 
-    public static void participantEdit (ParticipantUser participant, ParticipantDAO participantDAO) {
+    public static void participantEdit (ParticipantUser participant, ParticipantService participantService) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Редактирование участника (оставьте поле пустым, чтобы не менять значение)");
 
@@ -82,7 +87,7 @@ public class UserMacker {
         }
 
         // Отправляем обновление в БД
-        participantDAO.updateParticipant(participant.getId(), newName, newSurname, newCallSign, newAge);
+        participantService.updateParticipantInDao(participant.getId(), newName, newSurname, newCallSign, newAge);
 
     }
 

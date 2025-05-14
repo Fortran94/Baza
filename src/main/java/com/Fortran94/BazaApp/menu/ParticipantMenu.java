@@ -1,9 +1,9 @@
 package com.Fortran94.BazaApp.menu;
 
 import com.Fortran94.BazaApp.dao.EventDAO;
-import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.service.ParticipantService;
 import com.Fortran94.BazaApp.utils.UserMacker;
 
 import java.util.List;
@@ -11,12 +11,12 @@ import java.util.Scanner;
 
 public class ParticipantMenu {
 
-    private final ParticipantDAO participantDAO;
+    private final ParticipantService participantService;
     private final EventDAO eventDAO;
     private final Scanner scanner;
 
-    public ParticipantMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
-        this.participantDAO = participantDAO;
+    public ParticipantMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
+        this.participantService = participantService;
         this.eventDAO = eventDAO;
         this.scanner = scanner;
     }
@@ -43,8 +43,8 @@ public class ParticipantMenu {
      * передает ему данные только что созданного участника
      */
     public void addParticipant() {
-        ParticipantUser participant = UserMacker.writer(); // Внесение записей
-        participantDAO.addParticipant(participant); // добавляем в список
+        ParticipantUser participantUser = UserMacker.writer();
+        participantService.addParticipant(participantUser);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ParticipantMenu {
      * @param participant
      */
     private void editParticipant(ParticipantUser participant) {
-        UserMacker.participantEdit(participant, participantDAO);
+        UserMacker.participantEdit(participant, participantService);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ParticipantMenu {
      * @param participant
      */
     public void deleteParticipant (ParticipantUser participant) {
-        participantDAO.deleteParticipant(participant.getId());
+        participantService.deleteParticipant(participant);
         printParticipantList();
     }
 
@@ -71,6 +71,7 @@ public class ParticipantMenu {
      * @return
      */
     //todo Сделать обработку если введен пункт которого нет, в М также
+    //todo Перенести в сервис
     public int addParticipantToEvent() {
         List<Event> events = this.eventDAO.getAllEvents();
 
@@ -89,7 +90,7 @@ public class ParticipantMenu {
     // выводит пофамильный список
     public void printParticipantList() {
 
-        List<ParticipantUser> participants = participantDAO.getAllParticipants();
+        List<ParticipantUser> participants = participantService.getAllParticipants();
         while (true) {
             for (int i = 0; i < participants.size(); i++) {
                 System.out.println((i + 1) + " " + participants.get(i).getSurname());
@@ -115,12 +116,12 @@ public class ParticipantMenu {
     public void printCard(List<ParticipantUser> participants, int point) {
         ParticipantUser participant = participants.get(point - 1);
         showParticipantCard(participant);
-        showParticipantActions(participant, participants, point, scanner);
+        handleParticipantAction(participant, participants, point, scanner);
     }
 
 
     private void showParticipantCard(ParticipantUser participant) {
-        int eventCount = participantDAO.countEventsForParticipant(participant.getId());
+        int eventCount = participantService.getEventsForParticipant(participant);
         participant.setNumberOfEvents(eventCount);
 
         System.out.print("╔══════════════════════════════════════════════╗");
@@ -128,7 +129,8 @@ public class ParticipantMenu {
         System.out.println("╚══════════════════════════════════════════════╝");
     }
 
-    private void showParticipantActions(ParticipantUser participant, List<ParticipantUser> participants, int point, Scanner scanner) {
+    private void handleParticipantAction(ParticipantUser participant, List<ParticipantUser> participants,
+                                         int point, Scanner scanner) {
 
         while (true) {
             System.out.println("1. Редактировать карточку участника" +
@@ -143,14 +145,14 @@ public class ParticipantMenu {
                 return;
             }else if (inp == 1) {
                 editParticipant(participant);
-                participants.set(point - 1, participantDAO.getParticipantById(participant.getId()));
+                participants.set(point - 1, participantService.getParticipantById(participant.getId()));
                 printCard(participants, point);
                 return;
             } else if (inp == 2) {
                 deleteParticipant(participant);
             } else if (inp == 3) {
                 int eventId = addParticipantToEvent();
-                participantDAO.addParticipantToEvent(participant.getId(), eventId);
+               participantService.addParticipantToEvent(participant.getId(), eventId);
             } else if (inp == 4) {
                 printParticipantEvents(participant.getId());
 
@@ -161,7 +163,7 @@ public class ParticipantMenu {
     }
 
     private void printParticipantEvents(int participantId) {
-        List<Event> events = participantDAO.getEventsByParticipant(participantId);
+        List<Event> events = participantService.getEventsByParticipant(participantId);
         System.out.println("Участник посетил следующие мероприятия: ");
         System.out.println("╔═══════════════════════════════╗");
         for (int i = 0; i < events.size(); i++) {

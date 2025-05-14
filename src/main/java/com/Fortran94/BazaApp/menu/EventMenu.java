@@ -4,6 +4,7 @@ import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.service.ParticipantService;
 import com.Fortran94.BazaApp.utils.EventMacker;
 
 import java.util.List;
@@ -11,12 +12,12 @@ import java.util.Scanner;
 
 public class EventMenu {
 
-    private final ParticipantDAO participantDAO;
+    private final ParticipantService participantService;
     private final EventDAO eventDAO;
     private final Scanner scanner;
 
-    public EventMenu(ParticipantDAO participantDAO, EventDAO eventDAO, Scanner scanner) {
-        this.participantDAO = participantDAO;
+    public EventMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
+        this.participantService = participantService;
         this.eventDAO = eventDAO;
         this.scanner = scanner;
     }
@@ -55,7 +56,7 @@ public class EventMenu {
     }
 
     public int addParticipantToEvent() {
-        List<ParticipantUser> participants = this.participantDAO.getAllParticipants();
+        List<ParticipantUser> participants = this.participantService.getAllParticipants();
 
         for (int i = 0; i < participants.size(); i++) {
             System.out.println((i + 1) + " " + participants.get(i).getSurname());
@@ -126,7 +127,7 @@ public class EventMenu {
                 deleteEvent(event);
             } else if (inp == 3) {
                 int participantId = addParticipantToEvent();
-                participantDAO.addParticipantToEvent(participantId, event.getId());
+                participantService.addParticipantToEvent(participantId, event.getId());
                 System.out.println("Участник записан");
             } else if (inp == 4) {
                 printEventParticipants(event.getId());
