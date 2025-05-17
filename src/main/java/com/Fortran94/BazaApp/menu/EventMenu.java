@@ -50,7 +50,7 @@ public class EventMenu {
 
     private void editEvent(Event event) {
         eventMacker.eventEdit(event, eventService);
-    } //todo
+    }
 
     public void deleteEvent (Event event) {
         eventService.deleteEvent(event);
@@ -58,7 +58,6 @@ public class EventMenu {
     }
 
     //todo Сделать обработку если введен пункт которого нет, в М также
-    //todo Перенести в сервис
     public int addParticipantToEvent() {
         List<ParticipantUser> participants = this.participantService.getAllParticipants();
 

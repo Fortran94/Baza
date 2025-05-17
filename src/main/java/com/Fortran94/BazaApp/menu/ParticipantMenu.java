@@ -73,7 +73,7 @@ public class ParticipantMenu {
      * @return
      */
     //todo Сделать обработку если введен пункт которого нет, в М также
-    //todo Перенести в сервис
+
     public int addParticipantToEvent() {
         List<Event> events = this.eventService.getAllEvents();
 
