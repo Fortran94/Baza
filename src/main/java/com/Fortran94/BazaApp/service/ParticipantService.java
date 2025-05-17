@@ -5,6 +5,7 @@ import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.utils.UserMacker;
 
 
 import java.util.List;
@@ -29,9 +30,7 @@ public class ParticipantService {
         return participantDAO.getAllParticipants();
     }
 
-    private void editParticipant(ParticipantUser participant) {
-        //todo
-    }
+
 
     public void updateParticipantInDao(int id, String newName, String newSurname, String newCallSign, int newAge) {
        participantDAO.updateParticipant(id, newName, newSurname, newCallSign, newAge);

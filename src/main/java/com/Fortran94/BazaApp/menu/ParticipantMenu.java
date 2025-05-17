@@ -1,8 +1,8 @@
 package com.Fortran94.BazaApp.menu;
 
-import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.service.EventService;
 import com.Fortran94.BazaApp.service.ParticipantService;
 import com.Fortran94.BazaApp.utils.UserMacker;
 
@@ -12,13 +12,15 @@ import java.util.Scanner;
 public class ParticipantMenu {
 
     private final ParticipantService participantService;
-    private final EventDAO eventDAO;
+    private final EventService eventService;
     private final Scanner scanner;
+    private final UserMacker userMacker;
 
-    public ParticipantMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
+    public ParticipantMenu(ParticipantService participantService, EventService eventService, Scanner scanner, UserMacker userMacker) {
         this.participantService = participantService;
-        this.eventDAO = eventDAO;
+        this.eventService = eventService;
         this.scanner = scanner;
+        this.userMacker = userMacker;
     }
 
     public void printParticipantMenu(){
@@ -43,7 +45,7 @@ public class ParticipantMenu {
      * передает ему данные только что созданного участника
      */
     public void addParticipant() {
-        ParticipantUser participantUser = UserMacker.writer();
+        ParticipantUser participantUser = userMacker.writer();
         participantService.addParticipant(participantUser);
     }
 
@@ -53,7 +55,7 @@ public class ParticipantMenu {
      * @param participant
      */
     private void editParticipant(ParticipantUser participant) {
-        UserMacker.participantEdit(participant, participantService);
+        userMacker.participantEdit(participant, participantService);
     }
 
     /**
@@ -73,7 +75,7 @@ public class ParticipantMenu {
     //todo Сделать обработку если введен пункт которого нет, в М также
     //todo Перенести в сервис
     public int addParticipantToEvent() {
-        List<Event> events = this.eventDAO.getAllEvents();
+        List<Event> events = this.eventService.getAllEvents();
 
         for (int i = 0; i < events.size(); i++) {
             System.out.println((i + 1) + " " + events.get(i).getName());

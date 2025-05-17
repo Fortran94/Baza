@@ -3,7 +3,10 @@ package com.Fortran94.BazaApp.menu;
 import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Logo;
+import com.Fortran94.BazaApp.service.EventService;
 import com.Fortran94.BazaApp.service.ParticipantService;
+import com.Fortran94.BazaApp.utils.EventMacker;
+import com.Fortran94.BazaApp.utils.UserMacker;
 
 import java.util.Scanner;
 
@@ -13,12 +16,18 @@ public class MainMenu {
     private final ParticipantMenu participantMenu;
     private final EventMenu eventMenu;
     private final ParticipantService participantService;
+    private final EventService eventService;
+    private final UserMacker userMacker;
+    private final EventMacker eventMacker;
 
-    public MainMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
+    public MainMenu(ParticipantService participantService, Scanner scanner, EventService eventService, UserMacker userMacker, EventMacker eventMacker) {
         this.scanner = scanner;
         this.participantService = participantService;
-        this.participantMenu = new ParticipantMenu(participantService, eventDAO, scanner);
-        this.eventMenu = new EventMenu(participantService, eventDAO, scanner);
+        this.eventService = eventService;
+        this.userMacker = userMacker;
+        this.eventMacker = eventMacker;
+        this.participantMenu = new ParticipantMenu(participantService, eventService, scanner, userMacker);
+        this.eventMenu = new EventMenu(participantService, eventService, scanner, eventMacker);
     }
 
     public void printMainMenu() {

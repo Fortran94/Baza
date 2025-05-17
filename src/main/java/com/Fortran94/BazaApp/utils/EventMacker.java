@@ -1,42 +1,49 @@
 package com.Fortran94.BazaApp.utils;
 
-import com.Fortran94.BazaApp.dao.EventDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.Game;
 import com.Fortran94.BazaApp.model.Tournament;
+import com.Fortran94.BazaApp.service.EventService;
 
 import java.util.Scanner;
 
 public class EventMacker {
 
-    public static Event writer () {
-        Scanner input = new Scanner(System.in);
+    private final EventService eventService;
+    private final Scanner scanner;
+
+    public EventMacker(EventService eventService, Scanner scanner) {
+        this.eventService = eventService;
+        this.scanner = scanner;
+    }
+
+    public Event writer () {
 
         String type = "";
         while (type.isEmpty()) {
             System.out.print("Введите тип мероприятия: ");
-            type = input.nextLine().trim();
+            type = scanner.nextLine().trim();
             if (type.isEmpty()) System.out.println("Тип не может быть пустым.");
         }
 
         String name = "";
         while (name.isEmpty()) {
             System.out.print("Введите название: ");
-            name = input.nextLine().trim();
+            name = scanner.nextLine().trim();
             if (name.isEmpty()) System.out.println("Название не может быть пустым.");
         }
 
         String location = "";
         while (location.isEmpty()) {
             System.out.print("Введите локацию: ");
-            location = input.nextLine().trim();
+            location = scanner.nextLine().trim();
             if (location.isEmpty()) System.out.println("Локация не указана.");
         }
 
         String organizer = "";
         while (organizer.isEmpty()) {
             System.out.print("Введите организатора: ");
-            organizer = input.nextLine().trim();
+            organizer = scanner.nextLine().trim();
             if (organizer.isEmpty()) System.out.println("Организатор не указан.");
         }
 
@@ -44,21 +51,21 @@ public class EventMacker {
         String overview = "";
         while (overview.isEmpty()) {
             System.out.print("Введите описание: ");
-            overview = input.nextLine().trim();
+            overview = scanner.nextLine().trim();
             if (overview.isEmpty()) System.out.println("Описание не указано.");
         }
 
         int quantityOfParticipantAll = 0;
         while (quantityOfParticipantAll <= 0) {
             System.out.print("Введите количество участников: ");
-            if (input.hasNextInt()) {
-                quantityOfParticipantAll = input.nextInt();
+            if (scanner.hasNextInt()) {
+                quantityOfParticipantAll = scanner.nextInt();
                 if (quantityOfParticipantAll <= 0) System.out.println("Количество должно быть больше 0.");
             } else {
                 System.out.println("Введите корректное число.");
-                input.next(); // пропускаем неправильный ввод
+                scanner.next(); // пропускаем неправильный ввод
             }
-            input.nextLine(); // очищаем буфер
+            scanner.nextLine(); // очищаем буфер
         }
         //System.out.print("Введите количество наших участников: ");
         //int quantityOfParticipantOur = input.nextInt();
@@ -72,8 +79,7 @@ public class EventMacker {
         return null;// Зачем это???
     }
 
-    public static void eventEdit (Event event, EventDAO eventDAO) {
-        Scanner scanner = new Scanner(System.in);
+    public void eventEdit (Event event, EventService eventService) {
         System.out.println("Редактирование мероприятия (оставьте поле пустым, чтобы не менять значение)");
 
         System.out.println("Введите новый тип (" + event.getType() + "):");
@@ -116,7 +122,7 @@ public class EventMacker {
         }
 
         // Отправляем обновление в БД
-        eventDAO.updateEvent(event.getId(), newName, newLocation, newOrganizer, newOverview, newQuantityOfParticipant, newType);
+        eventService.updateEventInDao(event.getId(), newName, newLocation, newOrganizer, newOverview, newQuantityOfParticipant, newType);
 
     }
 }

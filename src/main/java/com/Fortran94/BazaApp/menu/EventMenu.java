@@ -1,9 +1,9 @@
 package com.Fortran94.BazaApp.menu;
 
 import com.Fortran94.BazaApp.dao.EventDAO;
-import com.Fortran94.BazaApp.dao.ParticipantDAO;
 import com.Fortran94.BazaApp.model.Event;
 import com.Fortran94.BazaApp.model.ParticipantUser;
+import com.Fortran94.BazaApp.service.EventService;
 import com.Fortran94.BazaApp.service.ParticipantService;
 import com.Fortran94.BazaApp.utils.EventMacker;
 
@@ -13,13 +13,15 @@ import java.util.Scanner;
 public class EventMenu {
 
     private final ParticipantService participantService;
-    private final EventDAO eventDAO;
+    private final EventService eventService;
     private final Scanner scanner;
+    private final EventMacker eventMacker;
 
-    public EventMenu(ParticipantService participantService, EventDAO eventDAO, Scanner scanner) {
+    public EventMenu(ParticipantService participantService, EventService eventService, Scanner scanner, EventMacker eventMacker) {
         this.participantService = participantService;
-        this.eventDAO = eventDAO;
+        this.eventService = eventService;
         this.scanner = scanner;
+        this.eventMacker = eventMacker;
     }
 
 
@@ -42,19 +44,21 @@ public class EventMenu {
 
     //создание мероприятие
     public void addEvent() {
-        Event event = EventMacker.writer();
-        eventDAO.addEvent(event); // добавляем в список
+        Event event = eventMacker.writer();
+        eventService.addEvent(event); // добавляем в список
     }
 
     private void editEvent(Event event) {
-        EventMacker.eventEdit(event, eventDAO);
-    }
+        eventMacker.eventEdit(event, eventService);
+    } //todo
 
     public void deleteEvent (Event event) {
-        eventDAO.deleteEvent(event.getId());
+        eventService.deleteEvent(event);
         printEventList();
     }
 
+    //todo Сделать обработку если введен пункт которого нет, в М также
+    //todo Перенести в сервис
     public int addParticipantToEvent() {
         List<ParticipantUser> participants = this.participantService.getAllParticipants();
 
@@ -71,7 +75,7 @@ public class EventMenu {
 
     // выводит список мероприятий
     public void printEventList() {
-        List<Event> events = this.eventDAO.getAllEvents();
+        List<Event> events = this.eventService.getAllEvents();
         while (true) {
             for (int i = 0; i < events.size(); i++) {
                     System.out.println((i + 1) + " " + events.get(i).getName());
@@ -120,7 +124,7 @@ public class EventMenu {
                 return;
             } else if (inp == 1) {
                 editEvent(event);
-                events.set(point - 1, eventDAO.getEventById(event.getId()));
+                events.set(point - 1, eventService.getEventById(event.getId()));
                 printCard(events, point);
                 return;
             } else if (inp == 2) {
@@ -138,7 +142,7 @@ public class EventMenu {
     }
 
     private void printEventParticipants(int eventId) {
-        List<ParticipantUser> participants = eventDAO.getParticipantsByEvent(eventId);
+        List<ParticipantUser> participants = eventService.getParticipantsByEvent(eventId);
         System.out.println("Участники этого мероприятия: ");
         System.out.println("╔════════════════════════════════════╗");
         for (int i = 0; i < participants.size(); i++) {
