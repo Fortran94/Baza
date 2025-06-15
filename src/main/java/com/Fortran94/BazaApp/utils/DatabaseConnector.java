@@ -14,7 +14,7 @@ public class DatabaseConnector {
         // Регистрируем драйвер PostgreSQL
         try {
             // Регистрируем драйвер вручную
-            Class.forName("org.postgresql.Driver");  // Эта строка добавлена
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Ошибка загрузки драйвера PostgreSQL");
             e.printStackTrace();
