@@ -1,5 +1,62 @@
 package com.fortran94.bazaweb.model;
 
-public class User {
-    
+import jakarta.persistence.Column;
+
+public abstract class User {
+
+    private long id;
+    private int age;
+    private String name, surname;
+
+    @Column(name = "call_sign")
+    private String callSign;
+
+    public User(long id, String name, String surname, String callSign, int age) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.callSign = callSign;
+        this.age = age;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getCallSign() {
+        return callSign;
+    }
+
+    public void setCallSign(String callSign) {
+        this.callSign = callSign;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }
+
