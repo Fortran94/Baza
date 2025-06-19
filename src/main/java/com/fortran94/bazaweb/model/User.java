@@ -1,10 +1,14 @@
 package com.fortran94.bazaweb.model;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
+@MappedSuperclass
 public abstract class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private int age;
     private String name, surname;
 
@@ -17,6 +21,10 @@ public abstract class User {
         this.surname = surname;
         this.callSign = callSign;
         this.age = age;
+    }
+
+    public User(){
+
     }
 
     public void setId(int id) {

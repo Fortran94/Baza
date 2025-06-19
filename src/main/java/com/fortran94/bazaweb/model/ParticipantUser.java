@@ -2,6 +2,7 @@ package com.fortran94.bazaweb.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -13,8 +14,10 @@ import java.util.List;
 @Table(name = "participants")
 public class ParticipantUser extends User {
     private int numberOfEvents;
+    @Transient
     private List<Integer> eventIds = new ArrayList<>();
     private java.sql.Date registrationDate;
+    @Transient
     private int experiencePerMonth;
 
 
@@ -24,6 +27,10 @@ public class ParticipantUser extends User {
         this.numberOfEvents = numberOfEvents;
     }
 
+    public ParticipantUser() {
+        super();
+
+    }
 
     public java.sql.Date getRegistrationDate() {
         return new java.sql.Date(registrationDate.getTime());
