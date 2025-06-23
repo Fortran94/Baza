@@ -33,7 +33,7 @@ public class ParticipantUser extends User {
     }
 
     public java.sql.Date getRegistrationDate() {
-        return new java.sql.Date(registrationDate.getTime());
+        return registrationDate;
     }
 
 

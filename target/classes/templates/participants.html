@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Участники</title>
+</head>
+<body>
+<h1>Список участников</h1>
+<ul>
+    <li th:each="p : ${participants}">
+        <strong th:text="${p.name} + ' ' + ${p.surname}">Имя Фамилия</strong>
+        (Позывной: <span th:text="${p.callSign}">Позывной</span>)
+    </li>
+</ul>
+</body>
+</html>
