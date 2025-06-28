@@ -16,7 +16,6 @@ public abstract class User {
     private String name, surname;
     @Column(name = "birth_date")
     LocalDate dateOfBirth;
-
     @Column(name = "call_sign")
     private String callSign;
 
