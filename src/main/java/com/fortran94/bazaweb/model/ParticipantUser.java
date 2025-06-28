@@ -1,10 +1,10 @@
 package com.fortran94.bazaweb.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -13,37 +13,44 @@ import java.util.List;
 @Entity
 @Table(name = "participants")
 public class ParticipantUser extends User {
+    @Column(name = "number_of_events")
     private int numberOfEvents;
     @Transient
     private List<Integer> eventIds = new ArrayList<>();
-    private java.sql.Date registrationDate;
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
     @Transient
     private int experiencePerMonth;
 
 
-    public ParticipantUser(long id, String name, String surname, String callSign, int age, Date registrationDate) {
-        super(id, name, surname, callSign, age);
+    public ParticipantUser(long id, String name, String surname, String callSign, LocalDate dateOfBirth,
+                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth) {
+        super(id, name, surname, callSign, dateOfBirth);
         this.registrationDate = registrationDate;
         this.numberOfEvents = numberOfEvents;
+        this.experiencePerMonth = experiencePerMonth;
     }
 
     public ParticipantUser() {
         super();
-
     }
 
-    public java.sql.Date getRegistrationDate() {
-        return registrationDate;
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public LocalDate getRegistrationDate() {
+            return registrationDate;
     }
 
 
     public int getExperiencePerMonth() {
-        return experiencePerMonth;
+        return getMonthsSinceRegistration();
     }
 
-    public void setExperiencePerMonth(int experiencePerMonth) {
-        this.experiencePerMonth = experiencePerMonth;
-    }
+//    public void setExperiencePerMonth(int experiencePerMonth) {
+//        this.experiencePerMonth = experiencePerMonth;
+//    }
 
     public int getNumberOfEvents() {
         return numberOfEvents;
@@ -55,18 +62,27 @@ public class ParticipantUser extends User {
     }
 
 
-    private double activityLevel() {
-        return Math.round(((double) getNumberOfEvents()  / getMonthsSinceRegistration()  * 100.0) / 100.0);
+    public double getActivityLevel() {
+        int months = getMonthsSinceRegistration();
+        if (months == 0) return 0.0;
+
+        return Math.round(((double) getNumberOfEvents() / months) * 100.0) / 100.0;
     }
+
 
     //todo сейчас стаж считается в java "На лету" и не хранится в БД, возможно в будущем стоит переделать
     public int getMonthsSinceRegistration() {
-        LocalDate regDate = registrationDate.toLocalDate();
+        if (registrationDate == null) {
+            return 1;
+        }
+
+        LocalDate regDate = registrationDate;
         LocalDate now = LocalDate.now();
         Period period = Period.between(regDate, now);
         int months = period.getYears() * 12 + period.getMonths();
-        return Math.max(months, 1); // не меньше 1
+        return Math.max(months, 1);
     }
+
 
     //TODO сделать абстрактный метод
     @Override
@@ -78,7 +94,7 @@ public class ParticipantUser extends User {
                         "\n Возраст: " + getAge() +
                         "\n Стаж участника в месяцах: " + getMonthsSinceRegistration() +
                         "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
-                        "\n Уровень активности: " + activityLevel();
+                        "\n Уровень активности: " + getActivityLevel();
     }
 }
 

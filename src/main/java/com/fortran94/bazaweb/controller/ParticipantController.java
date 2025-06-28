@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -34,6 +35,10 @@ public class ParticipantController {
 
     @PostMapping("/participants")
     public String saveParticipant (@ModelAttribute ParticipantUser participant) {
+        if (participant.getRegistrationDate() == null) {
+            participant.setRegistrationDate(LocalDate.now());
+        }
+
         repository.save(participant);
         return "redirect:/ui/participants";
     }
@@ -54,6 +59,11 @@ public class ParticipantController {
         return "participant-form";
     }
 
+    @PostMapping("/participants/{id}/delete")
+    public String deleteParticipant(@PathVariable Long id) {
+        repository.deleteById(id);
+        return "redirect:/ui/participants";
+    }
 
 
 

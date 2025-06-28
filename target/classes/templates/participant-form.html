@@ -7,12 +7,13 @@
 <body>
 <h1>Новый участник</h1>
 <form th:action="@{/ui/participants}" th:object="${participant}" method="post">
-    <label>Имя: <input type="text" th:field="*{name}" /></label><br>
-    <label>Фамилия: <input type="text" th:field="*{surname}" /></label><br>
-    <label>Позывной: <input type="text" th:field="*{callSign}" /></label><br>
-    <label>Возраст: <input type="number" th:field="*{age}" /></label><br>
-    <label>Дата регистрации: <input type="date" th:field="*{registrationDate}" /></label><br>
-    <label>Стаж (в месяцах): <input type="number" th:field="*{experiencePerMonth}" /></label><br>
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Имя: <input type="text" th:field="*{name}" required /></label><br>
+    <label>Фамилия: <input type="text" th:field="*{surname}" required /></label><br>
+    <label>Позывной: <input type="text" th:field="*{callSign}" required /></label><br>
+    <label>Дата Рождения: <input type="date" th:field="*{dateOfBirth}" required /></label><br>
+    <label>Дата регистрации: <input type="date" th:field="*{registrationDate}"  /></label><br>
     <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
     <button type="submit">Сохранить</button>
 </form>
