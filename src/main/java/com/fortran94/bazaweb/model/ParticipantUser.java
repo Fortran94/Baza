@@ -1,9 +1,6 @@
 package com.fortran94.bazaweb.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,8 +12,9 @@ import java.util.List;
 public class ParticipantUser extends User {
     @Column(name = "number_of_events")
     private int numberOfEvents;
-    @Transient
-    private List<Integer> eventIds = new ArrayList<>();
+    @ManyToMany(mappedBy = "participants")
+    private List<Event> events = new ArrayList<>();
+
     @Column(name = "registration_date")
     private LocalDate registrationDate;
     @Transient

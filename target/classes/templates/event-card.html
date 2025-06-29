@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Карточка мероприятия</title>
+</head>
+<body>
+<h1>Карточка мероприятия</h1>
+
+<p><strong>ИД:</strong> <span th:text="${event.id}"></span></p>
+<p><strong>Название:</strong> <span th:text="${event.name}"></span></p>
+<p><strong>Локация:</strong> <span th:text="${event.location}"></span></p>
+<p><strong>Дата:</strong> <span th:text="${event.date}"></span></p>
+<p><strong>Организатор:</strong> <span th:text="${event.organizer}"></span></p>
+<p><strong>Описание:</strong> <span th:text="${event.overview}"></span></p>
+<p><strong>Количество участников:</strong> <span th:text="${event.quantityOfParticipant}"></span></p>
+<p><strong>Тип:</strong> <span th:text="${event.type}"></span></p>
+<p><strong>Результат:</strong> <span>TODO</span></p>
+
+
+<!-- Кнопки -->
+<a th:href="@{'/events/' + ${event.id} + '/edit'}">Редактировать</a> |
+<form th:action="@{'/events/' + ${event.id} + '/delete'}" method="post" style="display:inline;">
+    <button type="submit" onclick="return confirm('Удалить мероприятие?')">Удалить</button>
+</form>
+<a th:href="@{/events}">Назад</a>
+</body>
+</html>
