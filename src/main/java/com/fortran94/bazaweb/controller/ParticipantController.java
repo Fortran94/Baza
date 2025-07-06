@@ -1,6 +1,8 @@
 package com.fortran94.bazaweb.controller;
 
+import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.model.ParticipantUser;
+import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +16,18 @@ import java.util.List;
 @RequestMapping("/ui")
 public class ParticipantController {
 
-    private final ParticipantUserRepository repository;
+    private final ParticipantUserRepository participantUserRepository;
+    private final EventRepository eventRepository;
 
-    public ParticipantController(ParticipantUserRepository repository){
-        this.repository = repository;
+    public ParticipantController(ParticipantUserRepository repository, EventRepository eventRepository){
+        this.participantUserRepository = repository;
+        this.eventRepository = eventRepository;
     }
 
     @GetMapping("/participants")
     public String showParticipants(Model model) {
-        List<ParticipantUser> list = repository.findAll();
-        model.addAttribute("participants", list);
+        List<ParticipantUser> list = participantUserRepository.findAll();
+        model.addAttribute(/*"participants"*/ "participants", list);
         return "participants"; // название шаблона .html
     }
 
@@ -39,13 +43,13 @@ public class ParticipantController {
             participant.setRegistrationDate(LocalDate.now());
         }
 
-        repository.save(participant);
-        return "redirect:/ui/participants";
+        participantUserRepository.save(participant);
+        return "redirect:/ui/participants/" + participant.getId();
     }
 
     @GetMapping("/participants/{id}")
     public String showCard(@PathVariable Long id, Model model) {
-        ParticipantUser participant = repository.findById(id)
+        ParticipantUser participant = participantUserRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Нет участника с id " + id));
         model.addAttribute("participant", participant);
         return "participant-card";
@@ -53,7 +57,7 @@ public class ParticipantController {
 
     @GetMapping("/participants/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
-        ParticipantUser participant = repository.findById(id)
+        ParticipantUser participant = participantUserRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(String.valueOf(id)));
         model.addAttribute("participant", participant);
         return "participant-form";
@@ -61,9 +65,34 @@ public class ParticipantController {
 
     @PostMapping("/participants/{id}/delete")
     public String deleteParticipant(@PathVariable Long id) {
-        repository.deleteById(id);
+        participantUserRepository.deleteById(id);
         return "redirect:/ui/participants";
     }
+
+    @GetMapping("/participants/{id}/assign-event-form")
+    public String showEventAssignForm(@PathVariable Long id, Model model) {
+        ParticipantUser participant = participantUserRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Не найден участник с id = " + id));
+        List<Event> events = eventRepository.findAll();
+
+        model.addAttribute("participant", participant);
+        model.addAttribute("events", events);
+        return "assign-event-form";
+    }
+
+    @PostMapping("/participants/{id}/assign-event-form")
+    public String assignToEvent(@PathVariable Long id, @RequestParam Long eventId) {
+        ParticipantUser participant = participantUserRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
+
+        participant.getEvents().add(event);
+        participantUserRepository.save(participant);
+        return "redirect:/ui/participants/" + id;
+    }
+
+
 
 
 

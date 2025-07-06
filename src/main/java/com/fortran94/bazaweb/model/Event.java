@@ -1,6 +1,7 @@
 package com.fortran94.bazaweb.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,9 +25,16 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "participant_id")
     )
     private List<ParticipantUser> participants = new ArrayList<>();
-
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
+    public List<ParticipantUser> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<ParticipantUser> participants) {
+        this.participants = participants;
+    }
 
     public Event(long id, String name, String location, String organizer, String overview, int quantityOfParticipant,
                  String type, LocalDate date) {

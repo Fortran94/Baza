@@ -1,6 +1,7 @@
 package com.fortran94.bazaweb.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,7 +16,8 @@ public abstract class User {
     private int age;
     private String name, surname;
     @Column(name = "birth_date")
-    LocalDate dateOfBirth;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dateOfBirth;
     @Column(name = "call_sign")
     private String callSign;
 

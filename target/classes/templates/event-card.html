@@ -14,7 +14,7 @@
 <p><strong>Описание:</strong> <span th:text="${event.overview}"></span></p>
 <p><strong>Количество участников:</strong> <span th:text="${event.quantityOfParticipant}"></span></p>
 <p><strong>Тип:</strong> <span th:text="${event.type}"></span></p>
-<p><strong>Результат:</strong> <span>TODO</span></p>
+<p><strong>Результат:</strong> <span th:text="${event.result}"></span></p>
 
 
 <!-- Кнопки -->
@@ -22,6 +22,11 @@
 <form th:action="@{'/events/' + ${event.id} + '/delete'}" method="post" style="display:inline;">
     <button type="submit" onclick="return confirm('Удалить мероприятие?')">Удалить</button>
 </form>
+
+<a th:href="@{/events/{id}/assign-participant(id=${event.id})}">
+    Добавить участника
+</a>
+
 <a th:href="@{/events}">Назад</a>
 </body>
 </html>

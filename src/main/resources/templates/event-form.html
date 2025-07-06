@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Добавить мероприятие</title>
+    <script>
+        function toggleResultField() {
+            const typeSelect = document.getElementById('type');
+            const resultField = document.getElementById('result-field');
+            if (typeSelect.value === 'Tournament') {
+                resultField.style.display = 'block';
+            } else {
+                resultField.style.display = 'none';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const typeSelect = document.getElementById('type');
+            typeSelect.addEventListener('change', toggleResultField);
+            toggleResultField(); // показать/скрыть при первой загрузке
+        });
+    </script>
 </head>
 <body>
 <h1>Новое мероприятие</h1>
@@ -15,19 +32,29 @@
     <label>Организатор: <input type="text" th:field="*{organizer}" required /></label><br>
     <label>Описание: <input type="text" th:field="*{overview}" required /></label><br>
     <label>Количество участников: <input type="number" th:field="*{quantityOfParticipant}" /></label><br>
+
     <label>Тип мероприятия:
-        <select th:field="*{type}" required>
+        <select th:field="*{type}" id="type" required>
             <option value="" disabled selected>Выберите тип</option>
             <option value="Game">Игра</option>
             <option value="Tournament">Турнир</option>
         </select>
-        <!-- /TODO Почему не появляется поле? -->
-        <div th:if="${event.type == 'Tournament'}">
-            <label>Результат: <input type="text" th:field="*{result}"/></label>
-        </div>
-    </label>
+    </label><br>
 
+    <!-- Это поле показывается только если выбран "Tournament" -->
+    <div id="result-field" style="display: none;">
+        <label>Результат: <input type="text" th:field="*{result}" /></label><br>
+    </div>
 
+    <div th:if="${event.id != null}">
+        <label>Участники:</label><br>
+        <a th:href="@{'/events/' + ${event.id} + '/add-participant'}">
+            <button type="button">Добавить участника</button>
+        </a>
+        <a th:href="@{'/events/' + ${event.id} + '/participants'}">
+            <button type="button">Показать участников</button>
+        </a>
+    </div>
 
     <button type="submit">Сохранить</button>
 </form>

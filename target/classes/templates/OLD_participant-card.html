@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Карточка участника</title>
+</head>
+<body>
+<h1>Карточка участника</h1>
+
+<p><strong>ИД:</strong> <span th:text="${participant.id}"></span></p>
+<p><strong>Позывной:</strong> <span th:text="${participant.callSign}"></span></p>
+<p><strong>ФИО:</strong> <span th:text="${participant.surname} + ' ' + ${participant.name}"></span></p>
+<p><strong>Дата рождения:</strong> <span th:text="${participant.dateOfBirth}"></span></p>
+<p><strong>Возраст:</strong> <span th:text="${participant.age}"></span></p>
+<p><strong>Дата регистрации:</strong> <span th:text="${participant.registrationDate}"></span></p>
+<p><strong>Опыт:</strong> <span th:text="${participant.experiencePerMonth}"></span></p>
+<p><strong>Количество игр:</strong> <span th:text="${participant.numberOfEvents}"></span></p>
+<p><strong>Уровень активности:</strong> <span th:text="${participant.getActivityLevel}"></span></p>
+
+
+<!-- Кнопки -->
+<a th:href="@{'/ui/participants/' + ${participant.id} + '/edit'}">Редактировать</a> |
+<form th:action="@{'/ui/participants/' + ${participant.id} + '/delete'}" method="post" style="display:inline;">
+    <button type="submit" onclick="return confirm('Удалить участника?')">Удалить</button>
+</form>
+<a th:href="@{/ui/participants}">Назад</a>
+
+<a th:href="@{/ui/participants/{id}/assign-event-form(id=${participant.id})}">
+    Записать на мероприятие
+</a>
+
+</body>
+</html>

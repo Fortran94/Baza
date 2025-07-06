@@ -1,6 +1,7 @@
 package com.fortran94.bazaweb.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -16,6 +17,7 @@ public class ParticipantUser extends User {
     private List<Event> events = new ArrayList<>();
 
     @Column(name = "registration_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate registrationDate;
     @Transient
     private int experiencePerMonth;
@@ -59,6 +61,14 @@ public class ParticipantUser extends User {
         this.numberOfEvents = numberOfEvents;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
 
     public double getActivityLevel() {
         int months = getMonthsSinceRegistration();
@@ -94,5 +104,19 @@ public class ParticipantUser extends User {
                         "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
                         "\n Уровень активности: " + getActivityLevel();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ParticipantUser)) return false;
+        ParticipantUser that = (ParticipantUser) o;
+        return this.getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(getId());
+    }
+
 }
 
