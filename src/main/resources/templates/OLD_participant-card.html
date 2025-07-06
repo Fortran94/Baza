@@ -23,5 +23,10 @@
     <button type="submit" onclick="return confirm('Удалить участника?')">Удалить</button>
 </form>
 <a th:href="@{/ui/participants}">Назад</a>
+
+<a th:href="@{/ui/participants/{id}/assign-event-form(id=${participant.id})}">
+    Записать на мероприятие
+</a>
+
 </body>
 </html>
