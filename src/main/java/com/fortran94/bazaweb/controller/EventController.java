@@ -39,16 +39,31 @@ public class EventController {
     }
 
     @PostMapping("")
-    public String saveEvent (@ModelAttribute Event event) {
-        if (event.getType() == null || event.getType().isBlank()) {
-            throw new IllegalArgumentException("Тип мероприятия обязателен");
-        }
-        // Приводим к нижнему регистру
-        event.setType(event.getType().toLowerCase());
+    public String saveEvent (@ModelAttribute Event formEvent) {
+        if (formEvent.getId() == null) {
+            // это новое мероприятие
+            formEvent.setType(formEvent.getType().toLowerCase());
+            eventRepository.save(formEvent);
+        } else {
+            // это редактирование
+            Event existingEvent = eventRepository.findById(formEvent.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
 
-        eventRepository.save(event);
+            existingEvent.setName(formEvent.getName());
+            existingEvent.setLocation(formEvent.getLocation());
+            existingEvent.setDate(formEvent.getDate());
+            existingEvent.setOrganizer(formEvent.getOrganizer());
+            existingEvent.setOverview(formEvent.getOverview());
+            existingEvent.setQuantityOfParticipant(formEvent.getQuantityOfParticipant());
+            existingEvent.setType(formEvent.getType().toLowerCase());
+            existingEvent.setResult(formEvent.getResult());
+
+            eventRepository.save(existingEvent); // ✅ participants не тронуты
+        }
+
         return "redirect:/events";
     }
+
 
     @GetMapping("/{id}")
     public String showCard(@PathVariable Long id, Model model) {
@@ -92,8 +107,12 @@ public class EventController {
                 .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
 
         event.getParticipants().add(participant);
+        participant.getEvents().add(event); // обязательно!
+
         eventRepository.save(event);
-        return "redirect:/events/" + id + "/edit";
+        participantUserRepository.save(participant); // тоже обязательно!
+
+        return "redirect:/events/" + id;
     }
 
     @GetMapping("/{id}/participants")

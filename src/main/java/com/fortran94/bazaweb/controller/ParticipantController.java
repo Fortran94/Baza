@@ -88,9 +88,14 @@ public class ParticipantController {
                 .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
 
         participant.getEvents().add(event);
+        event.getParticipants().add(participant); // вот чего не хватало
+
         participantUserRepository.save(participant);
+        eventRepository.save(event); // обязательно
+
         return "redirect:/ui/participants/" + id;
     }
+
 
 
 

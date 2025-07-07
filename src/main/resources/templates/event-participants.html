@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <h1>ЧЛЕН!!!</h1>
+    <title>Участники мероприятия</title>
 </head>
 <body>
+<h1 th:text="'Участники мероприятия: ' + ${event.name}"></h1>
 
+<ul>
+    <li th:each="p : ${participants}" th:text="${p.name + ' ' + p.surname}">Участник</li>
+</ul>
+
+<a th:href="@{'/events/' + ${event.id}}">Назад</a>
 </body>
 </html>

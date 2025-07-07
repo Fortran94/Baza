@@ -46,15 +46,8 @@
         <label>Результат: <input type="text" th:field="*{result}" /></label><br>
     </div>
 
-    <div th:if="${event.id != null}">
-        <label>Участники:</label><br>
-        <a th:href="@{'/events/' + ${event.id} + '/add-participant'}">
-            <button type="button">Добавить участника</button>
-        </a>
-        <a th:href="@{'/events/' + ${event.id} + '/participants'}">
-            <button type="button">Показать участников</button>
-        </a>
-    </div>
+
+
 
     <button type="submit">Сохранить</button>
 </form>

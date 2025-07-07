@@ -92,7 +92,7 @@ public class ParticipantUser extends User {
     }
 
 
-    //TODO сделать абстрактный метод
+    //TODO сделать абстрактный метод???
     @Override
     public String toString() {
         return

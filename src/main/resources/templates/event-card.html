@@ -23,8 +23,15 @@
     <button type="submit" onclick="return confirm('Удалить мероприятие?')">Удалить</button>
 </form>
 
-<a th:href="@{/events/{id}/assign-participant(id=${event.id})}">
-    Добавить участника
+<div th:if="${event.id != null}">
+    <label>Участники:</label><br>
+    <a th:href="@{/events/{id}/assign-participant(id=${event.id})}">
+        <button type="button">Добавить участника</button>
+    </a>
+</div>
+
+<a th:href="@{'/events/' + ${event.id} + '/participants'}">
+    <button type="button">Показать участников</button>
 </a>
 
 <a th:href="@{/events}">Назад</a>
