@@ -7,10 +7,8 @@ import com.fortran94.bazaweb.repository.ParticipantUserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/ui")
@@ -96,11 +94,14 @@ public class ParticipantController {
         return "redirect:/ui/participants/" + id;
     }
 
+    @GetMapping("/{id}/events")
+    public String showEventsOfParticipant(@PathVariable Long id, Model model) {
+        ParticipantUser participantUser = participantUserRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
 
-
-
-
-
-
+        model.addAttribute("participant", participantUser);
+        model.addAttribute("events", participantUser.getEvents());
+        return "participant-events"; // имя Thymeleaf-шаблона
+    }
 
 }

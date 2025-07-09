@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Мероприятия участника</title>
+</head>
+<body>
+<h1 th:text="'Мероприятия участника: ' + ${participant.name}"></h1>
+
+<ul>
+  <li th:each="e : ${events}" th:text="${e.name + ' ' + e.location + ' ' + e.type}">Мероприятие</li>
+</ul>
+
+<a th:href="@{'/participants/' + ${participant.id}}">Назад</a>
+</body>
+</html>
