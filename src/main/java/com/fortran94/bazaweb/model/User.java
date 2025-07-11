@@ -20,14 +20,16 @@ public abstract class User {
     private LocalDate dateOfBirth;
     @Column(name = "call_sign")
     private String callSign;
+//    private long telephoneNumber;
 
-    public User(long id, String name, String surname, String callSign, LocalDate dateOfBirth) {
+    public User(long id, String name, String surname, String callSign, LocalDate dateOfBirth, long telephoneNumber) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.callSign = callSign;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
+//        this.telephoneNumber = telephoneNumber;
     }
 
     public User(){
@@ -81,5 +83,13 @@ public abstract class User {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+//    public long getTelephoneNumber() {
+//        return telephoneNumber;
+//    }
+
+//    public void setTelephoneNumber(long telephoneNumber) {
+//        this.telephoneNumber = telephoneNumber;
+//    }
 }
 

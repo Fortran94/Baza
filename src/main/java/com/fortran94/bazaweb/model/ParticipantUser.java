@@ -24,8 +24,8 @@ public class ParticipantUser extends User {
 
 
     public ParticipantUser(long id, String name, String surname, String callSign, LocalDate dateOfBirth,
-                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth) {
-        super(id, name, surname, callSign, dateOfBirth);
+                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth, long telephoneNumber) {
+        super(id, name, surname, callSign, dateOfBirth, telephoneNumber);
         this.registrationDate = registrationDate;
         this.numberOfEvents = numberOfEvents;
         this.experiencePerMonth = experiencePerMonth;
@@ -53,7 +53,7 @@ public class ParticipantUser extends User {
 //    }
 
     public int getNumberOfEvents() {
-        return numberOfEvents;
+        return this.events.size();
     }
 
     public void setNumberOfEvents(int numberOfEvents) {

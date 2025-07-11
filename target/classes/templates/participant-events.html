@@ -11,6 +11,6 @@
   <li th:each="e : ${events}" th:text="${e.name + ' ' + e.location + ' ' + e.type}">Мероприятие</li>
 </ul>
 
-<a th:href="@{'/participants/' + ${participant.id}}">Назад</a>
+<a th:href="@{'/ui/participants/' + ${participant.id}}">Назад</a>
 </body>
 </html>

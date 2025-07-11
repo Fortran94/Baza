@@ -4,10 +4,12 @@ import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.model.ParticipantUser;
 import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -124,6 +126,27 @@ public class EventController {
         model.addAttribute("participants", event.getParticipants());
         return "event-participants"; // имя Thymeleaf-шаблона
     }
+
+    @GetMapping("/filter")
+    public String filterEvents(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) Integer minParticipants,
+            Model model
+    ) {
+        List<Event> events = eventRepository.findAll().stream()
+                .filter(e -> (type == null || type.isBlank() || e.getType().equalsIgnoreCase(type)))
+                .filter(e -> (startDate == null || !e.getDate().isBefore(startDate)))
+                .filter(e -> (endDate == null || !e.getDate().isAfter(endDate)))
+                .filter(e -> (minParticipants == null || e.getQuantityOfParticipant() >= minParticipants))
+                .toList();
+
+        model.addAttribute("events", events);
+        model.addAttribute("allParticipants", participantUserRepository.findAll());
+        return "events";
+    }
+
 
 
 }

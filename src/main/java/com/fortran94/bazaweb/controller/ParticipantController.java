@@ -94,7 +94,7 @@ public class ParticipantController {
         return "redirect:/ui/participants/" + id;
     }
 
-    @GetMapping("/{id}/events")
+    @GetMapping("/participants/{id}/events")
     public String showEventsOfParticipant(@PathVariable Long id, Model model) {
         ParticipantUser participantUser = participantUserRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));

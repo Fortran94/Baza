@@ -182,7 +182,7 @@
         </div>
         <div class="stat-box">
             <h3>Мероприятия</h3>
-            <p>16</p>
+            <p th:text="${events != null ? events.size() : 0}"></p>
         </div>
     </div>
 
