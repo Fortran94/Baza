@@ -162,12 +162,18 @@
 
     </style>
 </head>
+
+<!-- Хедер -->
+<!--<div th:replace="fragments/header :: header"></div>-->
+
 <body>
 
-<div id="loader">
-    <div class="spinner"></div>
-    <p>Загрузка BazaApp...</p>
-</div>
+<!--<div id="loader">-->
+<!--    <div class="spinner"></div>-->
+<!--    <p>Загрузка BazaApp...</p>-->
+<!--</div>-->
+
+
 
 <!-- Сайдбар -->
 <div th:replace="fragments/sidebar :: sidebar"></div>
@@ -236,37 +242,7 @@
       });
     });
 
-    // Уведомление при нажатии на кнопки
-  const buttons = document.querySelectorAll('.btn');
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      showToast(`Действие: ${button.textContent}`);
-    });
-  });
 
-  // Простое уведомление
-  function showToast(text) {
-    const toast = document.createElement('div');
-    toast.textContent = text;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#0f0';
-    toast.style.color = '#000';
-    toast.style.padding = '10px 20px';
-    toast.style.borderRadius = '8px';
-    toast.style.fontWeight = 'bold';
-    toast.style.boxShadow = '0 0 10px #0f0';
-    toast.style.opacity = '0';
-    toast.style.transition = 'opacity 0.5s ease';
-
-    document.body.appendChild(toast);
-    setTimeout(() => toast.style.opacity = '1', 100);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 500);
-    }, 3000);
   }
 
 

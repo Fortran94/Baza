@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>BazaApp – Список участников</title>
+    <title>Baza – Список участников</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
     <style>
         body {
@@ -110,13 +110,13 @@
         </tr>
         </thead>
         <tbody>
-            <tr th:each="p : ${participants}" th:attr="data-href=@{'/ui/participants/' + ${p.id}}">
+            <tr th:each="p : ${participants}" th:attr="data-href=@{'/ui/participants/' + ${p.getId}}">
                 <td th:text="${p.getId}"></td>
                 <td th:text="${p.getName} + ' ' + ${p.getSurname}"></td>
                 <td th:text="${p.getCallSign}"></td>
                 <td th:text="${p.getAge}"></td>
                 <td th:text="${p.getActivityLevel()}"></td>
-                <td th:text="${p.events.size()}"></td>
+                <td th:text="${p.getEvents.size()}"></td>
             </tr>
         </tbody>
     </table>

@@ -1,43 +1,157 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Мероприятия</title>
+    <meta charset="UTF-8" />
+    <title>BazaApp – Список мероприятий</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <style>
+        body {
+          margin: 0;
+          font-family: 'Orbitron', monospace;
+          background-color: #0a0a0a;
+          color: #0f0;
+          display: flex;
+          height: 100vh;
+          text-shadow: 0 0 4px #0f0;
+        }
+        .sidebar {
+          width: 220px;
+          background-color: #111;
+          padding: 20px;
+          border-right: 1px solid #0f0;
+        }
+        .sidebar h1 {
+          margin-top: 0;
+          font-size: 22px;
+        }
+        .nav a {
+          display: block;
+          color: #0f0;
+          text-decoration: none;
+          margin: 10px 0;
+          padding: 8px;
+        }
+        .nav a:hover, .nav a.active {
+          background-color: #0f0;
+          color: #000;
+          border-radius: 5px;
+        }
+        .main {
+          flex: 1;
+          padding: 30px;
+          overflow-y: auto;
+        }
+        .main h2 {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background-color: #111;
+          box-shadow: 0 0 10px #0f0;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        thead tr {
+          background-color: #0f0;
+          color: #000;
+          font-weight: bold;
+          text-align: left;
+        }
+        th, td {
+          padding: 12px 15px;
+          border-bottom: 1px solid #0f0;
+        }
+        tbody tr:hover {
+          background-color: #063006;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .btn {
+          display: inline-block;
+          padding: 10px 20px;
+          margin: 15px 0;
+          background-color: #000;
+          color: #0f0;
+          border: 1px solid #0f0;
+          border-radius: 6px;
+          font-size: 16px;
+          cursor: pointer;
+          box-shadow: 0 0 5px #0f0;
+          transition: all 0.3s ease;
+          text-decoration: none;
+        }
+        .btn:hover {
+          background-color: #0f0;
+          color: #000;
+          box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+        }
+    </style>
 </head>
 <body>
-<h1>Список мероприятий</h1>
-<ul>
-    <li th:each="e : ${events}">
-        <a th:href="@{'/events/' + ${e.id}}"> <strong th:text="${e.name}">Название</strong>
-            (Локация: <span th:text="${e.location}">Локация</span>)</a>
-    </li>
-</ul>
 
-<form th:action="@{/events/filter}" method="get">
-    <label>Тип:
-        <select name="type">
-            <option value="">Любой</option>
-            <option value="game">Игра</option>
-            <option value="tournament">Турнир</option>
-        </select>
-    </label>
+<!-- Сайдбар -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <label>От даты:
-        <input type="date" name="startDate"/>
-    </label>
+<div class="main">
+    <h2>Список мероприятий</h2>
+    <a th:href="@{/events/new}" class="btn">Добавить мероприятие</a>
 
-    <label>До даты:
-        <input type="date" name="endDate"/>
-    </label>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Дата</th>
+            <th>Локация</th>
+            <th>Участников</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${events}" th:attr="data-href=@{'/events/' + ${e.getId}}">
+            <td th:text="${e.getId}"></td>
+            <td th:text="${e.getName}"></td>
+            <td th:text="${e.getType}"></td>
+            <td th:text="${e.getDate}"></td>
+            <td th:text="${e.getLocation}"></td>
+            <td th:text="${e.getParticipants.size()}"></td>
+        </tr>
 
-    <label>Мин. Участников:
-        <input type="number" name="minParticipants"/>
-    </label>
+        </tbody>
+    </table>
+</div>
 
-    <button type="submit">Фильтровать</button>
-</form>
+<script>
+    const navLinks = document.querySelectorAll('.nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
 
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.style.opacity = 0;
+      document.body.style.transition = 'opacity 1s';
+      requestAnimationFrame(() => {
+        document.body.style.opacity = 1;
+      });
+    });
 
-<a th:href="@{/events/new}">Добавить</a>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('tbody tr').forEach(row => {
+        const href = row.getAttribute('data-href');
+        if (href) {
+          row.style.cursor = 'pointer';
+          row.addEventListener('click', () => {
+            window.location.href = href;
+          });
+        }
+      });
+    });
+</script>
+
 </body>
 </html>

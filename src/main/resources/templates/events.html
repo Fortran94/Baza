@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>BazaApp – Список мероприятий</title>
+    <title>Baza – Список мероприятий</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
     <style>
         body {
@@ -110,22 +110,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr data-href="#">
-            <td>1</td>
-            <td>Операция "Лесной Дух"</td>
-            <td>Турнир</td>
-            <td>10.07.2025</td>
-            <td>Зона 51</td>
-            <td>8</td>
+        <tr th:each="e : ${events}" th:attr="data-href=@{'/events/' + ${e.getId}}">
+            <td th:text="${e.getId}"></td>
+            <td th:text="${e.getName}"></td>
+            <td th:text="${e.getType}"></td>
+            <td th:text="${e.getDate}"></td>
+            <td th:text="${e.getLocation}"></td>
+            <td th:text="${e.getParticipants.size()}"></td>
         </tr>
-        <tr data-href="#">
-            <td>2</td>
-            <td>Тренировка "Шторм"</td>
-            <td>Игра</td>
-            <td>12.07.2025</td>
-            <td>Полигон Восток</td>
-            <td>12</td>
-        </tr>
+
         </tbody>
     </table>
 </div>
