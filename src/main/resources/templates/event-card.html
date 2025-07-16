@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Baza – Карточка мероприятия</title>
+    <title>Baza – Просмотр участника</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
     <style>
         body {
@@ -20,14 +20,14 @@
           box-sizing: border-box;
         }
         .info-container {
-          position: relative; /* Важно для абсолютного позиционирования кнопки */
+          position: relative;
           background-color: #111;
           border: 1px solid #0f0;
           border-radius: 8px;
           box-shadow: 0 0 15px #0f0;
-          width: 850px;
+          width: 900px;
           max-width: 100%;
-          padding: 30px 40px 60px 40px; /* Нижний паддинг под кнопку назад */
+          padding: 30px 40px 60px 40px;
           display: flex;
           gap: 40px;
           box-sizing: border-box;
@@ -35,18 +35,39 @@
           overflow-y: visible;
         }
         h2 {
-          width: 100%;
-          margin-top: 0;
-          margin-bottom: 30px;
+          position: absolute;
+          top: 30px;
+          left: 40px;
           font-size: 24px;
-          text-align: center;
+          margin: 0;
+          width: 373.367 px;
+        }
+        .column-characteristics {
+          flex: 1.5;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          margin-top: 90px;
+        }
+        .characteristics-box {
+          background-color: #000;
+          padding: 10px;
+          border: 1px solid #0f0;
+          border-radius: 6px;
+          box-shadow: inset 0 0 5px #0f0;
+          font-family: 'Orbitron', monospace;
+          font-size: 16px;
+          color: #0f0;
+          white-space: pre-wrap;
+          min-height: 295px;
+          overflow-y: auto;
         }
         .info-column {
-          flex: 1;
+          flex: 0.7;
           display: flex;
           flex-direction: column;
           gap: 18px;
-            margin-top: auto;
+          margin-top: auto;
         }
         .info-row {
           display: flex;
@@ -76,7 +97,7 @@
           flex-direction: column;
           gap: 15px;
           justify-content: center;
-          flex: 1;
+          flex: 0.5;
           max-width: 240px;
         }
         .btn {
@@ -123,126 +144,117 @@
           color: #000;
           box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
         }
-
         #delete-btn {
           color: #ff0000;
           box-shadow: 0 0 5px #ff0000;
           border: 1px solid #ff0000;
-
-
         }
-
         #delete-btn:hover {
           background-color: #ff3300;
           color: #000;
           box-shadow: 0 0 15px #ff0000, inset 0 0 10px #000;
         }
-
-     .buttons form {
-      flex: 1 1 auto;         /* чтобы формы растягивались как кнопки */
-      display: flex;          /* чтобы кнопка внутри могла растянуться */
-    }
-
-    .buttons form > button {
-      flex: 1 1 auto;         /* кнопка растягивается на всю ширину формы */
-      width: 100%;            /* на всякий */
-      box-sizing: border-box; /* чтобы padding не ломал ширину */
-    }
+        .buttons form {
+          flex: 1 1 auto;
+          display: flex;
+        }
+        .buttons form > button {
+          flex: 1 1 auto;
+          width: 100%;
+          box-sizing: border-box;
+        }
         .avatar-wrapper {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 20px;
-    }
-
-    .avatar-img {
-      width: 100%;
-      max-width: 240px; /* как ширина кнопки */
-      height: 50px;
-      object-fit: cover;
-      border: 1px solid #0f0;
-      border-radius: 6px;
-      box-shadow: 0 0 5px #0f0;
-      background-color: #000;
-    }
-
-
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 12px;
+        }
+        .avatar-img {
+          width: 100%;
+          max-width: 240px;
+          height: 170px;
+          object-fit: cover;
+          border: 1px solid #0f0;
+          border-radius: 6px;
+          box-shadow: 0 0 5px #0f0;
+          background-color: #000;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="info-container">
+
     <h2>Карточка мероприятия</h2>
 
+    <!-- Column 1 -->
+    <div class="column-overview">
+        <div>
+            <span class="label">Описание</span>
+            <div class="overview-box" th:utext="${#strings.replace(event.overview, '\n', '<br/>')}"></div>
+        </div>
+        <a href="#" class="btn-back" th:href="@{/events}">К списку</a>
+    </div>
+
+    <!-- Column 2 -->
     <div class="info-column">
         <div class="info-row">
-            <span class="label" >Название</span>
+            <span class="label">Название</span>
             <div class="value" id="name" th:text="${event.getName}"></div>
         </div>
 
         <div class="info-row">
             <span class="label">Локация</span>
-            <div class="value" id="location" th:text="${event.getCallSign}"></div>
+            <div class="value" id="location" th:text="${event.location}"></div>
         </div>
-
         <div class="info-row">
             <span class="label">Дата</span>
-            <div class="value" id="date" th:text="${event.getDate}"></div>
+            <div class="value" id="date" th:text="${event.date}"></div>
         </div>
-
         <div class="info-row">
             <span class="label">Организатор</span>
-            <div class="value" id="organizer" th:text="${event.getOrganizer}"></div>
+            <div class="value" id="organizer" th:text="${event.organizer}"></div>
         </div>
-<!-- //TODO сделать описание -->
-<!--        <div class="info-row">-->
-<!--            <span class="label">Количество мероприятий</span>-->
-<!--            <div class="value" id="events-attended" th:text="${participant.getNumberOfEvents}"></div>-->
-<!--        </div>-->
-
         <div class="info-row">
             <span class="label">Количество участников</span>
-            <div class="value" id="quantityOfParticipant" th:text="${event.getQuantityOfParticipant}"></div>
+            <div class="value" id="quantityOfParticipant" th:text="${event.quantityOfParticipant}"></div>
         </div>
-
         <div class="info-row">
             <span class="label">Тип</span>
-            <div class="value" id="type" th:text="${event.getType}"></div>
+            <div class="value" id="type" th:text="${event.type}"></div>
         </div>
-
         <div class="info-row">
             <span class="label">Результат</span>
-            <div class="value" id="result" th:text="${event.getResult}"></div>
+            <div class="value" id="result" th:text="${event.result}"></div>
         </div>
     </div>
 
-
+    <!-- Column 3 -->
     <div class="info-column">
 
         <div class="buttons">
-            <form th:action="@{'/ui/participants/' + ${participant.id} + '/edit'}" method="get" style="display:inline;">
+            <form th:action="@{'/event/' + ${event.id} + '/edit'}" method="get">
                 <button class="btn" id="edit-btn">Редактировать</button>
             </form>
+
+            <!-- //todo Дальше не редачено -->
             <form th:action="@{/ui/participants/{id}/assign-event-form(id=${participant.id})}">
                 <button class="btn" id="register-event-btn">Записать на мероприятие</button>
             </form>
             <form th:action="@{/ui/participants/{id}/events(id=${participant.id})}">
                 <button class="btn" id="view-events-btn">Посмотреть активности</button>
             </form>
-            <form th:action="@{'/ui/participants/' + ${participant.id} + '/delete'}" method="post" style="display:inline;">
+            <form th:action="@{'/ui/participants/' + ${participant.id} + '/delete'}" method="post">
                 <button class="btn" id="delete-btn">Удалить</button>
             </form>
         </div>
     </div>
 
-
-    <a href="#" class="btn-back" th:href="@{/ui/participants}">К списку</a>
 </div>
 
-<!-- //TODO Баг при удалении: нажимаешь отмену, но участник всеравно удаляется -->
 <script>
     document.getElementById('delete-btn').addEventListener('click', () => {
-      if (confirm('Вы уверены, что хотите удалить этого участника?')) {
-      }
+      if (confirm('Вы уверены, что хотите удалить этого участника?')) {}
     });
 </script>
 

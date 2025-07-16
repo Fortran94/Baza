@@ -94,6 +94,9 @@
       <!-- Надо понять нужно ли вносить эту информацию при регистрации, если нужно то потом правильно считать
       <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
       -->
+      <label>Характеристика:</label><br>
+      <textarea th:field="*{characteristics}" rows="4" cols="50" placeholder="Напишите краткую характеристику участника"></textarea><br>
+
       <button class="btn" type="submit">Сохранить</button>
     </form>
   </div>

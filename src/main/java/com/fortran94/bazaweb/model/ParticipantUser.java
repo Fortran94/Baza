@@ -21,14 +21,16 @@ public class ParticipantUser extends User {
     private LocalDate registrationDate;
     @Transient
     private int experiencePerMonth;
-
+    @Column(length = 1000)
+    private String characteristics;
 
     public ParticipantUser(long id, String name, String surname, String callSign, LocalDate dateOfBirth,
-                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth, long telephoneNumber) {
+                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth, long telephoneNumber, String characteristics) {
         super(id, name, surname, callSign, dateOfBirth, telephoneNumber);
         this.registrationDate = registrationDate;
         this.numberOfEvents = numberOfEvents;
         this.experiencePerMonth = experiencePerMonth;
+        this.characteristics = characteristics;
     }
 
     public ParticipantUser() {
@@ -91,6 +93,13 @@ public class ParticipantUser extends User {
         return Math.max(months, 1);
     }
 
+    public String getCharacteristics() {
+        return characteristics;
+    }
+
+    public void setCharacteristics(String characteristics) {
+        this.characteristics = characteristics;
+    }
 
     //TODO сделать абстрактный метод???
     @Override
