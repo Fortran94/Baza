@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ParticipantUserRepository extends JpaRepository<ParticipantUser, Long> {
-    //Можно вписать кастомные запросы
+    // кастомные запросы
 }

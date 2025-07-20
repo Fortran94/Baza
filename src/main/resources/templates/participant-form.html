@@ -32,15 +32,15 @@
     }
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 1px;
       font-weight: bold;
     }
     input[type="text"],
     input[type="number"],
     select {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
+      padding: 5px;
+      margin-bottom: 1, 0, 1, 0;
       background-color: #000;
       border: 1px solid #0f0;
       border-radius: 6px;
@@ -51,12 +51,47 @@
       outline: none;
       transition: border-color 0.3s ease;
     }
+
     input[type="text"]:focus,
     input[type="number"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
     select:focus {
       border-color: #0fff0f;
       box-shadow: 0 0 10px #0f0;
     }
+
+    input[type="date"] {
+      padding: 5px;
+      margin-bottom: 1, 0, 1, 0;
+      background-color: #000;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      color: #0f0;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      box-shadow: inset 0 0 5px #0f0;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    textarea {
+      max-width: 96.6%;
+      padding: 5px;
+      background-color: #000;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      color: #0f0;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      box-shadow: inset 0 0 5px #0f0;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    #characteristics{
+    }
+
     .btn {
       display: block;
       width: 100%;
@@ -81,25 +116,27 @@
 </head>
 <body>
 
-  <div class="form-container">
-    <h2>Добавить участника</h2>
-    <form th:action="@{/ui/participants}" th:object="${participant}" method="post">
-      <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+  <h2>Новый участник</h2>
+  <form th:action="@{/ui/participants}" th:object="${participant}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}" />
+    <input type="file" name="avatar" accept="image/*" />
+    <label>Имя: <input type="text" th:field="*{name}" required /></label><br>
+    <label>Фамилия: <input type="text" th:field="*{surname}" required /></label><br>
+    <label>Позывной: <input type="text" th:field="*{callSign}" required /></label><br>
+    <label>Номер телефона: <input type="text" th:field="*{telephoneNumber}" required /></label><br>
+    <label>Дата Рождения: <span><input type="date" th:field="*{dateOfBirth}" required /></span></label><br>
+    <label>Дата регистрации: <input type="date" th:field="*{registrationDate}"  /></label><br>
+    <!-- Надо понять нужно ли вносить эту информацию при регистрации, если нужно то потом правильно считать -->
+    <!--
+    <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
+    -->
+    <label id="characteristics">Характеристика:<textarea th:field="*{characteristics}" rows="4" cols="40" placeholder="Напишите краткую характеристику участника"></textarea><br>
+    </label><br>
 
-      <label>Имя: <input type="text" th:field="*{name}" required /></label><br>
-      <label>Фамилия: <input type="text" th:field="*{surname}" required /></label><br>
-      <label>Позывной: <input type="text" th:field="*{callSign}" required /></label><br>
-      <label>Дата Рождения: <input type="date" th:field="*{dateOfBirth}" required /></label><br>
-      <label>Дата регистрации: <input type="date" th:field="*{registrationDate}"  /></label><br>
-      <!-- Надо понять нужно ли вносить эту информацию при регистрации, если нужно то потом правильно считать
-      <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
-      -->
-      <label>Характеристика:</label><br>
-      <textarea th:field="*{characteristics}" rows="4" cols="50" placeholder="Напишите краткую характеристику участника"></textarea><br>
-
-      <button class="btn" type="submit">Сохранить</button>
-    </form>
-  </div>
+    <button class="btn" type="submit">Сохранить</button>
+  </form>
+</div>
 
 <script>
   const form = document.getElementById('addParticipantForm');

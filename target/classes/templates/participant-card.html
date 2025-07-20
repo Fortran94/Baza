@@ -60,6 +60,7 @@
       color: #0f0;
       white-space: pre-wrap;
       min-height: 295px;
+      max-height: 295px;
       overflow-y: auto;
     }
     .info-column {
@@ -88,6 +89,7 @@
       color: #0f0;
       user-select: text;
       min-width: 160px;
+      max-width: 160px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -221,14 +223,14 @@
     </div>
     <div class="info-row">
       <span class="label">Номер телефона</span>
-      <div class="value" id="tel-number">89012345678</div>
+      <div class="value" id="tel-number" th:text="${participant.telephoneNumber}"></div>
     </div>
   </div>
 
   <!-- Column 3 -->
   <div class="info-column">
     <div class="avatar-wrapper">
-      <img src="img1.jpeg" alt="Аватар" class="avatar-img" />
+      <img th:src="@{'/' + ${participant.avatarPath}}" alt="Аватар" class="avatar-img" />
     </div>
     <div class="buttons">
       <form th:action="@{'/ui/participants/' + ${participant.id} + '/edit'}" method="get">

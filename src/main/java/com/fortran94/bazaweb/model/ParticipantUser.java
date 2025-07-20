@@ -25,8 +25,9 @@ public class ParticipantUser extends User {
     private String characteristics;
 
     public ParticipantUser(long id, String name, String surname, String callSign, LocalDate dateOfBirth,
-                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth, long telephoneNumber, String characteristics) {
-        super(id, name, surname, callSign, dateOfBirth, telephoneNumber);
+                           LocalDate registrationDate, int numberOfEvents, int experiencePerMonth,
+                           String telephoneNumber, String characteristics, String avatarPath) {
+        super(id, name, surname, callSign, dateOfBirth, telephoneNumber, avatarPath);
         this.registrationDate = registrationDate;
         this.numberOfEvents = numberOfEvents;
         this.experiencePerMonth = experiencePerMonth;
@@ -101,18 +102,18 @@ public class ParticipantUser extends User {
         this.characteristics = characteristics;
     }
 
-    //TODO сделать абстрактный метод???
-    @Override
-    public String toString() {
-        return
-                "\n Имя: " + getName() +
-                        "\n Фамилия: " + getSurname() +
-                        "\n Позывной: " + getCallSign() +
-                        "\n Возраст: " + getAge() +
-                        "\n Стаж участника в месяцах: " + getMonthsSinceRegistration() +
-                        "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
-                        "\n Уровень активности: " + getActivityLevel();
-    }
+//    //TODO сделать абстрактный метод???
+//    @Override
+//    public String toString() {
+//        return
+//                "\n Имя: " + getName() +
+//                        "\n Фамилия: " + getSurname() +
+//                        "\n Позывной: " + getCallSign() +
+//                        "\n Возраст: " + getAge() +
+//                        "\n Стаж участника в месяцах: " + getMonthsSinceRegistration() +
+//                        "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
+//                        "\n Уровень активности: " + getActivityLevel();
+//    }
 
     @Override
     public boolean equals(Object o) {

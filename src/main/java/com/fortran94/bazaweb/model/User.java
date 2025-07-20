@@ -20,19 +20,24 @@ public abstract class User {
     private LocalDate dateOfBirth;
     @Column(name = "call_sign")
     private String callSign;
-//    private long telephoneNumber;
+    @Column(name = "telephone_number")
+    private String telephoneNumber;
+    @Column(name = "avatar_path")
+    private String avatarPath;
 
-    public User(long id, String name, String surname, String callSign, LocalDate dateOfBirth, long telephoneNumber) {
+
+    public User(long id, String name, String surname, String callSign, LocalDate dateOfBirth, String telephoneNumber, String avatarPath) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.callSign = callSign;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
-//        this.telephoneNumber = telephoneNumber;
+        this.telephoneNumber = telephoneNumber;
+        this.avatarPath = avatarPath;
     }
 
-    public User(){
+    public User() {
 
     }
 
@@ -84,12 +89,20 @@ public abstract class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-//    public long getTelephoneNumber() {
-//        return telephoneNumber;
-//    }
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
 
-//    public void setTelephoneNumber(long telephoneNumber) {
-//        this.telephoneNumber = telephoneNumber;
-//    }
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
 }
 

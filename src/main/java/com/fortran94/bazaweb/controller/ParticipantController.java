@@ -7,8 +7,13 @@ import com.fortran94.bazaweb.repository.ParticipantUserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/ui")
@@ -22,6 +27,35 @@ public class ParticipantController {
         this.eventRepository = eventRepository;
     }
 
+    @PostMapping("/participants")
+    public String saveParticipant (@ModelAttribute ParticipantUser participant,
+                                   @RequestParam("avatar") MultipartFile avatarFile) throws IOException {
+        if (participant.getRegistrationDate() == null) {
+            participant.setRegistrationDate(LocalDate.now());
+        }
+
+        if (!avatarFile.isEmpty()) {
+            // создаём имя файла, например: "ivan_ivanov_123456.png"
+            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+            String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
+
+
+            // создаём директорию, если нет
+            File uploadPath = new File(uploadDir);
+            if (!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            }
+
+            // сохраняем файл на диск
+            avatarFile.transferTo(new File(uploadDir + filename));
+            // сохраняем путь в participant
+            participant.setAvatarPath("uploads/avatars/" + filename);
+        }
+
+        participantUserRepository.save(participant);
+        return "redirect:/ui/participants/" + participant.getId();
+    }
+
     @GetMapping("/participants")
     public String showParticipants(Model model) {
         List<ParticipantUser> list = participantUserRepository.findAll();
@@ -33,16 +67,6 @@ public class ParticipantController {
     public String showCreateForm(Model model) {
         model.addAttribute("participant", new ParticipantUser());
         return "participant-form";
-    }
-
-    @PostMapping("/participants")
-    public String saveParticipant (@ModelAttribute ParticipantUser participant) {
-        if (participant.getRegistrationDate() == null) {
-            participant.setRegistrationDate(LocalDate.now());
-        }
-
-        participantUserRepository.save(participant);
-        return "redirect:/ui/participants/" + participant.getId();
     }
 
     @GetMapping("/participants/{id}")
