@@ -14,33 +14,55 @@
       height: 100vh;
       text-shadow: 0 0 4px #0f0;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      padding-top: 40px;
     }
+
     .form-container {
       background-color: #111;
       padding: 30px 40px;
       border: 1px solid #0f0;
       border-radius: 8px;
       box-shadow: 0 0 15px #0f0;
-      width: 400px;
+      width: 800px;
+      max-height: 100vh;
+      overflow-y: auto;
+      box-sizing: border-box;
+      margin-bottom: 90px;
+      min-height: 500px;
     }
+
     h2 {
       margin-top: 0;
       margin-bottom: 20px;
       font-size: 24px;
       text-align: center;
     }
+
+    .form-grid {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .form-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     label {
-      display: block;
-      margin-bottom: 1px;
       font-weight: bold;
     }
+
     input[type="text"],
     input[type="number"],
-    select {
+    input[type="date"],
+    select,
+    textarea {
       width: 100%;
       padding: 5px;
-      margin-bottom: 1, 0, 1, 0;
       background-color: #000;
       border: 1px solid #0f0;
       border-radius: 6px;
@@ -61,40 +83,15 @@
       box-shadow: 0 0 10px #0f0;
     }
 
-    input[type="date"] {
-      padding: 5px;
-      margin-bottom: 1, 0, 1, 0;
-      background-color: #000;
-      border: 1px solid #0f0;
-      border-radius: 6px;
-      color: #0f0;
-      font-family: 'Orbitron', monospace;
-      font-size: 16px;
-      box-shadow: inset 0 0 5px #0f0;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-
     textarea {
-      max-width: 96.6%;
-      padding: 5px;
-      background-color: #000;
-      border: 1px solid #0f0;
-      border-radius: 6px;
-      color: #0f0;
-      font-family: 'Orbitron', monospace;
-      font-size: 16px;
-      box-shadow: inset 0 0 5px #0f0;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-
-    #characteristics{
+      resize: vertical;
+      min-height: 80px;
     }
 
     .btn {
       display: block;
-      width: 100%;
+      margin: 0 auto;
+      width: 50%;
       padding: 12px;
       background-color: #000;
       color: #0f0;
@@ -107,11 +104,61 @@
       font-weight: bold;
       text-align: center;
     }
+
     .btn:hover {
       background-color: #0f0;
       color: #000;
       box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
     }
+
+
+    .upload-photo {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      border: 2px solid #0f0;
+      border-radius: 8px;
+      background-color: #111;
+      padding: 10px 20px;
+      color: #0f0;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      max-width: 38%;
+    }
+
+    .upload-photo:hover {
+      background-color: #0a0a0a;
+    }
+
+    .upload-photo input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .photo-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* отступ между кнопкой и превью */
+    }
+
+    #preview img {
+      max-width: 100px;
+      max-height: 100px;
+      border: 1px solid #0f0;
+      border-radius: 4px;
+      object-fit: cover; /* чтобы картинка не растягивалась */
+    }
+
+    #characteristics {
+      margin-bottom: 30px;
+    }
+
   </style>
 </head>
 <body>
@@ -120,75 +167,68 @@
   <h2>Новый участник</h2>
   <form th:action="@{/ui/participants}" th:object="${participant}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}" />
-    <input type="file" name="avatar" accept="image/*" />
-    <label>Имя: <input type="text" th:field="*{name}" required /></label><br>
-    <label>Фамилия: <input type="text" th:field="*{surname}" required /></label><br>
-    <label>Позывной: <input type="text" th:field="*{callSign}" required /></label><br>
-    <label>Номер телефона: <input type="text" th:field="*{telephoneNumber}" required /></label><br>
-    <label>Дата Рождения: <span><input type="date" th:field="*{dateOfBirth}" required /></span></label><br>
-    <label>Дата регистрации: <input type="date" th:field="*{registrationDate}"  /></label><br>
-    <!-- Надо понять нужно ли вносить эту информацию при регистрации, если нужно то потом правильно считать -->
-    <!--
-    <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
-    -->
-    <label id="characteristics">Характеристика:<textarea th:field="*{characteristics}" rows="4" cols="40" placeholder="Напишите краткую характеристику участника"></textarea><br>
-    </label><br>
+
+    <div class="form-grid">
+      <div class="form-column">
+        <label>Имя:
+          <input type="text" th:field="*{name}" required />
+        </label>
+        <label>Фамилия:
+          <input type="text" th:field="*{surname}" required />
+        </label>
+        <label>Позывной:
+          <input type="text" th:field="*{callSign}" required />
+        </label>
+        <label>Номер телефона:
+          <input type="text" th:field="*{telephoneNumber}" required />
+        </label>
+      </div>
+
+      <div class="form-column">
+
+        <label>Дата рождения:
+          <input type="date" th:field="*{dateOfBirth}" required />
+        </label>
+        <label>Дата регистрации:
+          <input type="date" th:field="*{registrationDate}" />
+        </label>
+        <div class="photo-upload-wrapper">
+          <label class="upload-photo">
+            Добавить фото
+            <input type="file" id="avatarInput" name="avatar" accept="image/*">
+          </label>
+          <div id="preview"></div>
+        </div>
+      </div>
+    </div>
+    <label>Характеристика:
+      <textarea id="characteristics" th:field="*{characteristics}" placeholder="Напишите краткую характеристику участника"></textarea>
+    </label>
 
     <button class="btn" type="submit">Сохранить</button>
   </form>
 </div>
 
+</body>
+
 <script>
-  const form = document.getElementById('addParticipantForm');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  const input = document.getElementById("avatarInput");
+  const preview = document.getElementById("preview");
 
-    const data = {
-      name: form.name.value.trim(),
-      callsign: form.callsign.value.trim(),
-      age: parseInt(form.age.value, 10),
-      status: form.status.value
-    };
-
-    // Тут можно отправить данные на сервер через fetch/ajax
-    alert(`Добавлен участник:\nИмя: ${data.name}\nПозывной: ${data.callsign}\nВозраст: ${data.age}\nСтатус: ${data.status}`);
-
-    form.reset();
+  input.addEventListener("change", function () {
+    preview.innerHTML = ""; // очистка
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.style.maxWidth = "100px";
+      img.style.maxHeight = "100px";
+      img.style.border = "1px solid #0f0";
+      img.style.borderRadius = "4px";
+      img.onload = () => URL.revokeObjectURL(img.src); // чистим URL
+      preview.appendChild(img);
+    }
   });
-
-   // Уведомление при нажатии на кнопки
-  const buttons = document.querySelectorAll('.btn');
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      showToast(`Участник добавлен!`);
-    });
-  });
-
-  // Простое уведомление
-  function showToast(text) {
-    const toast = document.createElement('div');
-    toast.textContent = text;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#0f0';
-    toast.style.color = '#000';
-    toast.style.padding = '10px 20px';
-    toast.style.borderRadius = '8px';
-    toast.style.fontWeight = 'bold';
-    toast.style.boxShadow = '0 0 10px #0f0';
-    toast.style.opacity = '0';
-    toast.style.transition = 'opacity 0.5s ease';
-
-    document.body.appendChild(toast);
-    setTimeout(() => toast.style.opacity = '1', 100);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 500);
-    }, 3000);
-  }
 </script>
 
-</body>
 </html>

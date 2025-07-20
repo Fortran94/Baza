@@ -209,10 +209,12 @@
             <span class="label">Тип</span>
             <div class="value" id="type" th:text="${event.type}"></div>
         </div>
+        <!--
         <div class="info-row">
             <span class="label">Результат</span>
             <div class="value" id="result" th:text="${event.result}"></div>
         </div>
+        -->
     </div>
 
     <!-- Column 3 -->
@@ -240,7 +242,7 @@
 
 <script>
     document.getElementById('delete-btn').addEventListener('click', () => {
-      if (confirm('Вы уверены, что хотите удалить этого участника?')) {}
+      if (confirm('Вы уверены, что хотите удалить это мероприятие?')) {}
     });
 </script>
 
