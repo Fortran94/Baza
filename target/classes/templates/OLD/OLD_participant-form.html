@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить участника</title>
+</head>
+<body>
+<h1>Новый участник</h1>
+<form th:action="@{/ui/participants}" th:object="${participant}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Имя: <input type="text" th:field="*{name}" required /></label><br>
+    <label>Фамилия: <input type="text" th:field="*{surname}" required /></label><br>
+    <label>Позывной: <input type="text" th:field="*{callSign}" required /></label><br>
+    <label>Дата Рождения: <input type="date" th:field="*{dateOfBirth}" required /></label><br>
+    <label>Дата регистрации: <input type="date" th:field="*{registrationDate}"  /></label><br>
+    <!-- Надо понять нужно ли вносить эту информацию при регистрации, если нужно то потом правильно считать
+    <label>Кол-во мероприятий: <input type="number" th:field="*{numberOfEvents}" /></label><br>
+    -->
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>

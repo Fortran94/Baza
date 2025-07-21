@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Baza – Просмотр участника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', monospace;
+      background-color: #0a0a0a;
+      color: #0f0;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 0 0 4px #0f0;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .info-container {
+      position: relative;
+      background-color: #111;
+      border: 1px solid #0f0;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #0f0;
+      width: 900px;
+      max-width: 100%;
+      padding: 30px 40px 60px 40px;
+      display: flex;
+      gap: 40px;
+      box-sizing: border-box;
+      max-height: none;
+      overflow-y: visible;
+    }
+    h2 {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      font-size: 24px;
+      margin: 0;
+      width: 373.367 px;
+    }
+    .column-characteristics {
+      flex: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 90px;
+    }
+    .characteristics-box {
+      background-color: #000;
+      padding: 10px;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      box-shadow: inset 0 0 5px #0f0;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      color: #0f0;
+      white-space: pre-wrap;
+      min-height: 295px;
+      max-height: 295px;
+      overflow-y: auto;
+    }
+    .info-column {
+      flex: 0.7;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: auto;
+    }
+    .info-row {
+      display: flex;
+      flex-direction: column;
+    }
+    .label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .value {
+      background-color: #000;
+      padding: 10px;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      box-shadow: inset 0 0 5px #0f0;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      color: #0f0;
+      user-select: text;
+      min-width: 160px;
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      justify-content: center;
+      flex: 0.5;
+      max-width: 240px;
+    }
+    .btn {
+      padding: 12px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #0f0;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      user-select: none;
+      text-align: center;
+    }
+    .btn:hover {
+      background-color: #0f0;
+      color: #000;
+      box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+    }
+    .btn-back {
+      position: absolute;
+      left: 40px;
+      bottom: 20px;
+      padding: 12px 24px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #0f0;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .btn-back:hover {
+      background-color: #0f0;
+      color: #000;
+      box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+    }
+    #delete-btn {
+      color: #ff0000;
+      box-shadow: 0 0 5px #ff0000;
+      border: 1px solid #ff0000;
+    }
+    #delete-btn:hover {
+      background-color: #ff3300;
+      color: #000;
+      box-shadow: 0 0 15px #ff0000, inset 0 0 10px #000;
+    }
+    .buttons form {
+      flex: 1 1 auto;
+      display: flex;
+    }
+    .buttons form > button {
+      flex: 1 1 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .avatar-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+    .avatar-img {
+      width: 100%;
+      max-width: 240px;
+      height: 170px;
+      object-fit: cover;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      box-shadow: 0 0 5px #0f0;
+      background-color: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="info-container">
+
+  <h2>Информация об участнике</h2>
+
+  <!-- Column 1 -->
+  <div class="column-characteristics">
+    <div>
+      <span class="label">Характеристика</span>
+      <div class="characteristics-box" th:utext="${#strings.replace(participant.characteristics, '\n', '<br/>')}"></div>
+    </div>
+    <a href="#" class="btn-back" th:href="@{/ui/participants}">К списку</a>
+  </div>
+
+  <!-- Column 2 -->
+  <div class="info-column">
+    <div class="info-row">
+      <span class="label">Имя Фамилия</span>
+      <div class="value" id="name" th:text="${participant.getName} + ' ' + ${participant.getSurname}"></div>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Позывной</span>
+      <div class="value" id="callsign" th:text="${participant.getCallSign}"></div>
+    </div>
+    <div class="info-row">
+      <span class="label">Возраст</span>
+      <div class="value" id="age" th:text="${participant.getAge}"></div>
+    </div>
+    <div class="info-row">
+      <span class="label">Уровень активности</span>
+      <div class="value" id="activity-level" th:text="${participant.getActivityLevel}"></div>
+    </div>
+    <div class="info-row">
+      <span class="label">Количество мероприятий</span>
+      <div class="value" id="events-attended" th:text="${participant.getNumberOfEvents}"></div>
+    </div>
+    <div class="info-row">
+      <span class="label">Номер телефона</span>
+      <div class="value" id="tel-number" th:text="${participant.telephoneNumber}"></div>
+    </div>
+  </div>
+
+  <!-- Column 3 -->
+  <div class="info-column">
+    <div class="avatar-wrapper">
+      <img th:src="@{'/' + ${participant.avatarPath}}" alt="Аватар" class="avatar-img" />
+    </div>
+    <div class="buttons">
+      <form th:action="@{'/ui/participants/' + ${participant.id} + '/edit'}" method="get">
+        <button class="btn" id="edit-btn">Редактировать</button>
+      </form>
+      <form th:action="@{/ui/participants/{id}/assign-event-form(id=${participant.id})}">
+        <button class="btn" id="register-event-btn">Записать на мероприятие</button>
+      </form>
+      <form th:action="@{/ui/participants/{id}/events(id=${participant.id})}">
+        <button class="btn" id="view-events-btn">Посмотреть активности</button>
+      </form>
+      <form th:action="@{'/ui/participants/' + ${participant.id} + '/delete'}" method="post">
+        <button class="btn" id="delete-btn">Удалить</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('delete-btn').addEventListener('click', () => {
+    if (confirm('Вы уверены, что хотите удалить этого участника?')) {}
+  });
+</script>
+
+</body>
+</html>

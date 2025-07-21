@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Baza – Добавить мероприятие</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <style>
+        body {
+          margin: 0;
+          font-family: 'Orbitron', monospace;
+          background-color: #0a0a0a;
+          color: #0f0;
+          display: flex;
+          height: 100vh;
+          text-shadow: 0 0 4px #0f0;
+          justify-content: center;
+          align-items: flex-start;
+          padding-top: 40px;
+        }
+
+        .form-container {
+          background-color: #111;
+          padding: 30px 40px;
+          border: 1px solid #0f0;
+          border-radius: 8px;
+          box-shadow: 0 0 15px #0f0;
+          width: 750px;
+          max-height: 100vh;
+          overflow-y: auto;
+          box-sizing: border-box;
+          margin-bottom: 90px;
+          min-height: 500px;
+        }
+
+        h2 {
+          margin-top: 0;
+          margin-bottom: 20px;
+          font-size: 24px;
+          text-align: center;
+        }
+
+        .form-grid {
+          display: flex;
+          gap: 30px;
+          margin-bottom: 20px;
+        }
+
+        .form-column {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        label {
+          font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+          width: 100%;
+          padding: 5px;
+          background-color: #000;
+          border: 1px solid #0f0;
+          border-radius: 6px;
+          color: #0f0;
+          font-family: 'Orbitron', monospace;
+          font-size: 16px;
+          box-shadow: inset 0 0 5px #0f0;
+          outline: none;
+          transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+          border-color: #0fff0f;
+          box-shadow: 0 0 10px #0f0;
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 80px;
+          margin-bottom: 30px;
+        }
+
+        .btn {
+          display: block;
+          margin: 0 auto;
+          width: 50%;
+          padding: 12px;
+          background-color: #000;
+          color: #0f0;
+          border: 1px solid #0f0;
+          border-radius: 6px;
+          font-size: 18px;
+          cursor: pointer;
+          box-shadow: 0 0 5px #0f0;
+          transition: all 0.3s ease;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .btn:hover {
+          background-color: #0f0;
+          color: #000;
+          box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+        }
+
+        #characteristics {
+          margin-bottom: 30px;
+        }
+
+    /* Убирает стрелки в Chrome, Safari, Edge */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Убирает стрелки в Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Baza – Новое мероприятие</h2>
+    <form th:action="@{/events}" th:object="${event}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-grid">
+            <!-- Первая колонка -->
+
+            <div class="form-column">
+                <label>Название: <input type="text" th:field="*{name}" required /></label><br>
+                <label>Локация: <input type="text" th:field="*{location}" required /></label><br>
+                <label>Организатор: <input type="text" th:field="*{organizer}" required /></label><br>
+            </div>
+            <!-- Вторая колонка -->
+            <div class="form-column">
+                <label>Количество участников: <input type="number" th:field="*{quantityOfParticipant}" /></label><br>
+                <label>Дата: <input type="date" th:field="*{date}" min="2000-01-01" max="2100-12-31" required /></label><br>
+
+
+                <label>Тип мероприятия:
+                    <select th:field="*{type}" id="type" required>
+                        <option value="" disabled selected>Выберите тип</option>
+                        <option value="Game">Игра</option>
+                        <option value="Tournament">Турнир</option>
+                    </select>
+                </label><br>
+
+                <!-- Это поле показывается только если выбран "Tournament" -->
+                <div id="result-field" style="display: none;">
+                    <label>Результат: <input type="text" th:field="*{result}" /></label><br>
+                </div>
+
+            </div>
+
+        </div>
+        <label>Описание:
+            <textarea id="overview" th:field="*{overview}" placeholder="Напишите краткое описание"></textarea>
+        </label>
+        <button class="btn" type="submit">Сохранить</button>
+    </form>
+</div>
+
+<script>
+    function toggleResultField() {
+            const typeSelect = document.getElementById('type');
+            const resultField = document.getElementById('result-field');
+            if (typeSelect.value === 'Tournament') {
+                resultField.style.display = 'block';
+            } else {
+                resultField.style.display = 'none';
+            }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const typeSelect = document.getElementById('type');
+        typeSelect.addEventListener('change', toggleResultField);
+        toggleResultField(); // показать/скрыть при первой загрузке
+    });
+
+    const form = document.getElementById('addParticipantForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: form.name.value.trim(),
+        callsign: form.callsign.value.trim(),
+        age: parseInt(form.age.value, 10),
+        status: form.status.value
+      };
+
+      // Тут можно отправить данные на сервер через fetch/ajax
+      alert(`Добавлен участник:\nИмя: ${data.name}\nПозывной: ${data.callsign}\nВозраст: ${data.age}\nСтатус: ${data.status}`);
+
+      form.reset();
+    });
+
+     // Уведомление при нажатии на кнопки
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        showToast(`Мероприятие добавлено!`);
+      });
+    });
+
+    // Простое уведомление
+    function showToast(text) {
+      const toast = document.createElement('div');
+      toast.textContent = text;
+      toast.style.position = 'fixed';
+      toast.style.bottom = '20px';
+      toast.style.right = '20px';
+      toast.style.backgroundColor = '#0f0';
+      toast.style.color = '#000';
+      toast.style.padding = '10px 20px';
+      toast.style.borderRadius = '8px';
+      toast.style.fontWeight = 'bold';
+      toast.style.boxShadow = '0 0 10px #0f0';
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.5s ease';
+
+      document.body.appendChild(toast);
+      setTimeout(() => toast.style.opacity = '1', 100);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Baza – Записать на мероприятие</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', monospace;
+      background-color: #0a0a0a;
+      color: #0f0;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 0 0 4px #0f0;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .assign-form-container {
+      background-color: #111;
+      border: 1px solid #0f0;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #0f0;
+      width: 600px;
+      max-width: 100%;
+      padding: 30px 40px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0;
+      text-align: center;
+    }
+
+    label {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      box-shadow: inset 0 0 5px #0f0;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #0f0;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+      box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    a.button-link {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="assign-form-container">
+  <h1>Записать [[${participant.name}]] [[${participant.surname}]] на мероприятие</h1>
+
+  <form th:action="@{/ui/participants/{id}/assign-event-form(id=${participant.id})}" method="post">
+    <div class="form-group">
+      <label for="eventId">Выберите мероприятие:</label>
+      <select name="eventId" id="eventId" required>
+        <option th:each="e : ${events}"
+                th:value="${e.id}"
+                th:text="${e.name + ' (' + e.type + ') — ' + e.location}">
+        </option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <a th:href="@{'/ui/participants/' + ${participant.id}}" class="button-link">
+        <button type="button">Назад</button>
+      </a>
+      <button type="submit">Записать</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
