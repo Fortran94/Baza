@@ -1,16 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Baza – Мероприятия участника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', monospace;
+      background-color: #0a0a0a;
+      color: #0f0;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 0 0 4px #0f0;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .events-container {
+      background-color: #111;
+      border: 1px solid #0f0;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #0f0;
+      width: 700px;
+      max-width: 100%;
+      padding: 30px 40px 60px 40px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    li {
+      padding: 10px 14px;
+      background-color: #000;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      box-shadow: inset 0 0 5px #0f0;
+      font-size: 16px;
+      color: #0f0;
+      white-space: pre-wrap;
+    }
+
+    .btn-back {
+      align-self: flex-start;
+      padding: 10px 18px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #0f0;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-back:hover {
+      background-color: #0f0;
+      color: #000;
+      box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
+    }
+  </style>
 </head>
 <body>
-<h1 th:text="'Мероприятия участника: ' + ${participant.name}"></h1>
 
-<ul>
-  <li th:each="e : ${events}" th:text="${e.name + ' ' + e.location + ' ' + e.type}">Мероприятие</li>
-</ul>
+<div class="events-container">
 
-<a th:href="@{'/ui/participants/' + ${participant.id}}">Назад</a>
+  <h1 th:text="'Мероприятия участника: ' + ${participant.name}">Мероприятия участника</h1>
+
+  <ul>
+    <li th:each="e : ${events}"
+        th:text="${e.name + ' | ' + e.location + ' | ' + e.type}">
+      Название | Локация | Тип
+    </li>
+  </ul>
+
+  <a th:href="@{'/ui/participants/' + ${participant.id}}" class="btn-back">← Назад к участнику</a>
+
+</div>
+
 </body>
 </html>

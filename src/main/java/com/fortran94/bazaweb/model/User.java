@@ -11,7 +11,7 @@ public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Transient
     private int age;
     private String name, surname;
@@ -26,7 +26,7 @@ public abstract class User {
     private String avatarPath;
 
 
-    public User(long id, String name, String surname, String callSign, LocalDate dateOfBirth, String telephoneNumber, String avatarPath) {
+    public User(Long id, String name, String surname, String callSign, LocalDate dateOfBirth, String telephoneNumber, String avatarPath) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -41,11 +41,11 @@ public abstract class User {
 
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

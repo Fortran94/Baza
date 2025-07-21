@@ -27,34 +27,71 @@ public class ParticipantController {
         this.eventRepository = eventRepository;
     }
 
+//    @PostMapping("/participants")
+//    public String saveParticipant (@ModelAttribute ParticipantUser participant,
+//                                   @RequestParam("avatar") MultipartFile avatarFile) throws IOException {
+//        if (participant.getRegistrationDate() == null) {
+//            participant.setRegistrationDate(LocalDate.now());
+//        }
+//
+//        if (!avatarFile.isEmpty()) {
+//            // создаём имя файла, например: "ivan_ivanov_123456.png"
+//            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+//            String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
+//
+//
+//            // создаём директорию, если нет
+//            File uploadPath = new File(uploadDir);
+//            if (!uploadPath.exists()) {
+//                uploadPath.mkdirs();
+//            }
+//
+//            // сохраняем файл на диск
+//            avatarFile.transferTo(new File(uploadDir + filename));
+//            // сохраняем путь в participant
+//            participant.setAvatarPath("uploads/avatars/" + filename);
+//        }
+//
+//        participantUserRepository.save(participant);
+//        return "redirect:/ui/participants/" + participant.getId();
+//    }
+
     @PostMapping("/participants")
-    public String saveParticipant (@ModelAttribute ParticipantUser participant,
-                                   @RequestParam("avatar") MultipartFile avatarFile) throws IOException {
+    public String saveParticipant(@ModelAttribute ParticipantUser participant,
+                                  @RequestParam("avatar") MultipartFile avatarFile) throws IOException {
         if (participant.getRegistrationDate() == null) {
             participant.setRegistrationDate(LocalDate.now());
         }
 
+        // Если участник уже существует — берём старые данные
+        if (participant.getId() != null) {
+            ParticipantUser existing = participantUserRepository.findById(participant.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
+
+            // если файл НЕ загружен, оставляем старую аватарку
+            if (avatarFile.isEmpty()) {
+                participant.setAvatarPath(existing.getAvatarPath());
+            }
+        }
+
+        // если файл загружен — сохраняем новый
         if (!avatarFile.isEmpty()) {
-            // создаём имя файла, например: "ivan_ivanov_123456.png"
             String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
             String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
 
-
-            // создаём директорию, если нет
             File uploadPath = new File(uploadDir);
             if (!uploadPath.exists()) {
                 uploadPath.mkdirs();
             }
 
-            // сохраняем файл на диск
             avatarFile.transferTo(new File(uploadDir + filename));
-            // сохраняем путь в participant
             participant.setAvatarPath("uploads/avatars/" + filename);
         }
 
         participantUserRepository.save(participant);
         return "redirect:/ui/participants/" + participant.getId();
     }
+
 
     @GetMapping("/participants")
     public String showParticipants(Model model) {

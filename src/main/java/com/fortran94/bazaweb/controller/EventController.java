@@ -102,20 +102,24 @@ public class EventController {
     }
 
     @PostMapping("/{id}/assign-participant")
-    public String assignParticipant(@PathVariable Long id, @RequestParam Long participantId) {
+    public String assignParticipant(@PathVariable Long id, @RequestParam("participantIds") List<Long> participantIds) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
-        ParticipantUser participant = participantUserRepository.findById(participantId)
-                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
 
-        event.getParticipants().add(participant);
-        participant.getEvents().add(event); // обязательно!
+        for (Long participantId : participantIds) {
+            ParticipantUser participant = participantUserRepository.findById(participantId)
+                    .orElseThrow(() -> new IllegalArgumentException("Участник с id " + participantId + " не найден"));
 
-        eventRepository.save(event);
-        participantUserRepository.save(participant); // тоже обязательно!
+            event.getParticipants().add(participant);
+            participant.getEvents().add(event);
+
+            participantUserRepository.save(participant); // сохраняем изменения в участнике
+        }
+        eventRepository.save(event); // сохраняем изменения в мероприятии
 
         return "redirect:/events/" + id;
     }
+
 
     @GetMapping("/{id}/participants")
     public String showParticipantsOfEvent(@PathVariable Long id, Model model) {

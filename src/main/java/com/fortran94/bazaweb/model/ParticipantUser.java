@@ -24,7 +24,7 @@ public class ParticipantUser extends User {
     @Column(length = 1000)
     private String characteristics;
 
-    public ParticipantUser(long id, String name, String surname, String callSign, LocalDate dateOfBirth,
+    public ParticipantUser(Long id, String name, String surname, String callSign, LocalDate dateOfBirth,
                            LocalDate registrationDate, int numberOfEvents, int experiencePerMonth,
                            String telephoneNumber, String characteristics, String avatarPath) {
         super(id, name, surname, callSign, dateOfBirth, telephoneNumber, avatarPath);
