@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Baza – Добавить участника</title>
+    <title>Baza – Добавить мероприятие</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
     <style>
         body {
@@ -14,33 +14,55 @@
           height: 100vh;
           text-shadow: 0 0 4px #0f0;
           justify-content: center;
-          align-items: center;
+          align-items: flex-start;
+          padding-top: 40px;
         }
+
         .form-container {
           background-color: #111;
           padding: 30px 40px;
           border: 1px solid #0f0;
           border-radius: 8px;
           box-shadow: 0 0 15px #0f0;
-          width: 400px;
+          width: 750px;
+          max-height: 100vh;
+          overflow-y: auto;
+          box-sizing: border-box;
+          margin-bottom: 90px;
+          min-height: 500px;
         }
+
         h2 {
           margin-top: 0;
           margin-bottom: 20px;
           font-size: 24px;
           text-align: center;
         }
+
+        .form-grid {
+          display: flex;
+          gap: 30px;
+          margin-bottom: 20px;
+        }
+
+        .form-column {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
         label {
-          display: block;
-          margin-bottom: 6px;
           font-weight: bold;
         }
+
         input[type="text"],
         input[type="number"],
-        select {
+        input[type="date"],
+        select,
+        textarea {
           width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
+          padding: 5px;
           background-color: #000;
           border: 1px solid #0f0;
           border-radius: 6px;
@@ -51,15 +73,26 @@
           outline: none;
           transition: border-color 0.3s ease;
         }
+
         input[type="text"]:focus,
         input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
         select:focus {
           border-color: #0fff0f;
           box-shadow: 0 0 10px #0f0;
         }
+
+        textarea {
+          resize: vertical;
+          min-height: 80px;
+          margin-bottom: 30px;
+        }
+
         .btn {
           display: block;
-          width: 100%;
+          margin: 0 auto;
+          width: 50%;
           padding: 12px;
           background-color: #000;
           color: #0f0;
@@ -72,11 +105,29 @@
           font-weight: bold;
           text-align: center;
         }
+
         .btn:hover {
           background-color: #0f0;
           color: #000;
           box-shadow: 0 0 15px #0f0, inset 0 0 10px #000;
         }
+
+        #characteristics {
+          margin-bottom: 30px;
+        }
+
+    /* Убирает стрелки в Chrome, Safari, Edge */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Убирает стрелки в Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
     </style>
 </head>
 <body>
@@ -85,26 +136,39 @@
     <h2>Baza – Новое мероприятие</h2>
     <form th:action="@{/events}" th:object="${event}" method="post">
         <input type="hidden" th:field="*{id}" />
+        <div class="form-grid">
+            <!-- Первая колонка -->
 
-        <label>Название: <input type="text" th:field="*{name}" required /></label><br>
-        <label>Локация: <input type="text" th:field="*{location}" required /></label><br>
-        <label>Дата: <input type="date" th:field="*{date}" min="2000-01-01" max="2100-12-31" required /></label><br>
-        <label>Организатор: <input type="text" th:field="*{organizer}" required /></label><br>
-        <label>Описание: <input type="text" th:field="*{overview}" required /></label><br>
-        <label>Количество участников: <input type="number" th:field="*{quantityOfParticipant}" /></label><br>
+            <div class="form-column">
+                <label>Название: <input type="text" th:field="*{name}" required /></label><br>
+                <label>Локация: <input type="text" th:field="*{location}" required /></label><br>
+                <label>Организатор: <input type="text" th:field="*{organizer}" required /></label><br>
+            </div>
+            <!-- Вторая колонка -->
+            <div class="form-column">
+                <label>Количество участников: <input type="number" th:field="*{quantityOfParticipant}" /></label><br>
+                <label>Дата: <input type="date" th:field="*{date}" min="2000-01-01" max="2100-12-31" required /></label><br>
 
-        <label>Тип мероприятия:
-            <select th:field="*{type}" id="type" required>
-                <option value="" disabled selected>Выберите тип</option>
-                <option value="Game">Игра</option>
-                <option value="Tournament">Турнир</option>
-            </select>
-        </label><br>
 
-        <!-- Это поле показывается только если выбран "Tournament" -->
-        <div id="result-field" style="display: none;">
-            <label>Результат: <input type="text" th:field="*{result}" /></label><br>
+                <label>Тип мероприятия:
+                    <select th:field="*{type}" id="type" required>
+                        <option value="" disabled selected>Выберите тип</option>
+                        <option value="Game">Игра</option>
+                        <option value="Tournament">Турнир</option>
+                    </select>
+                </label><br>
+
+                <!-- Это поле показывается только если выбран "Tournament" -->
+                <div id="result-field" style="display: none;">
+                    <label>Результат: <input type="text" th:field="*{result}" /></label><br>
+                </div>
+
+            </div>
+
         </div>
+        <label>Описание:
+            <textarea id="overview" th:field="*{overview}" placeholder="Напишите краткое описание"></textarea>
+        </label>
         <button class="btn" type="submit">Сохранить</button>
     </form>
 </div>
@@ -147,7 +211,7 @@
     const buttons = document.querySelectorAll('.btn');
     buttons.forEach(button => {
       button.addEventListener('click', () => {
-        showToast(`Участник добавлен!`);
+        showToast(`Мероприятие добавлено!`);
       });
     });
 
