@@ -1,0 +1,2 @@
+# Указываем GitHub Linguist использовать Java как основной язык
+* linguist-language=Java
