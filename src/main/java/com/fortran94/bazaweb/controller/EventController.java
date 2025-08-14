@@ -50,7 +50,6 @@ public class EventController {
             // это редактирование
             Event existingEvent = eventRepository.findById(formEvent.getId())
                     .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
-
             existingEvent.setName(formEvent.getName());
             existingEvent.setLocation(formEvent.getLocation());
             existingEvent.setDate(formEvent.getDate());
@@ -60,7 +59,7 @@ public class EventController {
             existingEvent.setType(formEvent.getType().toLowerCase());
             existingEvent.setResult(formEvent.getResult());
 
-            eventRepository.save(existingEvent); // ✅ participants не тронуты
+            eventRepository.save(existingEvent);
         }
 
         return "redirect:/events";
@@ -130,7 +129,7 @@ public class EventController {
         model.addAttribute("participants", event.getParticipants());
         return "event-participants"; // имя Thymeleaf-шаблона
     }
-
+/*
     @GetMapping("/filter")
     public String filterEvents(
             @RequestParam(required = false) String type,
@@ -150,7 +149,7 @@ public class EventController {
         model.addAttribute("allParticipants", participantUserRepository.findAll());
         return "events";
     }
-
+*/
 
 
 }

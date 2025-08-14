@@ -1,5 +1,10 @@
 /home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/BazawebApplication.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/config/WebConfig.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/controller/EventController.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/controller/HomeController.java
 /home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/controller/ParticipantController.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/model/Event.java
 /home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/model/ParticipantUser.java
 /home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/model/User.java
+/home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/repository/EventRepository.java
 /home/fotran/IdeaProjects/Baza/src/main/java/com/fortran94/bazaweb/repository/ParticipantUserRepository.java
