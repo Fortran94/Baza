@@ -3,6 +3,7 @@ package com.fortran94.bazaweb.controller;
 import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
+import com.fortran94.bazaweb.repository.TrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,13 @@ public class HomeController {
 
     private final ParticipantUserRepository participantUserRepository;
     private final EventRepository eventRepository;
+//    private final TrainingRepository trainingRepository;
 
-    public HomeController(ParticipantUserRepository participantUserRepository, EventRepository eventRepository) {
+    public HomeController(ParticipantUserRepository participantUserRepository, EventRepository eventRepository
+            /* TrainingRepository trainingRepository */) {
         this.participantUserRepository = participantUserRepository;
         this.eventRepository = eventRepository;
+//        this.trainingRepository = trainingRepository;
     }
 
     @GetMapping("/")
@@ -29,6 +33,7 @@ public class HomeController {
         model.addAttribute("closestEvent", closestEvent);
         model.addAttribute("participants", participantUserRepository.findAll());
         model.addAttribute("events", eventRepository.findAll());
+//        model.addAttribute("trainings", trainingRepository.findAll());
         return "index";
     }
 

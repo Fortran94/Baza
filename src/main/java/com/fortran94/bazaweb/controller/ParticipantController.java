@@ -96,7 +96,7 @@ public class ParticipantController {
     @GetMapping("/participants")
     public String showParticipants(Model model) {
         List<ParticipantUser> list = participantUserRepository.findAll();
-        model.addAttribute(/*"participants"*/ "participants", list);
+        model.addAttribute("participants", list);
         return "participants"; // название шаблона .html
     }
 

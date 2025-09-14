@@ -133,16 +133,4 @@ public class Event {
         return type;
     }
 
-
-    @Override
-    public String toString() {
-        return
-                "\nНазвание: " + name + '\n' +
-                        "Локация: " + location + '\n' +
-                        "Организатор: " + organizer + '\n' +
-                        "Описание: " + overview + '\n' +
-                        // "Наших участников: " + quantityOfParticipantOur + '\n' +
-                        "Количество участников всего: " + quantityOfParticipant + '\n' +
-                        "Тип мероприятия: " + type;
-    }
 }

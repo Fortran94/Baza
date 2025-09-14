@@ -15,6 +15,9 @@ public class ParticipantUser extends User {
     private int numberOfEvents;
     @ManyToMany(mappedBy = "participants")
     private List<Event> events = new ArrayList<>();
+    @ManyToMany(mappedBy = "participants")
+    private List<Training> trainings = new ArrayList<>();
+
 
     @Column(name = "registration_date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -102,18 +105,13 @@ public class ParticipantUser extends User {
         this.characteristics = characteristics;
     }
 
-//    //TODO сделать абстрактный метод???
-//    @Override
-//    public String toString() {
-//        return
-//                "\n Имя: " + getName() +
-//                        "\n Фамилия: " + getSurname() +
-//                        "\n Позывной: " + getCallSign() +
-//                        "\n Возраст: " + getAge() +
-//                        "\n Стаж участника в месяцах: " + getMonthsSinceRegistration() +
-//                        "\n Количество посещенных мероприятий: " + getNumberOfEvents() +
-//                        "\n Уровень активности: " + getActivityLevel();
-//    }
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
+    }
 
     @Override
     public boolean equals(Object o) {

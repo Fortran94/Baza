@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Baza – Добавить тренировку</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/styles/event-form_style.css}" />
+</head>
+<body>
+    <div class="form-container">
+        <h2>Baza – Новая тренировка</h2>
+
+        <form th:action="@{/trainings}" th:object="${training}" method="post">
+
+                        <label>Дата: <input type="date" th:field="*{date}" min="2000-01-01" max="2100-12-31" required />
+                        </label>
+                        <br>
+
+
+
+                <button class="btn" type="submit">Сохранить</button>
+        </form>
+
+    </div>
+</body>
+</html>
