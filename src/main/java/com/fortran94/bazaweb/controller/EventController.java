@@ -106,7 +106,6 @@ public class EventController {
         for (Long participantId : participantIds) {
             ParticipantUser participant = participantUserRepository.findById(participantId)
                     .orElseThrow(() -> new IllegalArgumentException("Участник с id " + participantId + " не найден"));
-
             event.getParticipants().add(participant);
             participant.getEvents().add(event);
 
@@ -122,7 +121,6 @@ public class EventController {
     public String showParticipantsOfEvent(@PathVariable Long id, Model model) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
-
         model.addAttribute("event", event);
         model.addAttribute("participants", event.getParticipants());
         return "event-participants"; // имя Thymeleaf-шаблона

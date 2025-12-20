@@ -4,6 +4,8 @@ import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.model.ParticipantUser;
 import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
+import com.fortran94.bazaweb.service.UserService;
+import com.fortran94.bazaweb.service.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,42 +21,13 @@ import java.util.UUID;
 @RequestMapping("/ui")
 public class ParticipantController {
 
-    private final ParticipantUserRepository participantUserRepository;
+    private final UserService userService;
     private final EventRepository eventRepository;
 
-    public ParticipantController(ParticipantUserRepository repository, EventRepository eventRepository){
-        this.participantUserRepository = repository;
+    public ParticipantController(UserService userService, EventRepository eventRepository){
+        this.userService = userService;
         this.eventRepository = eventRepository;
     }
-
-//    @PostMapping("/participants")
-//    public String saveParticipant (@ModelAttribute ParticipantUser participant,
-//                                   @RequestParam("avatar") MultipartFile avatarFile) throws IOException {
-//        if (participant.getRegistrationDate() == null) {
-//            participant.setRegistrationDate(LocalDate.now());
-//        }
-//
-//        if (!avatarFile.isEmpty()) {
-//            // создаём имя файла, например: "ivan_ivanov_123456.png"
-//            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
-//            String uploadDir = System.getProperty("user.dir") + "/uploads/avatars/";
-//
-//
-//            // создаём директорию, если нет
-//            File uploadPath = new File(uploadDir);
-//            if (!uploadPath.exists()) {
-//                uploadPath.mkdirs();
-//            }
-//
-//            // сохраняем файл на диск
-//            avatarFile.transferTo(new File(uploadDir + filename));
-//            // сохраняем путь в participant
-//            participant.setAvatarPath("uploads/avatars/" + filename);
-//        }
-//
-//        participantUserRepository.save(participant);
-//        return "redirect:/ui/participants/" + participant.getId();
-//    }
 
     @PostMapping("/participants")
     public String saveParticipant(@ModelAttribute ParticipantUser participant,
@@ -65,8 +38,8 @@ public class ParticipantController {
 
         // Если участник уже существует — берём старые данные
         if (participant.getId() != null) {
-            ParticipantUser existing = participantUserRepository.findById(participant.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
+            ParticipantUser existing = userService.getParticipantById(participant.getId());
+//                    .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
 
             // если файл НЕ загружен, оставляем старую аватарку
             if (avatarFile.isEmpty()) {
@@ -88,14 +61,14 @@ public class ParticipantController {
             participant.setAvatarPath("uploads/avatars/" + filename);
         }
 
-        participantUserRepository.save(participant);
+        userService.addParticipant(participant);
         return "redirect:/ui/participants/" + participant.getId();
     }
 
 
     @GetMapping("/participants")
     public String showParticipants(Model model) {
-        List<ParticipantUser> list = participantUserRepository.findAll();
+        List<ParticipantUser> list = userService.getAllParticipants();
         model.addAttribute("participants", list);
         return "participants"; // название шаблона .html
     }
@@ -108,30 +81,30 @@ public class ParticipantController {
 
     @GetMapping("/participants/{id}")
     public String showCard(@PathVariable Long id, Model model) {
-        ParticipantUser participant = participantUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Нет участника с id " + id));
+        ParticipantUser participant = userService.getParticipantById(id);
+//                .orElseThrow(() -> new IllegalArgumentException("Нет участника с id " + id));
         model.addAttribute("participant", participant);
         return "participant-card";
     }
 
     @GetMapping("/participants/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
-        ParticipantUser participant = participantUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(String.valueOf(id)));
+        ParticipantUser participant = userService.getParticipantById(id);
+//                .orElseThrow(() -> new IllegalArgumentException(String.valueOf(id)));
         model.addAttribute("participant", participant);
         return "participant-form";
     }
 
     @PostMapping("/participants/{id}/delete")
     public String deleteParticipant(@PathVariable Long id) {
-        participantUserRepository.deleteById(id);
+        userService.deleteParticipant(id);
         return "redirect:/ui/participants";
     }
 
     @GetMapping("/participants/{id}/assign-event-form")
     public String showEventAssignForm(@PathVariable Long id, Model model) {
-        ParticipantUser participant = participantUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Не найден участник с id = " + id));
+        ParticipantUser participant = userService.getParticipantById(id);
+//                .orElseThrow(() -> new IllegalArgumentException("Не найден участник с id = " + id));
         List<Event> events = eventRepository.findAll();
 
         model.addAttribute("participant", participant);
@@ -141,15 +114,15 @@ public class ParticipantController {
 
     @PostMapping("/participants/{id}/assign-event-form")
     public String assignToEvent(@PathVariable Long id, @RequestParam Long eventId) {
-        ParticipantUser participant = participantUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
+        ParticipantUser participant =  userService.getParticipantById(id);
+//                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
 
         participant.getEvents().add(event);
         event.getParticipants().add(participant); // вот чего не хватало
 
-        participantUserRepository.save(participant);
+        userService.addParticipant(participant);
         eventRepository.save(event); // обязательно
 
         return "redirect:/ui/participants/" + id;
@@ -157,8 +130,8 @@ public class ParticipantController {
 
     @GetMapping("/participants/{id}/events")
     public String showEventsOfParticipant(@PathVariable Long id, Model model) {
-        ParticipantUser participantUser = participantUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
+        ParticipantUser participantUser = userService.getParticipantById(id);
+//                .orElseThrow(() -> new IllegalArgumentException("Участник не найден"));
 
         model.addAttribute("participant", participantUser);
         model.addAttribute("events", participantUser.getEvents());
