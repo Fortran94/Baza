@@ -4,12 +4,10 @@ import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.model.ParticipantUser;
 import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -30,7 +28,7 @@ public class EventController {
         List<Event> list = eventRepository.findAll();
         model.addAttribute("events", list);
         model.addAttribute("allParticipants", participantUserRepository.findAll());
-        return "events"; // название шаблона .html
+        return "events"; // название шаблона
     }
 
     @GetMapping("/new")
@@ -108,7 +106,6 @@ public class EventController {
         for (Long participantId : participantIds) {
             ParticipantUser participant = participantUserRepository.findById(participantId)
                     .orElseThrow(() -> new IllegalArgumentException("Участник с id " + participantId + " не найден"));
-
             event.getParticipants().add(participant);
             participant.getEvents().add(event);
 
@@ -124,7 +121,6 @@ public class EventController {
     public String showParticipantsOfEvent(@PathVariable Long id, Model model) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Мероприятие не найдено"));
-
         model.addAttribute("event", event);
         model.addAttribute("participants", event.getParticipants());
         return "event-participants"; // имя Thymeleaf-шаблона

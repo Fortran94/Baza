@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Baza – Просмотр тренировки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/styles/event-card_style.css}" />
+
+</head>
+
+<body>
+
+<div class="info-container">
+
+    <h2>Информация о тренировке</h2>
+
+    <!-- Column 1 -->
+    <div class="column-overview">
+        <!-- <div>
+                 <span class="label">Описание</span>
+                 <div class="overview-box" th:utext="${#strings.replace(event.overview, '\n', '<br/>')}"></div>
+             </div> -->
+        <a href="#" class="btn-back" th:href="@{/trainings}">К списку</a>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="info-column">
+
+        <div class="info-row">
+            <span class="label">Дата</span>
+            <div class="value" id="date" th:text="${training.date}"></div>
+        </div>
+        <!--
+        <div class="info-row">
+            <span class="label">Количество участников</span>
+            <div class="value" id="quantityOfParticipant" th:text="${event.quantityOfParticipant}"></div>
+        </div>
+        -->
+    </div>
+
+    <!-- Column 3 -->
+    <div class="button-column">
+
+
+        <div class="buttons">
+            <!--
+            <form th:action="@{'/events/' + ${event.id} + '/edit'}" method="get" style="display:inline;">
+                <button class="btn" id="edit-btn">Редактировать</button>
+            </form>
+            -->
+            <!-- Ниже не редактировано -->
+            <form th:action="@{'/trainings/' + ${training.id} + '/assign-participant'}" method="get">
+                <button class="btn">Добавить участника</button>
+            </form>
+            <form th:action="@{'/trainings/' + ${training.id} + '/participants'}" method="get">
+                <button class="btn">Показать участников</button>
+            </form>
+
+            <form th:action="@{'/trainings/' + ${training.id} + '/delete'}" method="post" style="display:inline;">
+                <button class="btn" id="delete-btn">Удалить</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/js/event-card_script.js}"></script>
+
+</body>
+</html>
