@@ -11,4 +11,13 @@
 <!--        <a th:href="@{/stats}">Статистика</a>-->
 <!--        <a th:href="@{/settings}">Настройки</a>-->
     </div>
+
+    <!-- ВЫНЕСТИ СТИЛИ -->
+    <div class="logout-btn">
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit" class="btn">
+                Выйти
+            </button>
+        </form>
+    </div>
 </div>

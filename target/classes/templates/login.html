@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Baza – Вход</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/styles/participants_style.css}" />
+</head>
+<body>
+
+<div style="max-width: 400px; margin: 100px auto; padding: 30px; background: #111; border: 1px solid #0f0; border-radius: 8px; text-align: center;">
+
+    <h2>Вход в Baza</h2>
+
+    <form th:action="@{/login}" method="post">
+        <div style="margin-bottom: 15px;">
+            <label>Позывной:</label><br>
+            <input type="text" name="username" style="width: 100%; padding: 8px; background: #000; color: #0f0; border: 1px solid #0f0;" required />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label>Пароль:</label><br>
+            <input type="password" name="password" style="width: 100%; padding: 8px; background: #000; color: #0f0; border: 1px solid #0f0;" required />
+        </div>
+
+        <button type="submit" style="padding: 12px 30px; background: #000; color: #0f0; border: 1px solid #0f0; cursor: pointer;">
+            Войти
+        </button>
+    </form>
+
+    <p th:if="${param.error}" style="color: red; margin-top: 15px; text-shadow: none;">
+        Неправильный логин или пароль!
+    </p>
+
+</div>
+
+</body>
+</html>
