@@ -11,4 +11,6 @@ public interface ParticipantUserRepository extends JpaRepository<ParticipantUser
 
 
     Optional<ParticipantUser> findByName(String name);
+
+    Optional<ParticipantUser> findByCallSign(String callSign);
 }
