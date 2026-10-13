@@ -2,8 +2,10 @@ package com.fortran94.bazaweb.controller;
 
 import com.fortran94.bazaweb.model.Event;
 import com.fortran94.bazaweb.model.ParticipantUser;
+import com.fortran94.bazaweb.model.dto.EventNotificationDto;
 import com.fortran94.bazaweb.repository.EventRepository;
 import com.fortran94.bazaweb.repository.ParticipantUserRepository;
+import com.fortran94.bazaweb.service.NotificationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,13 @@ public class EventController {
 
     private final EventRepository eventRepository;
     private final ParticipantUserRepository participantUserRepository;
+    private final NotificationService notificationService;
 
 
-    public EventController(EventRepository eventRepository, ParticipantUserRepository participantUserRepository) {
+    public EventController(EventRepository eventRepository, ParticipantUserRepository participantUserRepository, NotificationService notificationService) {
         this.eventRepository = eventRepository;
         this.participantUserRepository = participantUserRepository;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("")
@@ -44,6 +48,19 @@ public class EventController {
             // это новое мероприятие
             formEvent.setType(formEvent.getType().toLowerCase());
             eventRepository.save(formEvent);
+
+            EventNotificationDto eventNotificationDto = EventNotificationDto.builder()
+                    .name(formEvent.getName())
+                    .type(formEvent.getType())
+                    .date(formEvent.getDate())
+                    .organizer(formEvent.getOrganizer())
+                    .overview(formEvent.getOverview())
+                    .location(formEvent.getLocation())
+                    .build();
+
+            notificationService.sendEventNotification(eventNotificationDto);
+
+
         } else {
             // это редактирование
             Event existingEvent = eventRepository.findById(formEvent.getId())

@@ -46,11 +46,11 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Security + JWT -->
+		<!-- Security + JWT
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		</dependency>-->
 
 
 		<!-- PostgreSQL -->
